@@ -197,9 +197,10 @@ const teamMembers = [
   { name: "Thulasi Ram", role: "Filmmaker & Ad-Creator", specialty: "Filmmaking & Ads", img: "/thulasiram.jpg", instagram: "" },
   { name: "Yokash", role: "Cinematographer, Motion Designer & Film Editor", specialty: "Motion Graphics", img: "/yokash.jpg", instagram: "" },
   { name: "Vishal", role: "UI/UX Designer", specialty: "UI/UX Design", img: "/vishal.jpg", instagram: "" },
-  { name: "Hariharan", role: "Web Developer", specialty: "Web Development", img: "/hariharan.jpg", instagram: "" },
+  { name: "Hariharan", role: "Web Developer", specialty: "Web Development", img: "/hariharan.png", instagram: "" },
   { name: "Kathir", role: "Content Creator & Writer", specialty: "Content & Writing", img: "/kathir.jpg", instagram: "" },
   { name: "Prem Kumar", role: "Event Organizer", specialty: "Event Management", img: "/prem.png", instagram: "" },
+  { name: "Nisanth", role: "Reel Creator", specialty: "Reel Creation", img: "/nisanth.jpg", instagram: "" },
 ];
 
 const PAGE_TITLES = [
@@ -456,37 +457,6 @@ function Nav({
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={onPrev}
-              disabled={current === 0}
-              className="w-7 h-7 flex items-center justify-center border transition-all cursor-pointer"
-              style={{ 
-                borderColor: current === 0 ? "rgba(0,0,0,0.1)" : C.orange, 
-                color: current === 0 ? "#bbbbbb" : C.orangeDim,
-                borderRadius: "50%",
-                background: current === 0 ? "transparent" : "rgba(255, 215, 0, 0.05)"
-              }}
-            >
-              <ChevronLeft size={12} />
-            </button>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: C.muted }}>
-              {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </span>
-            <button
-              onClick={onNext}
-              disabled={current === total - 1}
-              className="w-7 h-7 flex items-center justify-center border transition-all cursor-pointer"
-              style={{ 
-                borderColor: current === total - 1 ? "rgba(0,0,0,0.1)" : C.orange, 
-                color: current === total - 1 ? "#bbbbbb" : C.orangeDim,
-                borderRadius: "50%",
-                background: current === total - 1 ? "transparent" : "rgba(255, 215, 0, 0.05)"
-              }}
-            >
-              <ChevronRight size={12} />
-            </button>
-          </div>
           <button onClick={() => setOpen(!open)} className="md:hidden cursor-pointer" style={{ color: C.fore }}>
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>

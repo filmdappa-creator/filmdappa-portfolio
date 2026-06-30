@@ -1896,6 +1896,20 @@ function Contact() {
       toast.error("Please fill in all fields.");
       return;
     }
+
+    const trimmedContact = contact.trim();
+    const isTenDigits = /^\d{10}$/.test(trimmedContact);
+    const isGmail = trimmedContact.toLowerCase().includes("@gmail.com") || trimmedContact.toLowerCase().includes("@gmail,com");
+
+    if (!isTenDigits && !isGmail) {
+      toast.error("Please enter a valid 10-digit phone number or a Gmail address (containing @gmail.com).");
+      return;
+    }
+
+    const validatedContact = trimmedContact.toLowerCase().includes("@gmail,com")
+      ? trimmedContact.replace(/@gmail,com/i, "@gmail.com")
+      : trimmedContact;
+
     setStatus("submitting");
     emailjs.send(
       "service_m8nh23t",
@@ -1903,9 +1917,9 @@ function Contact() {
       {
         name: name,
         from_name: name,
-        email: contact,
-        from_email: contact,
-        contact: contact,
+        email: validatedContact,
+        from_email: validatedContact,
+        contact: validatedContact,
         message: message,
         to_email: "filmdappa@gmail.com"
       },

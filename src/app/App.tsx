@@ -2506,7 +2506,7 @@ function Finale() {
             FIRST OFFER
           </h1>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(14px, 2vw, 17px)", fontWeight: 700, color: C.fore, letterSpacing: "0.02em" }}>
-            A Complete Filmmaking Package for New Age Creators
+            A Complete 10-Minute Filmmaking Package for New Age Creators
           </p>
         </div>
 
@@ -2718,6 +2718,9 @@ function Finale() {
 
               {/* Price with Premium Scale-up Animation */}
               <div className="py-6 flex flex-col items-center justify-center">
+                <span className="text-xs text-amber-400 font-mono tracking-widest mb-2 uppercase">
+                  for 10 minute
+                </span>
                 <div 
                   className={`transition-all duration-700 ease-out transform ${
                     priceRevealed ? "scale-110 opacity-100" : "scale-50 opacity-0"

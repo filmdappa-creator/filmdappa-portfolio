@@ -193,14 +193,14 @@ const beforeAfter = [
 ];
 
 const teamMembers = [
-  { name: "Nithis Kumar", role: "Co-Founder & Creative Director", specialty: "Brand & Art Direction", img: "/nithis.jpg", instagram: "" },
-  { name: "Thulasi Ram", role: "Filmmaker & Ad-Creator", specialty: "Filmmaking & Ads", img: "/thulasiram.jpg", instagram: "" },
-  { name: "Yokash", role: "Cinematographer, Motion Designer & Film Editor", specialty: "Motion Graphics", img: "/yokash.jpg", instagram: "" },
-  { name: "Vishal", role: "UI/UX Designer", specialty: "UI/UX Design", img: "/vishal.jpg", instagram: "" },
-  { name: "Hariharan", role: "Web Developer", specialty: "Web Development", img: "/hariharan.png", instagram: "" },
-  { name: "Kathir", role: "Content Creator & Writer", specialty: "Content & Writing", img: "/kathir.jpg", instagram: "" },
-  { name: "Prem Kumar", role: "Event Organizer", specialty: "Event Management", img: "/prem.png", instagram: "" },
-  { name: "Nisanth", role: "Reel Creator", specialty: "Reel Creation", img: "/nisanth.jpg", instagram: "" },
+  { name: "Nithis Kumar", role: "Co-Founder & Creative Director", specialty: "Brand & Art Direction", img: "/nithis.jpg", instagram: "", imgPos: "center center" },
+  { name: "Thulasi Ram", role: "Filmmaker & Ad-Creator", specialty: "Filmmaking & Ads", img: "/thulasiram.jpg", instagram: "", imgPos: "center center" },
+  { name: "Yokash", role: "Cinematographer, Motion Designer & Film Editor", specialty: "Motion Graphics", img: "/yokash.jpg", instagram: "", imgPos: "center center" },
+  { name: "Vishal", role: "UI/UX Designer", specialty: "UI/UX Design", img: "/vishal.jpg", instagram: "", imgPos: "center center" },
+  { name: "Hariharan", role: "Web Developer", specialty: "Web Development", img: "/hariharan.png", instagram: "", imgPos: "center center" },
+  { name: "Kathir", role: "Content Creator & Writer", specialty: "Content & Writing", img: "/kathir.jpg", instagram: "", imgPos: "center center" },
+  { name: "Prem Kumar", role: "Event Organizer", specialty: "Event Management", img: "/premkumar1.jpeg", instagram: "", imgPos: "center 20%" },
+  { name: "Nishanth", role: "Reel Creator", specialty: "Reel Creation", img: "/nishanth1.PNG", instagram: "", imgPos: "center 20%" },
 ];
 
 const PAGE_TITLES = [
@@ -264,16 +264,16 @@ function FilmStripV({ count = 12 }: { count?: number }) {
 function CinematicQR() {
   // A static, decorative QR-like SVG pattern for @filmdappa
   const rows = [
-    [1,1,1,0,0,1,0,1,1,1],
-    [1,0,1,0,1,0,0,1,0,1],
-    [1,0,1,1,0,1,1,1,0,1],
-    [1,1,1,0,0,0,0,0,1,0],
-    [0,0,0,1,1,0,1,0,1,1],
-    [1,1,0,0,0,1,0,1,1,0],
-    [1,1,1,0,1,0,0,1,0,1],
-    [1,0,1,1,0,1,0,1,0,1],
-    [1,0,1,0,1,1,1,0,1,1],
-    [1,1,1,0,0,0,1,1,1,0],
+    [1, 1, 1, 0, 0, 1, 0, 1, 1, 1],
+    [1, 0, 1, 0, 1, 0, 0, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 1, 0, 1],
+    [1, 1, 1, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 1, 0, 1, 0, 1, 1],
+    [1, 1, 0, 0, 0, 1, 0, 1, 1, 0],
+    [1, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 1, 1, 0, 1, 1],
+    [1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
   ];
   const cell = 14;
   const size = rows.length * cell + 28;
@@ -281,11 +281,11 @@ function CinematicQR() {
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: "block" }}>
       <rect x="0" y="0" width={size} height={size} fill="white" />
       {/* Corner markers */}
-      {[[14,14],[size-14-3*cell,14],[14,size-14-3*cell]].map(([ox,oy],ci) => (
+      {[[14, 14], [size - 14 - 3 * cell, 14], [14, size - 14 - 3 * cell]].map(([ox, oy], ci) => (
         <g key={ci}>
-          <rect x={ox} y={oy} width={3*cell} height={3*cell} fill="black" />
-          <rect x={ox+cell*0.5} y={oy+cell*0.5} width={2*cell} height={2*cell} fill="white" />
-          <rect x={ox+cell} y={oy+cell} width={cell} height={cell} fill="black" />
+          <rect x={ox} y={oy} width={3 * cell} height={3 * cell} fill="black" />
+          <rect x={ox + cell * 0.5} y={oy + cell * 0.5} width={2 * cell} height={2 * cell} fill="white" />
+          <rect x={ox + cell} y={oy + cell} width={cell} height={cell} fill="black" />
         </g>
       ))}
       {/* Data cells */}
@@ -467,8 +467,8 @@ function Nav({
       {open && (
         <div
           className="fixed inset-0 z-40 md:hidden flex flex-col pt-16 px-6 pb-6 gap-2"
-          style={{ 
-            background: "rgba(255, 255, 255, 0.98)", 
+          style={{
+            background: "rgba(255, 255, 255, 0.98)",
             backdropFilter: "blur(20px)",
             borderBottom: "1px solid rgba(255, 215, 0, 0.2)"
           }}
@@ -878,8 +878,8 @@ function Services() {
                 border: featured ? "1px solid rgba(255, 107, 0, 0.3)" : "1px solid rgba(255, 215, 0, 0.2)",
                 background: featured ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.75)",
                 backdropFilter: "blur(20px)",
-                boxShadow: featured 
-                  ? "0 20px 40px rgba(255, 107, 0, 0.08)" 
+                boxShadow: featured
+                  ? "0 20px 40px rgba(255, 107, 0, 0.08)"
                   : "0 10px 30px rgba(0, 0, 0, 0.02)",
               }}
             >
@@ -1034,21 +1034,21 @@ function Works() {
                   <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
                     {item.category}
                   </span>
-                  <span 
-                    className="flex items-center gap-1.5 px-2 py-0.5" 
-                    style={{ 
-                      fontFamily: "var(--font-mono)", 
-                      fontSize: 7.5, 
-                      color: "#FFFFFF", 
-                      background: "rgba(255, 107, 0, 0.85)", 
+                  <span
+                    className="flex items-center gap-1.5 px-2 py-0.5"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 7.5,
+                      color: "#FFFFFF",
+                      background: "rgba(255, 107, 0, 0.85)",
                       border: "1px solid rgba(255, 215, 0, 0.5)",
                       borderRadius: "4px",
                       fontWeight: 700
                     }}
                   >
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full animate-pulse" 
-                      style={{ backgroundColor: "#FFFFFF" }} 
+                    <span
+                      className="w-1.5 h-1.5 rounded-full animate-pulse"
+                      style={{ backgroundColor: "#FFFFFF" }}
                     />
                     {item.status}
                   </span>
@@ -1058,7 +1058,7 @@ function Works() {
                 </div>
                 {/* Watch Now Button */}
                 <div className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div 
+                  <div
                     className="flex items-center justify-center gap-1.5 py-1.5 w-full text-[9px] tracking-[0.2em] font-bold uppercase transition-all rounded-lg"
                     style={{ border: `1px solid ${C.gold}`, color: "#FFFFFF", background: "rgba(255, 215, 0, 0.12)" }}
                     onMouseEnter={(e) => {
@@ -1097,27 +1097,27 @@ function Works() {
               <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 20%, rgba(17, 17, 17, 0.95) 100%)" }} />
               <div className="absolute top-4 left-4 w-3.5 h-3.5" style={{ borderTop: "1.5px solid #FFA500", borderLeft: "1.5px solid #FFA500" }} />
               <div className="absolute top-4 right-4 w-3.5 h-3.5" style={{ borderTop: "1.5px solid #FFA500", borderRight: "1.5px solid #FFA500" }} />
-              
+
               <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
                   <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
                     {item.category}
                   </span>
-                  <span 
-                    className="flex items-center gap-1 px-1.5 py-0.5" 
-                    style={{ 
-                      fontFamily: "var(--font-mono)", 
-                      fontSize: 7.5, 
-                      color: "#FFFFFF", 
-                      background: "rgba(255, 107, 0, 0.85)", 
+                  <span
+                    className="flex items-center gap-1 px-1.5 py-0.5"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 7.5,
+                      color: "#FFFFFF",
+                      background: "rgba(255, 107, 0, 0.85)",
                       border: "1px solid rgba(255, 215, 0, 0.5)",
                       borderRadius: "4px",
                       fontWeight: 700
                     }}
                   >
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full" 
-                      style={{ backgroundColor: "#FFFFFF" }} 
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: "#FFFFFF" }}
                     />
                     {item.status}
                   </span>
@@ -1125,7 +1125,7 @@ function Works() {
                 <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>
                   {item.title}
                 </div>
-                <div 
+                <div
                   className="flex items-center justify-center gap-1.5 py-2 w-full text-[8.5px] tracking-[0.2em] font-bold uppercase mt-1 rounded-lg"
                   style={{ border: `1px solid ${C.gold}`, color: "#FFFFFF", background: "rgba(255, 215, 0, 0.12)" }}
                 >
@@ -1144,11 +1144,11 @@ function Works() {
 }
 
 const TooltipStyle = {
-  contentStyle: { 
-    background: "rgba(255, 255, 255, 0.95)", 
-    border: "1px solid rgba(255, 215, 0, 0.35)", 
-    borderRadius: "12px", 
-    boxShadow: "0 10px 25px rgba(0,0,0,0.05)" 
+  contentStyle: {
+    background: "rgba(255, 255, 255, 0.95)",
+    border: "1px solid rgba(255, 215, 0, 0.35)",
+    borderRadius: "12px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.05)"
   },
   labelStyle: { fontFamily: "var(--font-mono)", fontSize: 10, color: "#111111", fontWeight: 700 },
   itemStyle: { fontFamily: "var(--font-sans)", fontSize: 11, color: "#444444" },
@@ -1209,8 +1209,8 @@ function Results() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Area chart */}
-          <div 
-            className="md:col-span-2 p-6 w-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300" 
+          <div
+            className="md:col-span-2 p-6 w-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
             style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
@@ -1242,8 +1242,8 @@ function Results() {
           </div>
 
           {/* Radial */}
-          <div 
-            className="p-6 w-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300" 
+          <div
+            className="p-6 w-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
             style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
@@ -1270,9 +1270,9 @@ function Results() {
         {/* Before / After */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {beforeAfter.map((item, i) => (
-            <div 
-              key={item.label} 
-              className="p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300" 
+            <div
+              key={item.label}
+              className="p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
               style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
               onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
               onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
@@ -1783,8 +1783,8 @@ function Team() {
                   <img
                     src={m.img.startsWith("/") ? m.img : `https://images.unsplash.com/photo-${m.img}?w=400&h=400&fit=crop&auto=format`}
                     alt={m.name || m.role}
-                    className="w-full h-full object-cover object-center card-img"
-                    style={{ opacity: 0.95 }}
+                    className="w-full h-full object-cover card-img"
+                    style={{ opacity: 0.95, objectPosition: m.imgPos || "center center" }}
                   />
                   <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
                   <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
@@ -1828,8 +1828,8 @@ function Team() {
                   <img
                     src={m.img.startsWith("/") ? m.img : `https://images.unsplash.com/photo-${m.img}?w=400&h=400&fit=crop&auto=format`}
                     alt={m.name || m.role}
-                    className="w-full h-full object-cover object-center card-img"
-                    style={{ opacity: 0.95 }}
+                    className="w-full h-full object-cover card-img"
+                    style={{ opacity: 0.95, objectPosition: m.imgPos || "center center" }}
                   />
                   <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
                   <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
@@ -1925,26 +1925,26 @@ function Contact() {
       },
       "T1_z2_B3EhKob9bM-"
     )
-    .then(() => {
-      setStatus("success");
-      setShowSuccessModal(true);
-      confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.6 }
+      .then(() => {
+        setStatus("success");
+        setShowSuccessModal(true);
+        confetti({
+          particleCount: 80,
+          spread: 60,
+          origin: { y: 0.6 }
+        });
+        setName("");
+        setContact("");
+        setMessage("");
+        setTimeout(() => setStatus("idle"), 3000);
+      })
+      .catch((err) => {
+        console.error("EmailJS Error:", err);
+        setStatus("error");
+        setShowErrorModal(true);
+        toast.error("Something went wrong. Please try again.");
+        setTimeout(() => setStatus("idle"), 3000);
       });
-      setName("");
-      setContact("");
-      setMessage("");
-      setTimeout(() => setStatus("idle"), 3000);
-    })
-    .catch((err) => {
-      console.error("EmailJS Error:", err);
-      setStatus("error");
-      setShowErrorModal(true);
-      toast.error("Something went wrong. Please try again.");
-      setTimeout(() => setStatus("idle"), 3000);
-    });
   };
 
   return (
@@ -1972,9 +1972,9 @@ function Contact() {
                 { icon: Youtube, label: "YouTube Channel", value: "FILMDAPPA", sub: "Subscribe for creative films", href: "https://youtube.com/@filmdappa?si=DmTt0mLuiNMqWTbF", color: "#FF0000" },
                 { icon: MapPin, label: "Studio", value: "VISIT OFFICE", sub: "Tamil Nadu, India — 637211", href: "https://maps.app.goo.gl/NPmCvy21gRPYHGyw6", color: C.orangeDim },
               ].map((c) => (
-                <a 
-                  key={c.label} 
-                  href={c.href} 
+                <a
+                  key={c.label}
+                  href={c.href}
                   target={c.href.startsWith("http") ? "_blank" : undefined}
                   rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="flex items-start gap-5 group p-4 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md cursor-pointer border"
@@ -2008,15 +2008,15 @@ function Contact() {
           {/* Form + CTA */}
           <div className="space-y-6">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6 sm:p-8 rounded-3xl shadow-lg border"
-                  style={{
-                    background: "rgba(255, 255, 255, 0.8)",
-                    backdropFilter: "blur(20px)",
-                    borderColor: "rgba(255, 215, 0, 0.25)"
-                  }}>
+              style={{
+                background: "rgba(255, 255, 255, 0.8)",
+                backdropFilter: "blur(20px)",
+                borderColor: "rgba(255, 215, 0, 0.25)"
+              }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: C.orangeDim, letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700, marginBottom: 8 }}>
                 Send a Direct Message
               </div>
-              
+
               <div className="flex flex-col gap-1.5">
                 <label style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, fontWeight: 700, color: "#444444" }}>Name</label>
                 <input
@@ -2137,16 +2137,16 @@ function Contact() {
               href="tel:8489854125"
               className="flex items-center justify-center gap-3 w-full py-4 transition-all duration-300 group rounded-2xl cursor-pointer"
               style={{ border: `2px solid ${C.orange}`, color: C.orangeDim, background: "rgba(255, 170, 0, 0.04)" }}
-              onMouseEnter={(e) => { 
-                (e.currentTarget as HTMLAnchorElement).style.background = "linear-gradient(135deg, #FFD700, #FFA500, #FF6B00)"; 
-                (e.currentTarget as HTMLAnchorElement).style.color = "#FFF"; 
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "linear-gradient(135deg, #FFD700, #FFA500, #FF6B00)";
+                (e.currentTarget as HTMLAnchorElement).style.color = "#FFF";
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = "transparent";
                 (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 24px rgba(255, 107, 0, 0.35)";
                 (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-1px)";
               }}
-              onMouseLeave={(e) => { 
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255, 170, 0, 0.04)"; 
-                (e.currentTarget as HTMLAnchorElement).style.color = C.orangeDim; 
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255, 170, 0, 0.04)";
+                (e.currentTarget as HTMLAnchorElement).style.color = C.orangeDim;
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = C.orange;
                 (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
                 (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
@@ -2169,7 +2169,7 @@ function Contact() {
 
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div 
+          <div
             className="w-full max-w-md p-8 rounded-3xl border shadow-2xl text-center relative overflow-hidden"
             style={{
               background: "rgba(20, 20, 20, 0.95)",
@@ -2178,7 +2178,7 @@ function Contact() {
             }}
           >
             <div className="absolute inset-0 pointer-events-none opacity-20" style={{ background: "radial-gradient(circle at center, #FFD700 0%, transparent 70%)" }} />
-            
+
             <div className="relative z-10">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full border-2" style={{ borderColor: "#FFD700", background: "rgba(255, 215, 0, 0.1)" }}>
                 <svg className="w-8 h-8" style={{ color: "#FFD700" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
@@ -2189,7 +2189,7 @@ function Contact() {
               <h3 className="text-xl font-bold mb-3 uppercase tracking-widest text-white" style={{ fontFamily: "var(--font-sans)" }}>
                 Request Sent
               </h3>
-              
+
               <p className="text-[14px] leading-relaxed text-gray-300 mb-6 font-medium" style={{ fontFamily: "var(--font-sans)" }}>
                 Thank you! Your consultation request has been sent successfully. We'll contact you shortly.
               </p>
@@ -2211,7 +2211,7 @@ function Contact() {
 
       {showErrorModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div 
+          <div
             className="w-full max-w-md p-8 rounded-3xl border shadow-2xl text-center relative overflow-hidden"
             style={{
               background: "rgba(20, 20, 20, 0.95)",
@@ -2229,7 +2229,7 @@ function Contact() {
               <h3 className="text-xl font-bold mb-3 uppercase tracking-widest text-white" style={{ fontFamily: "var(--font-sans)" }}>
                 Failed to Send
               </h3>
-              
+
               <p className="text-[14px] leading-relaxed text-gray-300 mb-6 font-medium" style={{ fontFamily: "var(--font-sans)" }}>
                 Something went wrong. Please try again.
               </p>
@@ -2299,7 +2299,7 @@ function Finale() {
         requestAnimationFrame(frame);
       }
     };
-    
+
     // Central blast immediately
     confetti({
       particleCount: 100,
@@ -2317,9 +2317,9 @@ function Finale() {
   };
 
   return (
-    <section 
+    <section
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex flex-col items-center justify-between pt-24 pb-20 px-5 md:pt-32 md:pb-24 md:px-10 overflow-hidden bg-white" 
+      className="relative min-h-screen flex flex-col items-center justify-between pt-24 pb-20 px-5 md:pt-32 md:pb-24 md:px-10 overflow-hidden bg-white"
       style={{ background: "#FFFFFF" }}
     >
       <style>{`
@@ -2464,11 +2464,11 @@ function Finale() {
       {/* Background Atmosphere */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
         {/* Parallax Light Rays */}
-        <div 
+        <div
           className="light-ray top-[-10%] left-[10%] animate-[goldenGlow_8s_ease-in-out_infinite]"
           style={{ transform: `translate(${mousePos.x * 25}px, ${mousePos.y * 25}px)` }}
         />
-        <div 
+        <div
           className="light-ray bottom-[-10%] right-[10%] animate-[goldenGlow_12s_ease-in-out_infinite]"
           style={{ transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -15}px)` }}
         />
@@ -2497,7 +2497,7 @@ function Finale() {
 
       {/* Main Content Area */}
       <div className="relative z-20 w-full max-w-[1400px] mx-auto flex flex-col items-center gap-12 my-auto">
-        
+
         {/* Header Titles */}
         <div className="text-center space-y-4 max-w-3xl animate-[fadeUp_1.2s_cubic-bezier(0.16,1,0.3,1)_forwards]">
           <div className="inline-block px-5 py-1.5 rounded-md" style={{ background: "linear-gradient(135deg, #FF6B00 0%, #FFA500 50%, #FFD700 100%)" }}>
@@ -2526,11 +2526,11 @@ function Finale() {
 
         {/* 3-Column Content Layout */}
         <div className="w-full grid lg:grid-cols-3 items-center gap-8 lg:gap-4 xl:gap-8">
-          
+
           {/* Left Card: Pre Production */}
-          <div 
+          <div
             className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_7s_infinite_ease-in-out]"
-            style={{ 
+            style={{
               transform: `translate(${mousePos.x * -8}px, ${mousePos.y * -8}px)`,
               height: "150px"
             }}
@@ -2547,42 +2547,42 @@ function Finale() {
 
           {/* Center Column: Interactive Podium & Products */}
           <div className="flex flex-col items-center justify-center min-h-[380px] relative">
-            
+
             {/* Products container */}
             <div className="relative w-full max-w-[440px] h-[300px] z-20 flex justify-center">
-              
+
               {/* Product 1: LC500R RGB Tube Light */}
               <div className="hover-product product-light-wrapper">
-                <img 
-                  src="/product_light.png" 
-                  alt="LC500R Tube Light" 
+                <img
+                  src="/product_light.png"
+                  alt="LC500R Tube Light"
                   className="h-full w-auto object-contain"
                 />
               </div>
 
               {/* Product 2: iPhone 16 */}
               <div className="hover-product product-iphone-wrapper">
-                <img 
-                  src="/product_iphone.png" 
-                  alt="iPhone 16" 
+                <img
+                  src="/product_iphone.png"
+                  alt="iPhone 16"
                   className="h-full w-auto object-contain"
                 />
               </div>
 
               {/* Product 3: Gimbal */}
               <div className="hover-product product-gimbal-wrapper">
-                <img 
-                  src="/product_gimbal.png" 
-                  alt="Smartphone Gimbal" 
+                <img
+                  src="/product_gimbal.png"
+                  alt="Smartphone Gimbal"
                   className="h-full w-auto object-contain"
                 />
               </div>
 
               {/* Product 4: Microphone */}
               <div className="hover-product product-mic-wrapper">
-                <img 
-                  src="/product_mic.png" 
-                  alt="Wireless Microphone" 
+                <img
+                  src="/product_mic.png"
+                  alt="Wireless Microphone"
                   className="h-full w-auto object-contain"
                 />
               </div>
@@ -2590,9 +2590,9 @@ function Finale() {
           </div>
 
           {/* Right Card: Post Production */}
-          <div 
+          <div
             className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_8s_infinite_ease-in-out_delay-1s]"
-            style={{ 
+            style={{
               transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)`,
               height: "150px"
             }}
@@ -2612,10 +2612,10 @@ function Finale() {
         {/* CTA Bottom Area: Premium Glass Container */}
         <div className="relative z-30 w-full max-w-xl mx-auto px-4 pt-4">
           <div className="p-6 md:p-8 rounded-3xl backdrop-blur-xl border border-white/40 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 w-full animate-[fadeUp_1.4s_cubic-bezier(0.16,1,0.3,1)_forwards]"
-               style={{
-                 background: "rgba(255, 255, 255, 0.45)",
-                 boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.6)"
-               }}
+            style={{
+              background: "rgba(255, 255, 255, 0.45)",
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.6)"
+            }}
           >
             {/* Button 1: TAP TO SEE THE PRICE */}
             <button
@@ -2631,7 +2631,7 @@ function Finale() {
             >
               <span>TAP TO SEE THE PRICE</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="animate-pulse">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>
             </button>
 
@@ -2649,7 +2649,7 @@ function Finale() {
             >
               <span>GET MORE DETAILS</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
               </svg>
             </button>
           </div>
@@ -2665,7 +2665,7 @@ function Finale() {
             FILMDAPPA MEDIA COMPANY
           </span>
         </div>
-        
+
         <div className="flex flex-wrap justify-center gap-4 text-xs font-medium" style={{ fontFamily: "var(--font-sans)", color: C.muted }}>
           <a href="https://instagram.com/filmdappa" target="_blank" rel="noopener noreferrer" className="hover:text-amber-600 transition-colors">
             Instagram
@@ -2687,29 +2687,28 @@ function Finale() {
       {showPriceModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           {/* Backdrop Blur */}
-          <div 
+          <div
             className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-500 ease-out"
             onClick={() => setShowPriceModal(false)}
           />
-          
+
           {/* Modal Container */}
-          <div 
-            className={`relative w-full max-w-md p-8 rounded-3xl border border-amber-400/30 text-center shadow-2xl transition-all duration-500 ease-out transform ${
-              priceRevealed ? "scale-100 opacity-100" : "scale-90 opacity-0"
-            }`}
+          <div
+            className={`relative w-full max-w-md p-8 rounded-3xl border border-amber-400/30 text-center shadow-2xl transition-all duration-500 ease-out transform ${priceRevealed ? "scale-100 opacity-100" : "scale-90 opacity-0"
+              }`}
             style={{
               background: "rgba(17, 17, 17, 0.95)",
               boxShadow: "0 25px 50px -12px rgba(255, 196, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.05)"
             }}
           >
             {/* Close button */}
-            <button 
+            <button
               onClick={() => setShowPriceModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors cursor-pointer p-1 rounded-full hover:bg-white/10"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
 
@@ -2723,7 +2722,7 @@ function Finale() {
                 </span>
               </div>
 
-              <h3 
+              <h3
                 className="font-sans font-black tracking-tight"
                 style={{ fontSize: 24, color: "#FFFFFF" }}
               >
@@ -2735,12 +2734,11 @@ function Finale() {
                 <span className="text-xs text-amber-400 font-mono tracking-widest mb-2 uppercase">
                   for 10 minute
                 </span>
-                <div 
-                  className={`transition-all duration-700 ease-out transform ${
-                    priceRevealed ? "scale-110 opacity-100" : "scale-50 opacity-0"
-                  }`}
+                <div
+                  className={`transition-all duration-700 ease-out transform ${priceRevealed ? "scale-110 opacity-100" : "scale-50 opacity-0"
+                    }`}
                 >
-                  <span 
+                  <span
                     className="font-heading font-black tracking-wide block"
                     style={{
                       fontSize: "72px",
@@ -2774,8 +2772,8 @@ function Finale() {
                 >
                   <span>PROCEED TO BOOKING</span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
                   </svg>
                 </button>
               </div>
@@ -2795,7 +2793,7 @@ const PAGES = [Cover, About, Services, Works, Results, Team, Finale, Contact];
 
 function CinemaCameraWatermark({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   const filmPath = "M 145 110 C 60 110 30 200 40 280 C 50 360 150 380 220 330 C 290 280 290 140 340 100 C 370 76 395 86 395 86";
-  
+
   return (
     <svg viewBox="0 0 400 400" fill="none" className={className} stroke="currentColor" style={style}>
       {/* Film strip / roll ribbon body */}
@@ -2804,18 +2802,18 @@ function CinemaCameraWatermark({ className = "", style }: { className?: string; 
       <path d={filmPath} fill="none" stroke="#FFFFFF" strokeWidth="14" strokeLinecap="round" />
       {/* Film strip borders */}
       <path d={filmPath} fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.18" />
-      
+
       {/* Sprocket holes (offset parallel to path) */}
       <path d={filmPath} transform="translate(-4, -4)" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="1.5 4.5" opacity="0.25" />
       <path d={filmPath} transform="translate(4, 4)" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="1.5 4.5" opacity="0.25" />
-      
+
       {/* Frame dividers */}
       <path d={filmPath} fill="none" stroke="currentColor" strokeWidth="12" strokeDasharray="0.5 28" opacity="0.2" />
 
       {/* Film Reels on Top (Canisters) */}
       {/* Connecting Bracket */}
       <path d="M 145 148 L 175 160 L 205 150" strokeWidth="1.5" opacity="0.5" />
-      
+
       {/* Left Reel */}
       <circle cx="145" cy="110" r="38" strokeWidth="1.5" />
       <circle cx="145" cy="110" r="8" strokeWidth="1.2" />
@@ -2823,7 +2821,7 @@ function CinemaCameraWatermark({ className = "", style }: { className?: string; 
       <line x1="107" y1="110" x2="183" y2="110" strokeWidth="1" opacity="0.3" strokeDasharray="3 3" />
       <line x1="118" y1="83" x2="172" y2="137" strokeWidth="1" opacity="0.3" strokeDasharray="3 3" />
       <line x1="118" y1="137" x2="172" y2="83" strokeWidth="1" opacity="0.3" strokeDasharray="3 3" />
-      
+
       {/* Right Reel */}
       <circle cx="205" cy="118" r="32" strokeWidth="1.5" />
       <circle cx="205" cy="118" r="7" strokeWidth="1.2" />

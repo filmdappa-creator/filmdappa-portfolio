@@ -1970,7 +1970,7 @@ function Contact() {
                 { icon: Phone, label: "Call Us", value: "8489854125", sub: "Mon–Sat · 9 AM – 7 PM IST", href: "tel:8489854125", color: C.orangeDim },
                 { icon: Instagram, label: "Instagram", value: "@filmdappa", sub: "DM us for quick creative chats", href: "https://instagram.com/filmdappa", color: C.orange },
                 { icon: Youtube, label: "YouTube Channel", value: "FILMDAPPA", sub: "Subscribe for creative films", href: "https://youtube.com/@filmdappa?si=DmTt0mLuiNMqWTbF", color: "#FF0000" },
-                { icon: MapPin, label: "Studio", value: "VISIT OFFICE", sub: "Tamil Nadu, India — 637211", href: "https://maps.app.goo.gl/NPmCvy21gRPYHGyw6", color: C.orangeDim },
+                { icon: MapPin, label: "Studio", value: "VISIT OFFICE", sub: "Tamil Nadu, India — 637211", href: "https://maps.app.goo.gl/nb1zG7UD7Bf46rE57", color: C.orangeDim },
               ].map((c) => (
                 <a
                   key={c.label}

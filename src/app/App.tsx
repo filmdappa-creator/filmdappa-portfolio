@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import confetti from "canvas-confetti";
 import { Toaster, toast } from "sonner";
@@ -14,6 +14,87 @@ import {
   ChevronLeft, Menu, X, Mic, Music, Sliders, Volume2, Image,
   Youtube, Type, Megaphone, Tv, Camera, Clapperboard
 } from "lucide-react";
+
+// ─── SCROLL REVEAL SYSTEM ────────────────────────────────────────────────────
+/**
+ * useReveal — attaches an IntersectionObserver to a ref, swapping
+ * 'reveal-hidden' → 'reveal-visible' when the element enters the viewport.
+ * Animation fires only once (observer disconnects after triggering).
+ */
+function useReveal<T extends HTMLElement>(
+  options: IntersectionObserverInit = {}
+): React.RefObject<T | null> {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Check if motion is reduced at the JS level too
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) {
+      // Immediately make visible without animation
+      el.classList.remove("reveal-hidden");
+      return;
+    }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("reveal-hidden");
+            entry.target.classList.add("reveal-visible");
+            obs.unobserve(entry.target); // animate only once
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px", ...options }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+/**
+ * Reveal — a semantic wrapper that applies scroll-triggered
+ * fade-in + slide-up to its children.
+ *
+ * Props:
+ *  - as       : HTML tag to render (default: "div")
+ *  - delay    : stagger index 0–7, maps to .reveal-delay-N class
+ *  - className: additional classes
+ *  - style    : additional inline styles
+ */
+function Reveal({
+  children,
+  as: Tag = "div",
+  delay = 0,
+  className = "",
+  style,
+  threshold,
+}: {
+  children: React.ReactNode;
+  as?: keyof JSX.IntrinsicElements;
+  delay?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  threshold?: number;
+}) {
+  const ref = useReveal<HTMLDivElement>(
+    threshold !== undefined ? { threshold } : {}
+  );
+  const delayClass = delay > 0 ? ` reveal-delay-${Math.min(delay, 7)}` : " reveal-delay-0";
+  const AnyTag = Tag as any;
+  return (
+    <AnyTag
+      ref={ref}
+      className={`reveal-hidden${delayClass}${className ? ` ${className}` : ""}`}
+      style={style}
+    >
+      {children}
+    </AnyTag>
+  );
+}
 
 // ─── THEME TOKENS ─────────────────────────────────────────────────────────────
 const C = {
@@ -536,7 +617,7 @@ function Cover() {
       <div className="h-12 md:h-16" />
 
       {/* CENTER: Title and Branding */}
-      <div className="relative z-20 text-center w-full max-w-5xl mx-auto my-auto flex flex-col items-center justify-center gap-5">
+      <Reveal delay={0} className="relative z-20 text-center w-full max-w-5xl mx-auto my-auto flex flex-col items-center justify-center gap-5">
         {/* Title Heading: FILM DAPPA Animated */}
         <CinematicLogoAnimation />
 
@@ -566,10 +647,10 @@ function Cover() {
         >
           "Where Creativity Meets Growth"
         </p>
-      </div>
+      </Reveal>
 
       {/* BOTTOM: Services and Contacts */}
-      <div className="relative z-20 w-full max-w-5xl mx-auto pb-6 flex flex-col items-center gap-5">
+      <Reveal delay={1} className="relative z-20 w-full max-w-5xl mx-auto pb-6 flex flex-col items-center gap-5">
         {/* Contact details line (very minimal) */}
         <div className="flex flex-wrap items-center justify-center gap-x-10 md:gap-x-14 gap-y-3 opacity-95">
           {[
@@ -596,7 +677,7 @@ function Cover() {
         >
           POST PRODUCTION &bull; DESIGNING SERVICES &bull; DIGITAL MARKETING
         </p>
-      </div>
+      </Reveal>
 
       <PageNum n="00" label="COVER" />
     </section>
@@ -610,7 +691,7 @@ function About() {
 
       <div className="relative z-10 w-[92%] max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
         {/* Left */}
-        <div className="relative w-full flex justify-center">
+        <Reveal className="relative w-full flex justify-center" delay={0}>
           <div
             className="relative flex flex-col items-center justify-center p-6 sm:p-10 select-none h-[380px] sm:h-[500px] w-full max-w-[500px] lg:max-w-[568px] transition-all duration-500 hover:shadow-xl"
             style={{
@@ -655,10 +736,10 @@ function About() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Right */}
-        <div>
+        <Reveal delay={1}>
           <Label>About Us · Page 01</Label>
           <h2
             className="font-black leading-tight mt-4 mb-6 premium-heading-bold"
@@ -705,7 +786,7 @@ function About() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
 
       <PageNum n="01" label="ABOUT" />
@@ -856,7 +937,7 @@ function Services() {
       <Spotlight top="10%" left="50%" color={C.gold} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10">
-        <div className="text-center mb-16">
+        <Reveal className="text-center mb-16" delay={0}>
           <Label>Our Services · Page 02</Label>
           <h2
             className="font-black leading-tight mt-4 premium-heading-bold"
@@ -867,13 +948,13 @@ function Services() {
               Create
             </span>
           </h2>
-        </div>
+        </Reveal>
 
         <div className="grid md:grid-cols-3 gap-6 items-stretch">
-          {cols.map(({ num, title, icon: Icon, color, items, desc, featured }) => (
+          {cols.map(({ num, title, icon: Icon, color, items, desc, featured }, colIndex) => (
+            <Reveal key={title} delay={colIndex + 1}>
             <div
-              key={title}
-              className="relative flex flex-col rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-default"
+              className="relative flex flex-col rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-default h-full"
               style={{
                 border: featured ? "1px solid rgba(255, 107, 0, 0.3)" : "1px solid rgba(255, 215, 0, 0.2)",
                 background: featured ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.75)",
@@ -926,6 +1007,7 @@ function Services() {
                 })}
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -991,7 +1073,7 @@ function Works() {
       <Spotlight top="50%" left="50%" color={C.orange} />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="mb-12">
+        <Reveal className="mb-12" delay={0}>
           <Label>Our Works · Page 03</Label>
           <h2
             className="font-black leading-tight mt-4 premium-heading-bold"
@@ -1005,15 +1087,15 @@ function Works() {
           <p className="premium-body-bold" style={{ fontSize: 14, color: C.muted, marginTop: 8 }}>
             A curated showcase of our cinematic short films.
           </p>
-        </div>
+        </Reveal>
 
         {/* Desktop Gallery */}
         <div className="hidden md:grid grid-cols-3 gap-5" style={isAll ? { gridTemplateRows: "240px 240px 210px" } : {}}>
-          {filtered.map((item) => (
+          {filtered.map((item, idx) => (
+            <Reveal key={item.title} delay={idx % 3 + 1}>
             <div
-              key={item.title}
               onClick={() => window.open(item.videoUrl, "_blank")}
-              className={`${isAll ? item.cls : "col-span-1"} relative group overflow-hidden cursor-pointer rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-xl`}
+              className={`${isAll ? item.cls : "col-span-1"} relative group overflow-hidden cursor-pointer rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-xl h-full`}
               style={{ border: "1px solid rgba(255, 215, 0, 0.25)", height: isAll ? "auto" : "260px" }}
             >
               <img
@@ -1076,14 +1158,15 @@ function Works() {
                 </div>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
 
         {/* Mobile Gallery */}
         <div className="flex flex-col gap-5 md:hidden">
-          {filtered.map((item) => (
+          {filtered.map((item, idx) => (
+            <Reveal key={item.title} delay={idx > 0 ? 1 : 0}>
             <div
-              key={item.title}
               onClick={() => window.open(item.videoUrl, "_blank")}
               className="relative group overflow-hidden h-[240px] cursor-pointer rounded-2xl shadow-md"
               style={{ border: "1px solid rgba(255, 215, 0, 0.25)" }}
@@ -1134,6 +1217,7 @@ function Works() {
                 </div>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1160,7 +1244,7 @@ function Results() {
       <Spotlight top="30%" left="30%" color={C.gold} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10">
-        <div className="mb-12">
+        <Reveal className="mb-12" delay={0}>
           <Label>Client Results · Page 04</Label>
           <h2
             className="font-black leading-tight mt-4"
@@ -1171,130 +1255,136 @@ function Results() {
               Metrics
             </span>
           </h2>
-        </div>
+        </Reveal>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {stats.map((s, i) => (
-            <div
-              key={s.label}
-              className="relative p-6 text-center group overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[rgba(255,215,0,0.06)]"
-              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
-            >
+            <Reveal key={s.label} delay={i}>
               <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ background: `radial-gradient(ellipse at center, ${i % 2 === 0 ? C.orange : C.gold}08 0%, transparent 70%)` }}
-              />
-              <div
-                className="font-black leading-none mb-2 transition-transform duration-300 group-hover:scale-105"
-                style={{
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "var(--text-section)",
-                  background: i % 2 === 0
-                    ? "linear-gradient(135deg, #FF6B00, #FFA500)"
-                    : "linear-gradient(135deg, #FFA500, #FF6B00)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
+                className="relative p-6 text-center group overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[rgba(255,215,0,0.06)] h-full"
+                style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
               >
-                {s.value}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ background: `radial-gradient(ellipse at center, ${i % 2 === 0 ? C.orange : C.gold}08 0%, transparent 70%)` }}
+                />
+                <div
+                  className="font-black leading-none mb-2 transition-transform duration-300 group-hover:scale-105"
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "var(--text-section)",
+                    background: i % 2 === 0
+                      ? "linear-gradient(135deg, #FF6B00, #FFA500)"
+                      : "linear-gradient(135deg, #FFA500, #FF6B00)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  {s.value}
+                </div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-small)", color: C.muted, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>{s.label}</div>
+                <div className="absolute top-2 right-2 w-3 h-3" style={{ borderTop: "1px solid rgba(255, 107, 0, 0.3)", borderRight: "1px solid rgba(255, 107, 0, 0.3)" }} />
               </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-small)", color: C.muted, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>{s.label}</div>
-              <div className="absolute top-2 right-2 w-3 h-3" style={{ borderTop: "1px solid rgba(255, 107, 0, 0.3)", borderRight: "1px solid rgba(255, 107, 0, 0.3)" }} />
-            </div>
+            </Reveal>
           ))}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Area chart */}
-          <div
-            className="md:col-span-2 p-6 w-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-            style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
-          >
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 20 }}>
-              Follower & Reach Growth — 6 Months
+          <Reveal className="md:col-span-2 h-full" delay={0}>
+            <div
+              className="p-6 w-full h-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+            >
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 20 }}>
+                Follower & Reach Growth — 6 Months
+              </div>
+              <ResponsiveContainer width="100%" height={220}>
+                <AreaChart data={growthData} margin={{ top: 10, right: 5, left: -15, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="fGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={C.orange} stopOpacity={0.35} />
+                      <stop offset="95%" stopColor={C.orange} stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="rGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={C.gold} stopOpacity={0.35} />
+                      <stop offset="95%" stopColor={C.gold} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 215, 0, 0.15)" />
+                  <XAxis dataKey="month" tick={{ fill: "#666666", fontSize: 10, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} />
+                  <YAxis yAxisId="left" tick={{ fill: "#666666", fontSize: 9, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}K`} />
+                  <YAxis yAxisId="right" orientation="right" tick={{ fill: "#666666", fontSize: 9, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}K`} />
+                  <Tooltip {...TooltipStyle} />
+                  <Area yAxisId="left" type="monotone" dataKey="followers" name="Followers" stroke={C.orangeDim} strokeWidth={2.5} fill="url(#fGrad)" />
+                  <Area yAxisId="right" type="monotone" dataKey="reach" name="Reach" stroke={C.goldDim} strokeWidth={2.5} fill="url(#rGrad)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
-            <ResponsiveContainer width="100%" height={220}>
-              <AreaChart data={growthData} margin={{ top: 10, right: 5, left: -15, bottom: 5 }}>
-                <defs>
-                  <linearGradient id="fGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={C.orange} stopOpacity={0.35} />
-                    <stop offset="95%" stopColor={C.orange} stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="rGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={C.gold} stopOpacity={0.35} />
-                    <stop offset="95%" stopColor={C.gold} stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 215, 0, 0.15)" />
-                <XAxis dataKey="month" tick={{ fill: "#666666", fontSize: 10, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} />
-                <YAxis yAxisId="left" tick={{ fill: "#666666", fontSize: 9, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}K`} />
-                <YAxis yAxisId="right" orientation="right" tick={{ fill: "#666666", fontSize: 9, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}K`} />
-                <Tooltip {...TooltipStyle} />
-                <Area yAxisId="left" type="monotone" dataKey="followers" name="Followers" stroke={C.orangeDim} strokeWidth={2.5} fill="url(#fGrad)" />
-                <Area yAxisId="right" type="monotone" dataKey="reach" name="Reach" stroke={C.goldDim} strokeWidth={2.5} fill="url(#rGrad)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          </Reveal>
 
           {/* Radial */}
-          <div
-            className="p-6 w-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-            style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
-          >
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 20 }}>
-              Projects by Category
+          <Reveal className="h-full" delay={1}>
+            <div
+              className="p-6 w-full h-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+            >
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 20 }}>
+                Projects by Category
+              </div>
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={projectData} layout="vertical" margin={{ left: 15, right: 15 }}>
+                  <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 215, 0, 0.15)" horizontal={false} />
+                  <XAxis type="number" tick={{ fill: "#666666", fontSize: 9, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} />
+                  <YAxis type="category" dataKey="name" tick={{ fill: "#666666", fontSize: 10, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} width={75} />
+                  <Tooltip {...TooltipStyle} />
+                  <Bar dataKey="value" name="Projects" radius={[0, 4, 4, 0]}>
+                    {projectData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-            <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={projectData} layout="vertical" margin={{ left: 15, right: 15 }}>
-                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 215, 0, 0.15)" horizontal={false} />
-                <XAxis type="number" tick={{ fill: "#666666", fontSize: 9, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} />
-                <YAxis type="category" dataKey="name" tick={{ fill: "#666666", fontSize: 10, fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} width={75} />
-                <Tooltip {...TooltipStyle} />
-                <Bar dataKey="value" name="Projects" radius={[0, 4, 4, 0]}>
-                  {projectData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          </Reveal>
         </div>
 
         {/* Before / After */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {beforeAfter.map((item, i) => (
-            <div
-              key={item.label}
-              className="p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
-            >
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 14, fontWeight: 600 }}>{item.label}</div>
-              <div className="flex items-center gap-3">
-                <div className="flex-1 text-center">
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.muted, marginBottom: 4 }}>Before</div>
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-card)", fontWeight: 700, color: C.muted }}>{item.before}</div>
+            <Reveal key={item.label} delay={i}>
+              <div
+                className="p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 h-full"
+                style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+              >
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 14, fontWeight: 600 }}>{item.label}</div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 text-center">
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.muted, marginBottom: 4 }}>Before</div>
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-card)", fontWeight: 700, color: C.muted }}>{item.before}</div>
+                  </div>
+                  <div style={{ color: C.orangeDim, fontSize: 18, fontWeight: 700 }}>→</div>
+                  <div className="flex-1 text-center">
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, marginBottom: 4, fontWeight: 700 }}>After</div>
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-card)", fontWeight: 700, color: C.orangeDim }}>{item.after}</div>
+                  </div>
+                  <div style={{ fontFamily: "var(--font-heading)", fontSize: 20, fontWeight: 900, color: C.orangeDim }}>{item.pct}</div>
                 </div>
-                <div style={{ color: C.orangeDim, fontSize: 18, fontWeight: 700 }}>→</div>
-                <div className="flex-1 text-center">
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, marginBottom: 4, fontWeight: 700 }}>After</div>
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-card)", fontWeight: 700, color: C.orangeDim }}>{item.after}</div>
+                {/* Progress bar */}
+                <div className="mt-4" style={{ height: 4, background: "rgba(255, 215, 0, 0.15)", borderRadius: 2 }}>
+                  <div style={{ height: "100%", width: `${[68, 92, 84][i]}%`, background: "linear-gradient(90deg, #FFD700, #FF6B00)", borderRadius: 2 }} />
                 </div>
-                <div style={{ fontFamily: "var(--font-heading)", fontSize: 20, fontWeight: 900, color: C.orangeDim }}>{item.pct}</div>
               </div>
-              {/* Progress bar */}
-              <div className="mt-4" style={{ height: 4, background: "rgba(255, 215, 0, 0.15)", borderRadius: 2 }}>
-                <div style={{ height: "100%", width: `${[68, 92, 84][i]}%`, background: "linear-gradient(90deg, #FFD700, #FF6B00)", borderRadius: 2 }} />
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1331,7 +1421,7 @@ function Process() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10 w-full">
-        <div className="text-center mb-16">
+        <Reveal className="text-center mb-16" delay={0}>
           <Label>Creative Process · Page 04</Label>
           <h2
             className="font-black leading-tight mt-4"
@@ -1345,7 +1435,7 @@ function Process() {
           <p style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: C.muted, marginTop: 8, maxWidth: 500, margin: "8px auto 0" }}>
             A disciplined 7-step workflow — from raw spark to measurable brand growth.
           </p>
-        </div>
+        </Reveal>
 
         {/* Horizontal workflow */}
         <div className="relative">
@@ -1361,93 +1451,96 @@ function Process() {
               const col = i % 2 === 0 ? C.orangeDim : C.goldDim;
               const colLight = i % 2 === 0 ? C.orange : C.gold;
               return (
-                <button
-                  key={step.num}
-                  className="flex flex-col items-center text-center group cursor-pointer focus:outline-none"
-                  onMouseEnter={() => setActive(i)}
-                  onMouseLeave={() => setActive(null)}
-                >
-                  {/* Step icon */}
-                  <div
-                    className="relative w-28 h-28 flex flex-col items-center justify-center mb-4 transition-all duration-300"
-                    style={{
-                      border: `1.5px solid ${isActive ? colLight : "rgba(255, 215, 0, 0.25)"}`,
-                      background: isActive ? "rgba(255, 170, 0, 0.05)" : "rgba(255, 255, 255, 0.75)",
-                      backdropFilter: "blur(16px)",
-                      transform: isActive ? "scale(1.06)" : "scale(1)",
-                      borderRadius: "16px",
-                      boxShadow: isActive ? "0 10px 25px rgba(255, 107, 0, 0.12)" : "0 4px 12px rgba(0,0,0,0.01)"
-                    }}
+                <Reveal key={step.num} delay={i % 4}>
+                  <button
+                    className="w-full flex flex-col items-center text-center group cursor-pointer focus:outline-none"
+                    onMouseEnter={() => setActive(i)}
+                    onMouseLeave={() => setActive(null)}
                   >
+                    {/* Step icon */}
                     <div
-                      className="absolute -top-1.5 -left-1.5 w-4 h-4"
-                      style={{ borderTop: `2px solid ${colLight}`, borderLeft: `2px solid ${colLight}`, opacity: isActive ? 1 : 0.4 }}
-                    />
-                    <div
-                      className="absolute -bottom-1.5 -right-1.5 w-4 h-4"
-                      style={{ borderBottom: `2px solid ${colLight}`, borderRight: `2px solid ${colLight}`, opacity: isActive ? 1 : 0.4 }}
-                    />
-                    <div className="text-2xl mb-1">{step.icon}</div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: col, letterSpacing: "0.2em", marginBottom: 2, fontWeight: 700 }}>{step.num}</div>
-                    <div style={{ fontFamily: "var(--font-heading)", fontSize: 14, fontWeight: 700, color: C.fore }}>{step.title}</div>
-                  </div>
+                      className="relative w-28 h-28 flex flex-col items-center justify-center mb-4 transition-all duration-300"
+                      style={{
+                        border: `1.5px solid ${isActive ? colLight : "rgba(255, 215, 0, 0.25)"}`,
+                        background: isActive ? "rgba(255, 170, 0, 0.05)" : "rgba(255, 255, 255, 0.75)",
+                        backdropFilter: "blur(16px)",
+                        transform: isActive ? "scale(1.06)" : "scale(1)",
+                        borderRadius: "16px",
+                        boxShadow: isActive ? "0 10px 25px rgba(255, 107, 0, 0.12)" : "0 4px 12px rgba(0,0,0,0.01)"
+                      }}
+                    >
+                      <div
+                        className="absolute -top-1.5 -left-1.5 w-4 h-4"
+                        style={{ borderTop: `2px solid ${colLight}`, borderLeft: `2px solid ${colLight}`, opacity: isActive ? 1 : 0.4 }}
+                      />
+                      <div
+                        className="absolute -bottom-1.5 -right-1.5 w-4 h-4"
+                        style={{ borderBottom: `2px solid ${colLight}`, borderRight: `2px solid ${colLight}`, opacity: isActive ? 1 : 0.4 }}
+                      />
+                      <div className="text-2xl mb-1">{step.icon}</div>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: col, letterSpacing: "0.2em", marginBottom: 2, fontWeight: 700 }}>{step.num}</div>
+                      <div style={{ fontFamily: "var(--font-heading)", fontSize: 14, fontWeight: 700, color: C.fore }}>{step.title}</div>
+                    </div>
 
-                  <div
-                    style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: C.muted, lineHeight: 1.5, opacity: isActive ? 1 : 0.75, transition: "opacity 0.2s" }}
-                  >
-                    {step.desc}
-                  </div>
-                </button>
+                    <div
+                      style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: C.muted, lineHeight: 1.5, opacity: isActive ? 1 : 0.75, transition: "opacity 0.2s" }}
+                    >
+                      {step.desc}
+                    </div>
+                  </button>
+                </Reveal>
               );
             })}
           </div>
         </div>
 
         {/* Editing timeline visual */}
-        <div className="mt-16 relative w-full overflow-hidden rounded-2xl shadow-sm" style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(20px)", padding: "16px 20px" }}>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, letterSpacing: "0.35em", textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>
-            Project Timeline — Editing Suite
-          </div>
-          <div className="grid gap-2">
-            {[
-              { label: "Concept / Script", w: "25%", color: C.goldDim },
-              { label: "Shoot / Capture", w: "20%", ml: "25%", color: "#B8860B" },
-              { label: "Edit / Post", w: "30%", ml: "45%", color: C.orange },
-              { label: "Design / Review", w: "15%", ml: "75%", color: C.orangeDim },
-              { label: "Publish / Grow", w: "10%", ml: "90%", color: C.goldDim },
-            ].map((track) => (
-              <div key={track.label} className="relative flex items-center gap-3" style={{ height: 24 }}>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(7.5px, 1.5vw, 8px)", color: C.muted, width: 110, flexShrink: 0, fontWeight: 600 }}>{track.label}</span>
-                <div className="flex-1 relative" style={{ height: 14, background: "rgba(255, 215, 0, 0.12)", borderRadius: 4 }}>
-                  <div
-                    className="absolute top-0 bottom-0"
-                    style={{
-                      left: (track as any).ml || "0%",
-                      width: track.w,
-                      background: `linear-gradient(90deg, ${track.color}90, ${track.color})`,
-                      borderRadius: 4,
-                    }}
-                  />
+        <Reveal delay={1}>
+          <div className="mt-16 relative w-full overflow-hidden rounded-2xl shadow-sm" style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(20px)", padding: "16px 20px" }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, letterSpacing: "0.35em", textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>
+              Project Timeline — Editing Suite
+            </div>
+            <div className="grid gap-2">
+              {[
+                { label: "Concept / Script", w: "25%", color: C.goldDim },
+                { label: "Shoot / Capture", w: "20%", ml: "25%", color: "#B8860B" },
+                { label: "Edit / Post", w: "30%", ml: "45%", color: C.orange },
+                { label: "Design / Review", w: "15%", ml: "75%", color: C.orangeDim },
+                { label: "Publish / Grow", w: "10%", ml: "90%", color: C.goldDim },
+              ].map((track) => (
+                <div key={track.label} className="relative flex items-center gap-3" style={{ height: 24 }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(7.5px, 1.5vw, 8px)", color: C.muted, width: 110, flexShrink: 0, fontWeight: 600 }}>{track.label}</span>
+                  <div className="flex-1 relative" style={{ height: 14, background: "rgba(255, 215, 0, 0.12)", borderRadius: 4 }}>
+                    <div
+                      className="absolute top-0 bottom-0"
+                      style={{
+                        left: (track as any).ml || "0%",
+                        width: track.w,
+                        background: `linear-gradient(90deg, ${track.color}90, ${track.color})`,
+                        borderRadius: 4,
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            {/* Playhead */}
+            <div
+              className="absolute top-10 bottom-4"
+              style={{ left: "calc(110px + 20px + (100% - 110px - 60px) * 0.53 + 20px)", width: 1, background: C.orange, opacity: 0.7 }}
+            >
+              <div style={{ width: 7, height: 7, background: C.orange, borderRadius: "50%", marginLeft: -3, marginTop: -3 }} />
+            </div>
           </div>
-          {/* Playhead */}
-          <div
-            className="absolute top-10 bottom-4"
-            style={{ left: "calc(110px + 20px + (100% - 110px - 60px) * 0.53 + 20px)", width: 1, background: C.orange, opacity: 0.7 }}
-          >
-            <div style={{ width: 7, height: 7, background: C.orange, borderRadius: "50%", marginLeft: -3, marginTop: -3 }} />
-          </div>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 text-center">
+        <Reveal delay={2} className="mt-12 text-center">
           <GoldRule className="mb-8" />
           <p style={{ fontFamily: "var(--font-heading)", fontSize: 20, fontStyle: "italic", color: "#333333" }}>
             "From the first spark of an idea to the final frame — we own every step."
           </p>
           <GoldRule className="mt-8" />
-        </div>
+        </Reveal>
       </div>
 
       <PageNum n="04" label="PROCESS" />
@@ -1481,76 +1574,79 @@ function QuotesPage() {
       <div className="absolute top-0 right-1/4 w-px h-1/2 opacity-20" style={{ background: "linear-gradient(180deg, #FFD700, transparent)" }} />
 
       <div className="relative z-10 max-w-4xl mx-auto px-10 text-center w-full">
-        <Label>Cinema Quotes · Page 05</Label>
+        <Reveal delay={0}>
+          <Label>Cinema Quotes · Page 05</Label>
 
-        <GoldRule className="mt-8 mb-12" />
+          <GoldRule className="mt-8 mb-12" />
 
-        {/* Large quote mark */}
-        <div
-          className="absolute select-none pointer-events-none"
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: 240,
-            color: "rgba(255, 107, 0, 0.05)",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -60%)",
-            lineHeight: 1,
-          }}
-          aria-hidden
-        >
-          "
-        </div>
-
-        {/* Active quote */}
-        <div style={{ minHeight: 160 }} className="flex flex-col items-center justify-center">
-          <p
-            key={active}
-            className="italic font-bold leading-tight mb-6"
+          {/* Large quote mark */}
+          <div
+            className="absolute select-none pointer-events-none"
             style={{
               fontFamily: "var(--font-heading)",
-              fontSize: "clamp(22px,4vw,38px)",
-              color: C.fore,
-              transition: "opacity 0.5s",
+              fontSize: 240,
+              color: "rgba(255, 107, 0, 0.05)",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -60%)",
+              lineHeight: 1,
             }}
+            aria-hidden
           >
-            "{quotes[active]}"
-          </p>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, color: C.orangeDim, letterSpacing: "0.35em", fontWeight: 700 }}>
-            — Film Dappa
+            "
           </div>
-        </div>
 
-        <GoldRule className="mt-12 mb-10" />
+          {/* Active quote */}
+          <div style={{ minHeight: 160 }} className="flex flex-col items-center justify-center">
+            <p
+              key={active}
+              className="italic font-bold leading-tight mb-6"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "clamp(22px,4vw,38px)",
+                color: C.fore,
+                transition: "opacity 0.5s",
+              }}
+            >
+              "{quotes[active]}"
+            </p>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, color: C.orangeDim, letterSpacing: "0.35em", fontWeight: 700 }}>
+              — Film Dappa
+            </div>
+          </div>
 
-        {/* Dot nav */}
-        <div className="flex items-center justify-center gap-3 mb-12">
-          {quotes.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)} aria-label={`Quote ${i + 1}`} className="cursor-pointer">
-              <div
-                className="rounded-full transition-all duration-200"
-                style={{ width: i === active ? 28 : 6, height: 6, background: i === active ? C.orange : "rgba(255, 215, 0, 0.4)" }}
-              />
-            </button>
-          ))}
-        </div>
+          <GoldRule className="mt-12 mb-10" />
+
+          {/* Dot nav */}
+          <div className="flex items-center justify-center gap-3 mb-12">
+            {quotes.map((_, i) => (
+              <button key={i} onClick={() => setActive(i)} aria-label={`Quote ${i + 1}`} className="cursor-pointer">
+                <div
+                  className="rounded-full transition-all duration-200"
+                  style={{ width: i === active ? 28 : 6, height: 6, background: i === active ? C.orange : "rgba(255, 215, 0, 0.4)" }}
+                />
+              </button>
+            ))}
+          </div>
+        </Reveal>
 
         {/* All quotes mini */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           {quotes.map((q, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className="text-left p-4 transition-all duration-200 rounded-xl cursor-pointer"
-              style={{
-                border: `1px solid ${i === active ? "rgba(255, 107, 0, 0.35)" : "rgba(255, 215, 0, 0.15)"}`,
-                background: i === active ? "rgba(255, 107, 0, 0.05)" : "rgba(255, 255, 255, 0.5)",
-              }}
-            >
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: 10, color: i === active ? C.fore : C.muted, lineHeight: 1.5, fontWeight: i === active ? 600 : 400 }}>
-                "{q.length > 40 ? q.slice(0, 40) + "…" : q}"
-              </p>
-            </button>
+            <Reveal key={i} delay={i}>
+              <button
+                onClick={() => setActive(i)}
+                className="w-full text-left p-4 transition-all duration-200 rounded-xl cursor-pointer h-full"
+                style={{
+                  border: `1px solid ${i === active ? "rgba(255, 107, 0, 0.35)" : "rgba(255, 215, 0, 0.15)"}`,
+                  background: i === active ? "rgba(255, 107, 0, 0.05)" : "rgba(255, 255, 255, 0.5)",
+                }}
+              >
+                <p style={{ fontFamily: "var(--font-sans)", fontSize: 10, color: i === active ? C.fore : C.muted, lineHeight: 1.5, fontWeight: i === active ? 600 : 400 }}>
+                  "{q.length > 40 ? q.slice(0, 40) + "…" : q}"
+                </p>
+              </button>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1730,7 +1826,7 @@ function Team() {
       <Spotlight top="15%" left="80%" color={C.orange} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10">
-        <div className="mb-12">
+        <Reveal className="mb-12" delay={0}>
           <Label>Founder & Team · Page 05</Label>
           <h2
             className="font-black leading-tight mt-4"
@@ -1744,47 +1840,20 @@ function Team() {
           <p style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: C.muted, marginTop: 8 }}>
             Storytellers, designers, editors, and strategists working as one.
           </p>
-        </div>
+        </Reveal>
 
         {/* Team cards */}
         <div className="space-y-5">
           {/* Row 1: 4 members (Founder + first 3 workers) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {/* Founder Card */}
-            <div className="group team-member-card flex flex-col h-full overflow-hidden rounded-2xl shadow-sm cursor-default">
-              <div className="relative overflow-hidden" style={{ height: 230, background: "radial-gradient(circle at center, #3A3D42 0%, #151619 100%)" }}>
-                <img
-                  src="/founder.png"
-                  alt="Lakshan Sudhakar"
-                  className="w-full h-full object-cover object-center card-img"
-                />
-                <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
-                <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
-                <div
-                  className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md"
-                  style={{ background: "rgba(217, 164, 65, 0.08)", border: "1px solid rgba(217, 164, 65, 0.25)", backdropFilter: "blur(8px)" }}
-                >
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#D9A441", letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700 }}>Founder</span>
-                </div>
-              </div>
-              <div className="p-4 flex flex-col items-start flex-1 min-h-[92px]">
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 700, color: C.fore }}>Lakshan Sudhakar</div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: C.muted, marginTop: 2 }}>Founder of FilmDappa, Filmmaker, Graphic Designer & Creative Entrepreneur</div>
-              </div>
-            </div>
-
-            {/* First 3 Worker Cards */}
-            {teamMembers.slice(0, 3).map((m) => (
-              <div
-                key={m.name || m.role}
-                className="group team-member-card flex flex-col h-full overflow-hidden rounded-2xl shadow-sm cursor-default"
-              >
+            <Reveal delay={0} className="h-full">
+              <div className="group team-member-card flex flex-col h-full overflow-hidden rounded-2xl shadow-sm cursor-default">
                 <div className="relative overflow-hidden" style={{ height: 230, background: "radial-gradient(circle at center, #3A3D42 0%, #151619 100%)" }}>
                   <img
-                    src={m.img.startsWith("/") ? m.img : `https://images.unsplash.com/photo-${m.img}?w=400&h=400&fit=crop&auto=format`}
-                    alt={m.name || m.role}
-                    className="w-full h-full object-cover card-img"
-                    style={{ opacity: 0.95, objectPosition: m.imgPos || "center center" }}
+                    src="/founder.png"
+                    alt="Lakshan Sudhakar"
+                    className="w-full h-full object-cover object-center card-img"
                   />
                   <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
                   <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
@@ -1792,87 +1861,124 @@ function Team() {
                     className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md"
                     style={{ background: "rgba(217, 164, 65, 0.08)", border: "1px solid rgba(217, 164, 65, 0.25)", backdropFilter: "blur(8px)" }}
                   >
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#D9A441", letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700 }}>{m.specialty}</span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#D9A441", letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700 }}>Founder</span>
                   </div>
                 </div>
                 <div className="p-4 flex flex-col items-start flex-1 min-h-[92px]">
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 700, color: C.fore }}>{m.name || m.role}</div>
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: C.muted, marginTop: 2 }}>{m.role}</div>
-                  {m.instagram && (
-                    <a
-                      href={`https://instagram.com/${m.instagram.replace("@", "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 mt-2 text-[10px] font-semibold transition-colors"
-                      style={{ color: C.orangeDim }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = C.orange)}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = C.orangeDim)}
-                    >
-                      <Instagram size={10} />
-                      {m.instagram}
-                    </a>
-                  )}
+                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 700, color: C.fore }}>Lakshan Sudhakar</div>
+                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: C.muted, marginTop: 2 }}>Founder of FilmDappa, Filmmaker, Graphic Designer & Creative Entrepreneur</div>
                 </div>
               </div>
+            </Reveal>
+
+            {/* First 3 Worker Cards */}
+            {teamMembers.slice(0, 3).map((m, i) => (
+              <Reveal key={m.name || m.role} delay={i + 1} className="h-full">
+                <div
+                  className="group team-member-card flex flex-col h-full overflow-hidden rounded-2xl shadow-sm cursor-default"
+                >
+                  <div className="relative overflow-hidden" style={{ height: 230, background: "radial-gradient(circle at center, #3A3D42 0%, #151619 100%)" }}>
+                    <img
+                      src={m.img.startsWith("/") ? m.img : `https://images.unsplash.com/photo-${m.img}?w=400&h=400&fit=crop&auto=format`}
+                      alt={m.name || m.role}
+                      className="w-full h-full object-cover card-img"
+                      style={{ opacity: 0.95, objectPosition: m.imgPos || "center center" }}
+                    />
+                    <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
+                    <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
+                    <div
+                      className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md"
+                      style={{ background: "rgba(217, 164, 65, 0.08)", border: "1px solid rgba(217, 164, 65, 0.25)", backdropFilter: "blur(8px)" }}
+                    >
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#D9A441", letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700 }}>{m.specialty}</span>
+                    </div>
+                  </div>
+                  <div className="p-4 flex flex-col items-start flex-1 min-h-[92px]">
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 700, color: C.fore }}>{m.name || m.role}</div>
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: C.muted, marginTop: 2 }}>{m.role}</div>
+                    {m.instagram && (
+                      <a
+                        href={`https://instagram.com/${m.instagram.replace("@", "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 mt-2 text-[10px] font-semibold transition-colors"
+                        style={{ color: C.orangeDim }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = C.orange)}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = C.orangeDim)}
+                      >
+                        <Instagram size={10} />
+                        {m.instagram}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </Reveal>
             ))}
           </div>
 
           {/* Row 2: Remaining members centered */}
           <div className="flex flex-wrap justify-center gap-5">
-            {teamMembers.slice(3).map((m) => (
-              <div
+            {teamMembers.slice(3).map((m, i) => (
+              <Reveal
                 key={m.name || m.role}
-                className="w-[calc(50%-10px)] md:w-[calc(25%-15px)] flex flex-col h-full overflow-hidden rounded-2xl shadow-sm cursor-default group team-member-card"
+                delay={i % 4}
+                className="w-[calc(50%-10px)] md:w-[calc(25%-15px)] flex flex-col h-full"
               >
-                <div className="relative overflow-hidden" style={{ height: 230, background: "radial-gradient(circle at center, #3A3D42 0%, #151619 100%)" }}>
-                  <img
-                    src={m.img.startsWith("/") ? m.img : `https://images.unsplash.com/photo-${m.img}?w=400&h=400&fit=crop&auto=format`}
-                    alt={m.name || m.role}
-                    className="w-full h-full object-cover card-img"
-                    style={{ opacity: 0.95, objectPosition: m.imgPos || "center center" }}
-                  />
-                  <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
-                  <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
-                  <div
-                    className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md"
-                    style={{ background: "rgba(217, 164, 65, 0.08)", border: "1px solid rgba(217, 164, 65, 0.25)", backdropFilter: "blur(8px)" }}
-                  >
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#D9A441", letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700 }}>{m.specialty}</span>
+                <div
+                  className="w-full flex flex-col h-full overflow-hidden rounded-2xl shadow-sm cursor-default group team-member-card"
+                >
+                  <div className="relative overflow-hidden" style={{ height: 230, background: "radial-gradient(circle at center, #3A3D42 0%, #151619 100%)" }}>
+                    <img
+                      src={m.img.startsWith("/") ? m.img : `https://images.unsplash.com/photo-${m.img}?w=400&h=400&fit=crop&auto=format`}
+                      alt={m.name || m.role}
+                      className="w-full h-full object-cover card-img"
+                      style={{ opacity: 0.95, objectPosition: m.imgPos || "center center" }}
+                    />
+                    <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderLeft: "2px solid #D9A441" }} />
+                    <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #D9A441", borderRight: "2px solid #D9A441" }} />
+                    <div
+                      className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md"
+                      style={{ background: "rgba(217, 164, 65, 0.08)", border: "1px solid rgba(217, 164, 65, 0.25)", backdropFilter: "blur(8px)" }}
+                    >
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#D9A441", letterSpacing: "0.25em", textTransform: "uppercase", fontWeight: 700 }}>{m.specialty}</span>
+                    </div>
+                  </div>
+                  <div className="p-4 flex flex-col items-start flex-1 min-h-[92px]">
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 700, color: C.fore }}>{m.name || m.role}</div>
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: C.muted, marginTop: 2 }}>{m.role}</div>
+                    {m.instagram && (
+                      <a
+                        href={`https://instagram.com/${m.instagram.replace("@", "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 mt-2 text-[10px] font-semibold transition-colors"
+                        style={{ color: C.orangeDim }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = C.orange)}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = C.orangeDim)}
+                      >
+                        <Instagram size={10} />
+                        {m.instagram}
+                      </a>
+                    )}
                   </div>
                 </div>
-                <div className="p-4 flex flex-col items-start flex-1 min-h-[92px]">
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 700, color: C.fore }}>{m.name || m.role}</div>
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: C.muted, marginTop: 2 }}>{m.role}</div>
-                  {m.instagram && (
-                    <a
-                      href={`https://instagram.com/${m.instagram.replace("@", "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 mt-2 text-[10px] font-semibold transition-colors"
-                      style={{ color: C.orangeDim }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = C.orange)}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = C.orangeDim)}
-                    >
-                      <Instagram size={10} />
-                      {m.instagram}
-                    </a>
-                  )}
-                </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
 
         {/* Studio stats */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.slice(2).concat(stats.slice(0, 2)).map((s) => (
-            <div key={s.label + "team"} className="flex items-center gap-4 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow" style={{ border: "1px solid rgba(255, 215, 0, 0.2)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}>
-              <div style={{ width: 3, height: 32, background: "linear-gradient(180deg, #FF6B00, #FFA500)", flexShrink: 0 }} />
-              <div>
-                <div style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-card)", fontWeight: 900, color: C.orangeDim }}>{s.value}</div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-small)", color: C.muted, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>{s.label}</div>
+          {stats.slice(2).concat(stats.slice(0, 2)).map((s, i) => (
+            <Reveal key={s.label + "team"} delay={i}>
+              <div className="flex items-center gap-4 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-full" style={{ border: "1px solid rgba(255, 215, 0, 0.2)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}>
+                <div style={{ width: 3, height: 32, background: "linear-gradient(180deg, #FF6B00, #FFA500)", flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-card)", fontWeight: 900, color: C.orangeDim }}>{s.value}</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-small)", color: C.muted, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>{s.label}</div>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1971,42 +2077,43 @@ function Contact() {
                 { icon: Instagram, label: "Instagram", value: "@filmdappa", sub: "DM us for quick creative chats", href: "https://instagram.com/filmdappa", color: C.orange },
                 { icon: Youtube, label: "YouTube Channel", value: "FILMDAPPA", sub: "Subscribe for creative films", href: "https://youtube.com/@filmdappa?si=DmTt0mLuiNMqWTbF", color: "#FF0000" },
                 { icon: MapPin, label: "Studio", value: "VISIT OFFICE", sub: "Tamil Nadu, India — 637211", href: "https://maps.app.goo.gl/nb1zG7UD7Bf46rE57", color: C.orangeDim },
-              ].map((c) => (
-                <a
-                  key={c.label}
-                  href={c.href}
-                  target={c.href.startsWith("http") ? "_blank" : undefined}
-                  rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex items-start gap-5 group p-4 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md cursor-pointer border"
-                  style={{
-                    border: "1px solid rgba(255, 215, 0, 0.25)",
-                    background: "rgba(255, 255, 255, 0.75)",
-                    backdropFilter: "blur(16px)"
-                  }}
-                >
-                  <div
-                    className="w-12 h-12 flex items-center justify-center flex-shrink-0 transition-all duration-350 rounded-xl"
-                    style={{ border: `1px solid ${c.color}35`, background: `${c.color}08` }}
+              ].map((c, i) => (
+                <Reveal key={c.label} delay={i}>
+                  <a
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="flex items-start gap-5 group p-4 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md cursor-pointer border h-full"
+                    style={{
+                      border: "1px solid rgba(255, 215, 0, 0.25)",
+                      background: "rgba(255, 255, 255, 0.75)",
+                      backdropFilter: "blur(16px)"
+                    }}
                   >
-                    <c.icon size={17} style={{ color: c.color }} />
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: c.color, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 4 }}>{c.label}</div>
                     <div
-                      style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-card)", fontWeight: 700, color: C.fore }}
+                      className="w-12 h-12 flex items-center justify-center flex-shrink-0 transition-all duration-350 rounded-xl"
+                      style={{ border: `1px solid ${c.color}35`, background: `${c.color}08` }}
                     >
-                      {c.value}
+                      <c.icon size={17} style={{ color: c.color }} />
                     </div>
-                    <div style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: C.muted, marginTop: 3 }}>{c.sub}</div>
-                  </div>
-                </a>
+                    <div>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: c.color, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 4 }}>{c.label}</div>
+                      <div
+                        style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-card)", fontWeight: 700, color: C.fore }}
+                      >
+                        {c.value}
+                      </div>
+                      <div style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: C.muted, marginTop: 3 }}>{c.sub}</div>
+                    </div>
+                  </a>
+                </Reveal>
               ))}
             </div>
 
           </div>
 
           {/* Form + CTA */}
-          <div className="space-y-6">
+          <Reveal delay={1} className="space-y-6">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6 sm:p-8 rounded-3xl shadow-lg border"
               style={{
                 background: "rgba(255, 255, 255, 0.8)",
@@ -2161,7 +2268,7 @@ function Contact() {
             <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, textAlign: "center", letterSpacing: "0.3em", marginTop: 16, textTransform: "uppercase", fontWeight: 600 }}>
               8489854125 · @filmdappa · Tiruchengode
             </div>
-          </div>
+          </Reveal>
         </div>
 
         <GoldRule className="mt-14" />
@@ -2499,7 +2606,7 @@ function Finale() {
       <div className="relative z-20 w-full max-w-[1400px] mx-auto flex flex-col items-center gap-12 my-auto">
 
         {/* Header Titles */}
-        <div className="text-center space-y-4 max-w-3xl animate-[fadeUp_1.2s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+        <Reveal delay={0} className="text-center space-y-4 max-w-3xl">
           <div className="inline-block px-5 py-1.5 rounded-md" style={{ background: "linear-gradient(135deg, #FF6B00 0%, #FFA500 50%, #FFD700 100%)" }}>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, color: "#111111", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 900 }}>
               LET'S MAKE A PURE CINEMA
@@ -2522,96 +2629,102 @@ function Finale() {
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(14px, 2vw, 17px)", fontWeight: 700, color: C.fore, letterSpacing: "0.02em" }}>
             A Complete 10-Minute Filmmaking Package for New Age Creators
           </p>
-        </div>
+        </Reveal>
 
         {/* 3-Column Content Layout */}
         <div className="w-full grid lg:grid-cols-3 items-center gap-8 lg:gap-4 xl:gap-8">
 
           {/* Left Card: Pre Production */}
-          <div
-            className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_7s_infinite_ease-in-out]"
-            style={{
-              transform: `translate(${mousePos.x * -8}px, ${mousePos.y * -8}px)`,
-              height: "150px"
-            }}
-          >
-            <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 900, color: C.fore, letterSpacing: "0.08em", marginBottom: 8 }}>
-              PRE PRODUCTION
-            </h3>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
-              (iPhone 16, Gimbal,<br />
-              LC500R Light,<br />
-              Live Audio Mic)
-            </p>
-          </div>
+          <Reveal delay={0} className="w-full flex justify-center">
+            <div
+              className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_7s_infinite_ease-in-out]"
+              style={{
+                transform: `translate(${mousePos.x * -8}px, ${mousePos.y * -8}px)`,
+                height: "150px"
+              }}
+            >
+              <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 900, color: C.fore, letterSpacing: "0.08em", marginBottom: 8 }}>
+                PRE PRODUCTION
+              </h3>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
+                (iPhone 16, Gimbal,<br />
+                LC500R Light,<br />
+                Live Audio Mic)
+              </p>
+            </div>
+          </Reveal>
 
           {/* Center Column: Interactive Podium & Products */}
-          <div className="flex flex-col items-center justify-center min-h-[380px] relative">
+          <Reveal delay={1} className="w-full">
+            <div className="flex flex-col items-center justify-center min-h-[380px] relative">
 
-            {/* Products container */}
-            <div className="relative w-full max-w-[440px] h-[300px] z-20 flex justify-center">
+              {/* Products container */}
+              <div className="relative w-full max-w-[440px] h-[300px] z-20 flex justify-center">
 
-              {/* Product 1: LC500R RGB Tube Light */}
-              <div className="hover-product product-light-wrapper">
-                <img
-                  src="/product_light.png"
-                  alt="LC500R Tube Light"
-                  className="h-full w-auto object-contain"
-                />
-              </div>
+                {/* Product 1: LC500R RGB Tube Light */}
+                <div className="hover-product product-light-wrapper">
+                  <img
+                    src="/product_light.png"
+                    alt="LC500R Tube Light"
+                    className="h-full w-auto object-contain"
+                  />
+                </div>
 
-              {/* Product 2: iPhone 16 */}
-              <div className="hover-product product-iphone-wrapper">
-                <img
-                  src="/product_iphone.png"
-                  alt="iPhone 16"
-                  className="h-full w-auto object-contain"
-                />
-              </div>
+                {/* Product 2: iPhone 16 */}
+                <div className="hover-product product-iphone-wrapper">
+                  <img
+                    src="/product_iphone.png"
+                    alt="iPhone 16"
+                    className="h-full w-auto object-contain"
+                  />
+                </div>
 
-              {/* Product 3: Gimbal */}
-              <div className="hover-product product-gimbal-wrapper">
-                <img
-                  src="/product_gimbal.png"
-                  alt="Smartphone Gimbal"
-                  className="h-full w-auto object-contain"
-                />
-              </div>
+                {/* Product 3: Gimbal */}
+                <div className="hover-product product-gimbal-wrapper">
+                  <img
+                    src="/product_gimbal.png"
+                    alt="Smartphone Gimbal"
+                    className="h-full w-auto object-contain"
+                  />
+                </div>
 
-              {/* Product 4: Microphone */}
-              <div className="hover-product product-mic-wrapper">
-                <img
-                  src="/product_mic.png"
-                  alt="Wireless Microphone"
-                  className="h-full w-auto object-contain"
-                />
+                {/* Product 4: Microphone */}
+                <div className="hover-product product-mic-wrapper">
+                  <img
+                    src="/product_mic.png"
+                    alt="Wireless Microphone"
+                    className="h-full w-auto object-contain"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Right Card: Post Production */}
-          <div
-            className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_8s_infinite_ease-in-out_delay-1s]"
-            style={{
-              transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)`,
-              height: "150px"
-            }}
-          >
-            <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 900, color: C.fore, letterSpacing: "0.08em", marginBottom: 8 }}>
-              POST PRODUCTION
-            </h3>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
-              (Short Film Edit, Title Design,<br />
-              First Look, Release Poster,<br />
-              Promotion Video)
-            </p>
-          </div>
+          <Reveal delay={2} className="w-full flex justify-center">
+            <div
+              className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_8s_infinite_ease-in-out_delay-1s]"
+              style={{
+                transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)`,
+                height: "150px"
+              }}
+            >
+              <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 900, color: C.fore, letterSpacing: "0.08em", marginBottom: 8 }}>
+                POST PRODUCTION
+              </h3>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
+                (Short Film Edit, Title Design,<br />
+                First Look, Release Poster,<br />
+                Promotion Video)
+              </p>
+            </div>
+          </Reveal>
 
         </div>
 
         {/* CTA Bottom Area: Premium Glass Container */}
-        <div className="relative z-30 w-full max-w-xl mx-auto px-4 pt-4">
-          <div className="p-6 md:p-8 rounded-3xl backdrop-blur-xl border border-white/40 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 w-full animate-[fadeUp_1.4s_cubic-bezier(0.16,1,0.3,1)_forwards]"
+        <Reveal delay={1} className="relative z-30 w-full max-w-xl mx-auto px-4 pt-4">
+          <div className="p-6 md:p-8 rounded-3xl backdrop-blur-xl border border-white/40 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
             style={{
               background: "rgba(255, 255, 255, 0.45)",
               boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.6)"
@@ -2653,12 +2766,12 @@ function Finale() {
               </svg>
             </button>
           </div>
-        </div>
+        </Reveal>
 
       </div>
 
       {/* Footer info */}
-      <div className="relative z-20 w-full max-w-5xl mx-auto px-4 mt-8 pt-6 border-t border-dashed border-gray-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
+      <Reveal delay={0} className="relative z-20 w-full max-w-5xl mx-auto px-4 mt-8 pt-6 border-t border-dashed border-gray-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <img src="/logo.png" alt="FILMDAPPA Logo" className="h-6 w-auto opacity-90" />
           <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 700 }} className="tracking-widest">
@@ -2681,7 +2794,7 @@ function Finale() {
         <p style={{ fontFamily: "var(--font-sans)", fontSize: 10, color: C.muted }} className="text-center md:text-right">
           &copy; {new Date().getFullYear()} <strong>FilmDappa</strong>. All rights reserved.
         </p>
-      </div>
+      </Reveal>
 
       {/* Price Reveal Pop-up Modal */}
       {showPriceModal && (

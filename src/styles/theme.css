@@ -290,3 +290,55 @@
 .animate-float-3 {
   animation: float-3 7s ease-in-out infinite;
 }
+
+/* ─── SCROLL REVEAL ANIMATION SYSTEM ─────────────────────────────────────── */
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Initial hidden state — elements start invisible and slightly below */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(32px);
+  will-change: transform, opacity;
+}
+
+/* Visible state — triggered by IntersectionObserver via JS class toggle */
+.reveal-visible {
+  animation: reveal-up 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger delays for child elements within a group */
+.reveal-delay-0  { animation-delay: 0ms; }
+.reveal-delay-1  { animation-delay: 80ms; }
+.reveal-delay-2  { animation-delay: 160ms; }
+.reveal-delay-3  { animation-delay: 240ms; }
+.reveal-delay-4  { animation-delay: 320ms; }
+.reveal-delay-5  { animation-delay: 400ms; }
+.reveal-delay-6  { animation-delay: 480ms; }
+.reveal-delay-7  { animation-delay: 560ms; }
+
+/* Prevent horizontal overflow from the initial translateY offset */
+.reveal-clip-container {
+  overflow: clip;
+}
+
+/* Respect reduced-motion preference — disable animations entirely */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-hidden {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  .reveal-visible {
+    animation: none;
+  }
+}

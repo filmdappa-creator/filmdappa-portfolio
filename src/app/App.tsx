@@ -705,14 +705,13 @@ function Cover() {
         <div className="w-full max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 px-2">
           {/* Film Dappa */}
           <div
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl border transition-all duration-300 hover:shadow-md"
+            className="flex items-center gap-3.5 p-3.5 rounded-2xl transition-all duration-300 hover:shadow-md"
             style={{
-              background: "rgba(255, 255, 255, 0.92)",
-              borderColor: "rgba(255, 107, 0, 0.28)",
-              boxShadow: "0 6px 18px rgba(255, 107, 0, 0.06)",
+              background: "rgba(255, 255, 255, 0.95)",
+              boxShadow: "0 6px 20px rgba(255, 107, 0, 0.08)",
             }}
           >
-            <div className="w-12 h-12 flex items-center justify-center rounded-xl p-1 bg-amber-500/10 border border-amber-500/25 flex-shrink-0">
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl p-1 bg-amber-500/10 flex-shrink-0">
               <img src="/logo.png" alt="Film Dappa" className="w-full h-full object-contain" />
             </div>
             <div className="text-left">
@@ -727,14 +726,13 @@ function Cover() {
 
           {/* FD BrandStudio */}
           <div
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl border transition-all duration-300 hover:shadow-md"
+            className="flex items-center gap-3.5 p-3.5 rounded-2xl transition-all duration-300 hover:shadow-md"
             style={{
-              background: "rgba(255, 255, 255, 0.92)",
-              borderColor: "rgba(255, 196, 0, 0.38)",
-              boxShadow: "0 6px 18px rgba(255, 196, 0, 0.08)",
+              background: "rgba(255, 255, 255, 0.95)",
+              boxShadow: "0 6px 20px rgba(255, 196, 0, 0.09)",
             }}
           >
-            <div className="w-12 h-12 flex items-center justify-center rounded-xl p-1 bg-amber-500/10 border border-amber-500/35 flex-shrink-0">
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl p-1 bg-amber-500/10 flex-shrink-0">
               <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio" className="w-full h-full object-contain" />
             </div>
             <div className="text-left">
@@ -765,19 +763,18 @@ function About() {
           <div
             className="relative flex flex-col items-center justify-center p-6 sm:p-8 select-none w-full max-w-[540px] lg:max-w-[580px] transition-all duration-500 hover:shadow-2xl"
             style={{
-              background: "rgba(255, 255, 255, 0.88)",
+              background: "rgba(255, 255, 255, 0.94)",
               backdropFilter: "blur(20px)",
-              border: "1.5px solid rgba(255, 196, 0, 0.35)",
               borderRadius: "28px",
-              boxShadow: "0 20px 50px rgba(255, 196, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.02)"
+              boxShadow: "0 20px 50px rgba(255, 180, 0, 0.08), 0 4px 20px rgba(0, 0, 0, 0.03)"
             }}
           >
             {/* Top Badge */}
-            <div className="w-full flex items-center justify-between pb-4 mb-4 border-b border-amber-300/25">
+            <div className="w-full flex items-center justify-between pb-3 mb-4">
               <span className="text-[10px] font-mono font-bold tracking-[0.25em] text-[#D68500] uppercase">
                 Creative Media Agency
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/10 text-[#D68500] border border-amber-500/20">
+              <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/10 text-[#D68500]">
                 Tiruchengode, TN
               </span>
             </div>
@@ -788,11 +785,11 @@ function About() {
               <div
                 className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:scale-[1.01] hover:shadow-md"
                 style={{
-                  background: "linear-gradient(90deg, rgba(255, 107, 0, 0.06) 0%, rgba(255, 255, 255, 0.95) 100%)",
-                  border: "1.5px solid rgba(255, 107, 0, 0.28)",
+                  background: "linear-gradient(90deg, rgba(255, 107, 0, 0.05) 0%, rgba(255, 255, 255, 0.98) 100%)",
+                  boxShadow: "0 4px 18px rgba(255, 107, 0, 0.06)",
                 }}
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1.5 rounded-2xl bg-white shadow-sm border border-amber-500/25 flex-shrink-0">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1.5 rounded-2xl bg-white shadow-xs flex-shrink-0">
                   <img
                     src="/logo.png"
                     alt="Film Dappa Logo"
@@ -824,7 +821,6 @@ function About() {
                         background: "rgba(255, 107, 0, 0.1)",
                         padding: "2px 8px",
                         borderRadius: "6px",
-                        border: "1px solid rgba(255, 107, 0, 0.25)"
                       }}
                     >
                       Post Production
@@ -840,11 +836,11 @@ function About() {
               <div
                 className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:scale-[1.01] hover:shadow-md"
                 style={{
-                  background: "linear-gradient(90deg, rgba(255, 196, 0, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%)",
-                  border: "1.5px solid rgba(255, 196, 0, 0.38)",
+                  background: "linear-gradient(90deg, rgba(255, 196, 0, 0.06) 0%, rgba(255, 255, 255, 0.98) 100%)",
+                  boxShadow: "0 4px 18px rgba(255, 196, 0, 0.07)",
                 }}
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-2 rounded-2xl bg-white shadow-sm border border-amber-500/30 flex-shrink-0 overflow-hidden">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-2 rounded-2xl bg-white shadow-xs flex-shrink-0 overflow-hidden">
                   <img
                     src="/fd-brandstudio-logo.png"
                     alt="FD BrandStudio Logo"
@@ -873,10 +869,9 @@ function About() {
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
                         fontWeight: 800,
-                        background: "rgba(255, 196, 0, 0.15)",
+                        background: "rgba(255, 196, 0, 0.12)",
                         padding: "2px 8px",
                         borderRadius: "6px",
-                        border: "1px solid rgba(255, 196, 0, 0.35)"
                       }}
                     >
                       Design &bull; Marketing
@@ -890,7 +885,7 @@ function About() {
             </div>
 
             {/* Bottom union banner */}
-            <div className="w-full mt-4 pt-3 flex items-center justify-between border-t border-amber-300/20 text-[9.5px] font-mono font-bold tracking-widest text-[#D68500] uppercase">
+            <div className="w-full mt-4 pt-3 flex items-center justify-between text-[9.5px] font-mono font-bold tracking-widest text-[#D68500] uppercase">
               <span>ONE COMPLETE ECOSYSTEM</span>
               <span>CINEMA + BRAND ACCELERATION</span>
             </div>
@@ -972,17 +967,16 @@ function ServiceRow({
   return (
     <div
       onClick={onClick}
-      className={`flex items-start gap-2.5 p-2 sm:p-2.5 rounded-xl border transition-all duration-200 group ${
+      className={`flex items-start gap-2.5 p-2 sm:p-2.5 rounded-xl transition-all duration-200 group ${
         onClick
-          ? "cursor-pointer hover:border-amber-400 hover:bg-amber-500/[0.06] hover:shadow-sm"
-          : "border-transparent hover:border-amber-400/20 hover:bg-amber-500/[0.03]"
+          ? "cursor-pointer hover:bg-amber-500/[0.08] hover:shadow-xs"
+          : "hover:bg-amber-500/[0.04]"
       }`}
     >
       <div
         className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg mt-0.5 transition-transform group-hover:scale-105"
         style={{
-          background: "rgba(255, 170, 0, 0.08)",
-          border: "1px solid rgba(255, 170, 0, 0.25)",
+          background: "rgba(255, 170, 0, 0.12)",
         }}
       >
         <Icon size={12} style={{ color: C.orangeDim }} />
@@ -1049,8 +1043,7 @@ function Services() {
             <div
               className="relative flex flex-col rounded-3xl transition-all duration-300 hover:shadow-2xl cursor-default h-full overflow-hidden"
               style={{
-                border: "1.5px solid rgba(255, 107, 0, 0.35)",
-                background: "rgba(255, 255, 255, 0.94)",
+                background: "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(20px)",
                 boxShadow: "0 20px 45px rgba(255, 107, 0, 0.08)",
               }}
@@ -1065,7 +1058,7 @@ function Services() {
               <div className="p-6 sm:p-7 pb-4">
                 <div className="flex items-center justify-between gap-4 mb-3">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl p-2 bg-amber-500/10 border border-amber-500/25 flex-shrink-0">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl p-2 bg-amber-500/10 flex-shrink-0">
                       <img src="/logo.png" alt="Film Dappa Logo" className="w-full h-full object-contain" />
                     </div>
                     <div>
@@ -1096,7 +1089,6 @@ function Services() {
                       fontFamily: "var(--font-mono)",
                       background: "rgba(255, 107, 0, 0.1)",
                       color: C.orangeDim,
-                      border: "1px solid rgba(255, 107, 0, 0.3)"
                     }}
                   >
                     12 Services
@@ -1162,10 +1154,9 @@ function Services() {
             <div
               className="relative flex flex-col rounded-3xl transition-all duration-300 hover:shadow-2xl cursor-default h-full overflow-hidden"
               style={{
-                border: "1.5px solid rgba(255, 196, 0, 0.45)",
-                background: "rgba(255, 255, 255, 0.94)",
+                background: "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(20px)",
-                boxShadow: "0 20px 45px rgba(255, 196, 0, 0.1)",
+                boxShadow: "0 20px 45px rgba(255, 196, 0, 0.09)",
               }}
             >
               {/* Top accent gradient bar */}
@@ -1178,7 +1169,7 @@ function Services() {
               <div className="p-6 sm:p-7 pb-4">
                 <div className="flex items-center justify-between gap-4 mb-3">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl p-1.5 bg-amber-500/15 border border-amber-500/35 flex-shrink-0">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl p-1.5 bg-amber-500/15 flex-shrink-0">
                       <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio Logo" className="w-full h-full object-contain" />
                     </div>
                     <div>
@@ -1209,7 +1200,6 @@ function Services() {
                       fontFamily: "var(--font-mono)",
                       background: "rgba(255, 196, 0, 0.18)",
                       color: C.orangeDim,
-                      border: "1px solid rgba(255, 196, 0, 0.4)"
                     }}
                   >
                     12 Services
@@ -1290,7 +1280,6 @@ function Services() {
             className="relative rounded-3xl p-6 sm:p-8 overflow-hidden transition-all duration-300 hover:shadow-2xl"
             style={{
               background: "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 252, 243, 0.95) 100%)",
-              border: "1.5px solid rgba(255, 180, 0, 0.38)",
               boxShadow: "0 20px 45px rgba(255, 170, 0, 0.08)",
             }}
           >
@@ -1308,7 +1297,6 @@ function Services() {
                     style={{
                       background: "rgba(255, 107, 0, 0.1)",
                       color: C.orangeDim,
-                      border: "1px solid rgba(255, 107, 0, 0.25)",
                     }}
                   >
                     Studio Space & Background Setup
@@ -1331,7 +1319,7 @@ function Services() {
 
                 {/* Simple Sentences in Clear English */}
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 shadow-xs">
                     <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Video size={13} />
                     </div>
@@ -1345,7 +1333,7 @@ function Services() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 shadow-xs">
                     <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Lightbulb size={13} />
                     </div>
@@ -1359,7 +1347,7 @@ function Services() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 shadow-xs">
                     <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Layers size={13} />
                     </div>
@@ -1373,7 +1361,7 @@ function Services() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 shadow-xs">
                     <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Sparkles size={13} />
                     </div>
@@ -1390,7 +1378,7 @@ function Services() {
               </div>
 
               {/* Right Side: Quick Action Box */}
-              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 justify-center items-stretch flex-shrink-0 lg:w-[260px] p-5 rounded-2xl bg-amber-500/[0.08] border border-amber-500/25">
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 justify-center items-stretch flex-shrink-0 lg:w-[260px] p-5 rounded-2xl bg-amber-500/[0.08] shadow-xs">
                 <div className="text-center lg:text-left">
                   <div className="text-[10px] font-mono font-bold text-amber-700 uppercase tracking-wider">
                     Need Video Space?
@@ -1521,24 +1509,113 @@ function Works() {
     }, 100);
   }, [isMuted]);
 
-  // One-click: play there itself (single click toggles play/pause inline)
+  // Auto-play the video shown in front while scrolling without touching
+  const updateFrontVideoOnScroll = useCallback(() => {
+    if (bigScreenIdx !== null) return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    // Check if the works reel is within the viewport vertically
+    const containerRect = container.getBoundingClientRect();
+    if (containerRect.bottom < 50 || containerRect.top > window.innerHeight - 50) {
+      // Out of viewport: pause all videos to save battery/bandwidth
+      videoRefs.current.forEach((v) => {
+        if (v && !v.paused) v.pause();
+      });
+      return;
+    }
+
+    const containerCenter = containerRect.left + containerRect.width / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    videoRefs.current.forEach((videoEl, idx) => {
+      if (!videoEl) return;
+      const card = videoEl.parentElement;
+      if (!card) return;
+      const cardRect = card.getBoundingClientRect();
+      const cardCenter = cardRect.left + cardRect.width / 2;
+      const dist = Math.abs(cardCenter - containerCenter);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestIndex = idx;
+      }
+    });
+
+    // Auto-play the front video (muted for mobile browser policies) and pause all others
+    videoRefs.current.forEach((videoEl, idx) => {
+      if (!videoEl) return;
+      if (idx === closestIndex) {
+        if (videoEl.paused) {
+          videoEl.muted = isMuted;
+          videoEl.play().catch(() => {
+            // Mobile fallback: ensure muted is true if browser blocks sound
+            videoEl.muted = true;
+            videoEl.play().catch(() => {});
+          });
+        }
+      } else {
+        if (!videoEl.paused) {
+          videoEl.pause();
+        }
+      }
+    });
+
+    setPlayingIdx(closestIndex);
+  }, [bigScreenIdx, isMuted]);
+
+  // Attach horizontal reel scroll listener and window scroll listener
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateFrontVideoOnScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Initial check when opening on mobile or loading page
+    const timer = setTimeout(() => {
+      updateFrontVideoOnScroll();
+    }, 400);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
+  }, [updateFrontVideoOnScroll]);
+
+  // Single click: toggle audio / play-pause inline
   const handleInlineClick = (idx: number) => {
     const video = videoRefs.current[idx];
     if (!video) return;
 
     if (playingIdx === idx) {
+      // If already playing, toggle mute so user can hear audio on tap
+      const newMuted = !video.muted;
+      video.muted = newMuted;
+      setIsMuted(newMuted);
       if (video.paused) {
         video.play().catch(() => {});
-      } else {
-        video.pause();
       }
     } else {
-      // Pause previously playing video
-      if (playingIdx !== null && videoRefs.current[playingIdx]) {
-        videoRefs.current[playingIdx]!.pause();
-      }
+      // Pause others and switch to this video
+      videoRefs.current.forEach((v, i) => {
+        if (i !== idx && v && !v.paused) v.pause();
+      });
       setPlayingIdx(idx);
-      video.muted = isMuted;
+      video.muted = false;
+      setIsMuted(false);
       video.play().catch(() => {
         video.muted = true;
         setIsMuted(true);
@@ -1682,7 +1759,7 @@ function Works() {
                 </span>
               </h2>
               <p className="premium-body-bold" style={{ fontSize: 14, color: C.muted, marginTop: 8 }}>
-                One-click to play &bull; Double-click (or long press on mobile) to open in Cinema View.
+                Double-click or long-press to open in Cinema View.
               </p>
             </div>
 
@@ -2224,6 +2301,7 @@ function Works() {
                     className="w-full h-full object-cover"
                     playsInline
                     loop
+                    muted
                     preload="metadata"
                   />
 
@@ -2254,14 +2332,10 @@ function Works() {
                       {item.brand}
                     </span>
 
-                    {isPlayingInline ? (
+                    {isPlayingInline && (
                       <span className="flex items-center gap-1 text-[8px] font-mono text-green-400 font-bold bg-black/75 px-2 py-0.5 rounded-full border border-green-500/30 backdrop-blur-md">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                         PLAYING
-                      </span>
-                    ) : (
-                      <span className="text-[7.5px] font-mono text-white/80 font-bold bg-black/50 px-1.5 py-0.5 rounded-full backdrop-blur-sm border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        1-CLICK PLAY
                       </span>
                     )}
                   </div>
@@ -2272,16 +2346,18 @@ function Works() {
                       <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
                         {item.tag}
                       </span>
-                      <span
-                        className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[7.5px] font-bold uppercase tracking-wider"
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          color: "#FFFFFF",
-                          background: isPlayingInline ? "rgba(34, 197, 94, 0.85)" : "rgba(255, 255, 255, 0.2)",
-                        }}
-                      >
-                        {isPlayingInline ? "Playing" : "Tap Reel"}
-                      </span>
+                      {isPlayingInline && (
+                        <span
+                          className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[7.5px] font-bold uppercase tracking-wider"
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            color: "#FFFFFF",
+                            background: "rgba(34, 197, 94, 0.85)",
+                          }}
+                        >
+                          Playing
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between gap-2">
@@ -2363,10 +2439,8 @@ function Results() {
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i}>
               <div
-                className="relative p-6 text-center group overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[rgba(255,215,0,0.06)] h-full"
-                style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+                className="relative p-6 text-center group overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg h-full"
+                style={{ background: "rgba(255, 255, 255, 0.85)", backdropFilter: "blur(16px)", boxShadow: "0 6px 20px rgba(255, 170, 0, 0.05)" }}
               >
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -2387,7 +2461,6 @@ function Results() {
                   {s.value}
                 </div>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-small)", color: C.muted, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>{s.label}</div>
-                <div className="absolute top-2 right-2 w-3 h-3" style={{ borderTop: "1px solid rgba(255, 107, 0, 0.3)", borderRight: "1px solid rgba(255, 107, 0, 0.3)" }} />
               </div>
             </Reveal>
           ))}
@@ -2398,9 +2471,7 @@ function Results() {
           <Reveal className="md:col-span-2 h-full" delay={0}>
             <div
               className="p-6 w-full h-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+              style={{ background: "rgba(255, 255, 255, 0.85)", backdropFilter: "blur(16px)", boxShadow: "0 6px 20px rgba(255, 170, 0, 0.05)" }}
             >
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 20 }}>
                 Follower & Reach Growth — 6 Months
@@ -2433,9 +2504,7 @@ function Results() {
           <Reveal className="h-full" delay={1}>
             <div
               className="p-6 w-full h-full overflow-hidden rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+              style={{ background: "rgba(255, 255, 255, 0.85)", backdropFilter: "blur(16px)", boxShadow: "0 6px 20px rgba(255, 170, 0, 0.05)" }}
             >
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 700, marginBottom: 20 }}>
                 Projects by Category
@@ -2463,9 +2532,7 @@ function Results() {
             <Reveal key={item.label} delay={i}>
               <div
                 className="p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 h-full"
-                style={{ border: "1px solid rgba(255, 215, 0, 0.25)", background: "rgba(255, 255, 255, 0.75)", backdropFilter: "blur(16px)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = C.borderHot)}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255, 215, 0, 0.25)")}
+                style={{ background: "rgba(255, 255, 255, 0.85)", backdropFilter: "blur(16px)", boxShadow: "0 6px 20px rgba(255, 170, 0, 0.05)" }}
               >
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 14, fontWeight: 600 }}>{item.label}</div>
                 <div className="flex items-center gap-3">

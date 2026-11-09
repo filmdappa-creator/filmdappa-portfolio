@@ -8,11 +8,12 @@ import {
   CartesianGrid, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar, Cell
 } from "recharts";
 import {
-  Phone, MapPin, Instagram, Film, Play, Star, Award,
+  Phone, MapPin, Instagram, Film, Play, Pause, Star, Award,
   TrendingUp, Heart, Eye, Zap, Palette, Globe, Video,
   Monitor, Scissors, Layers, Share2, MessageCircle, ChevronRight,
-  ChevronLeft, Menu, X, Mic, Music, Sliders, Volume2, Image,
-  Youtube, Type, Megaphone, Tv, Camera, Clapperboard
+  ChevronLeft, Menu, X, Mic, Music, Sliders, Volume2, VolumeX, Image,
+  Youtube, Type, Megaphone, Tv, Camera, Clapperboard, Maximize2, Minimize2, Sparkles,
+  Headphones, Check, Lightbulb
 } from "lucide-react";
 
 // ─── SCROLL REVEAL SYSTEM ────────────────────────────────────────────────────
@@ -149,17 +150,19 @@ const processSteps = [
 ];
 
 const digitalMarketing = [
-  { icon: Share2, name: "Social Media Marketing" },
-  { icon: Instagram, name: "Instagram Growth" },
-  { icon: Globe, name: "Facebook Marketing" },
-  { icon: MessageCircle, name: "WhatsApp Marketing" },
-  { icon: TrendingUp, name: "Brand Promotion" },
+  { icon: Share2, name: "Social Media Marketing", desc: "Strategy & Viral Distribution" },
+  { icon: Instagram, name: "Instagram Growth", desc: "Audience Expansion & Reels Reach" },
+  { icon: Globe, name: "Facebook & Meta Ads", desc: "High-ROI Conversion Ad Sets" },
+  { icon: MessageCircle, name: "WhatsApp Marketing", desc: "Direct Customer Funnels & CRM" },
+  { icon: TrendingUp, name: "Brand Promotion", desc: "Influencer Push & Organic PR" },
+  { icon: Megaphone, name: "Performance Marketing", desc: "SEO & High-Converting Funnels" },
 ];
 
 const designingServices = [
   {
     icon: Star,
     name: "Logo Design",
+    desc: "Minimal, 3D, Mascot & Corporate Marks",
     types: [
       "Minimal Logo",
       "Modern Logo",
@@ -172,6 +175,7 @@ const designingServices = [
   {
     icon: Layers,
     name: "Poster Design",
+    desc: "Theatrical, First Look & Motion Posters",
     types: [
       "Movie Poster",
       "First Look Poster",
@@ -187,6 +191,7 @@ const designingServices = [
   {
     icon: Heart,
     name: "Social Media Creatives",
+    desc: "Reels Covers, Ad Banners & Carousels",
     types: [
       "Instagram Post",
       "Instagram Story",
@@ -200,6 +205,7 @@ const designingServices = [
   {
     icon: Award,
     name: "Business Branding",
+    desc: "Corporate Identity & Brand Guidelines",
     types: [
       "Business Card",
       "Letterhead",
@@ -212,6 +218,7 @@ const designingServices = [
   {
     icon: Monitor,
     name: "Portfolio Design",
+    desc: "Pitch Decks & High-End Profiles",
     types: [
       "Personal Portfolio",
       "Photography Portfolio",
@@ -222,42 +229,32 @@ const designingServices = [
   },
   {
     icon: Eye,
-    name: "UI/UX Design",
+    name: "UI/UX & Web Design",
+    desc: "Interactive Digital Systems & Websites",
     types: [
       "Mobile App UI",
       "Website UI",
       "Dashboard Design",
       "Landing Page Design",
-      "Wireframe Design"
-    ]
-  },
-  {
-    icon: Globe,
-    name: "Website Design",
-    types: [
-      "Business Website",
-      "Portfolio Website",
-      "E-Commerce Website",
-      "Media Company Website",
-      "Landing Page Website",
-      "Custom Website"
+      "Wireframe Design",
+      "Full Modern Website"
     ]
   }
 ];
 
 const postProduction = [
-  { icon: Scissors, name: "Video Editing" },
-  { icon: Mic, name: "Dubbing" },
-  { icon: Palette, name: "DI Color Grading" },
-  { icon: Music, name: "Background Music Production" },
-  { icon: Sliders, name: "Mix & Mastering" },
-  { icon: Volume2, name: "Sound Effects (SFX)" },
-  { icon: Image, name: "Movie Poster Design" },
-  { icon: Youtube, name: "YouTube Thumbnail Design" },
-  { icon: Type, name: "Subtitle Creation" },
-  { icon: Megaphone, name: "Digital Promotions" },
-  { icon: Film, name: "Trailer Cut & Teaser Editing" },
-  { icon: Tv, name: "OTT & Streaming Delivery" },
+  { icon: Scissors, name: "Video Editing", desc: "Feature Film & Commercial Cuts" },
+  { icon: Mic, name: "Dubbing & Voiceover", desc: "Multi-Language Sync & Record" },
+  { icon: Palette, name: "DI Color Grading", desc: "DaVinci Resolve Cinema Master" },
+  { icon: Music, name: "Background Score (BGM)", desc: "Original Compositions & Themes" },
+  { icon: Sliders, name: "Mix & Mastering", desc: "Dolby Atmos & 5.1 Surround" },
+  { icon: Volume2, name: "Sound Effects (SFX)", desc: "Foley & Cinematic Sound Design" },
+  { icon: Film, name: "Trailer & Teaser Editing", desc: "High-Octane Theatrical Cuts" },
+  { icon: Sparkles, name: "VFX & Motion Titles", desc: "Visual Effects & Dynamic CGI" },
+  { icon: Type, name: "Subtitle Creation", desc: "Multi-Language Translation & Sync" },
+  { icon: Tv, name: "OTT & Cinema Delivery", desc: "DCI DCP & Streaming Masters" },
+  { icon: Video, name: "Multi-Cam Sync & Rushes", desc: "Production Media Management" },
+  { icon: Headphones, name: "Audio Restoration", desc: "Dialogue Clean & Noise Reduction" },
 ];
 
 const stats = [
@@ -286,7 +283,19 @@ const teamMembers = [
 
 const PAGE_TITLES = [
   "COVER", "ABOUT US", "SERVICES", "OUR WORKS",
-  "RESULTS", "OUR TEAM", "OFFERS", "CONTACT"
+  "RESULTS", "OFFERS", "CONTACT"
+];
+
+// ─── VIDEO WORKS DATA ─────────────────────────────────────────────────────────
+const videoWorks = [
+  { id: "v1", brand: "Film Dappa", tag: "Post Production", title: "Cinema Showcase", src: "/videos/IMG_0243.MOV" },
+  { id: "v2", brand: "FD BrandStudio", tag: "Commercial Ad", title: "Brand Identity", src: "/videos/IMG_1966.MOV" },
+  { id: "v3", brand: "Film Dappa", tag: "Cinematic Cut", title: "Visual Story", src: "/videos/IMG_2408.MP4" },
+  { id: "v4", brand: "Film Dappa", tag: "Color & Motion", title: "Studio Grade", src: "/videos/IMG_2583.MOV" },
+  { id: "v5", brand: "FD BrandStudio", tag: "Digital Campaign", title: "Creative Growth", src: "/videos/IMG_2814.MP4" },
+  { id: "v6", brand: "FD BrandStudio", tag: "Social Creative", title: "Brand Promotion", src: "/videos/IMG_2815.MP4" },
+  { id: "v7", brand: "Film Dappa", tag: "DI Grading", title: "Trailer Cut", src: "/videos/IMG_2817.MP4" },
+  { id: "v8", brand: "FD BrandStudio", tag: "Design Motion", title: "Digital Marketing", src: "/videos/IMG_2818.MP4" },
 ];
 
 // ─── SVG COMPONENTS ───────────────────────────────────────────────────────────
@@ -484,23 +493,48 @@ function Nav({
           borderBottom: "1px solid rgba(255, 215, 0, 0.15)",
         }}
       >
-        <div className="flex items-center gap-3">
-          <img
-            src="/logo.png"
-            alt="FILMDAPPA Logo"
-            className="h-[38px] md:h-[48px] w-auto object-contain"
-          />
-          <span
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 900,
-              fontSize: 16,
-              color: C.fore,
-              letterSpacing: "0.15em",
-            }}
-          >
-            FILM DAPPA
-          </span>
+        {/* Dual Brand Header: Unified Left Icon + Left-Aligned Stacked Names */}
+        <div
+          className="flex items-center gap-3 cursor-pointer py-1 select-none group"
+          onClick={() => onGoto(0)}
+        >
+          {/* Unified Master Logo on Left */}
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-500/10 border border-amber-500/25 p-1 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+            <img
+              src="/logo.png"
+              alt="Film Dappa & FD BrandStudio"
+              className="w-full h-full object-contain"
+            />
+          </div>
+
+          {/* Stacked Left-Aligned Brand Names */}
+          <div className="flex flex-col justify-center">
+            <span
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 900,
+                fontSize: 14,
+                color: C.fore,
+                letterSpacing: "0.14em",
+                lineHeight: 1.15,
+              }}
+              className="group-hover:text-amber-600 transition-colors"
+            >
+              FILM DAPPA
+            </span>
+            <span
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 900,
+                fontSize: 12.5,
+                color: C.orangeDim,
+                letterSpacing: "0.14em",
+                lineHeight: 1.15,
+              }}
+            >
+              FD BRANDSTUDIO
+            </span>
+          </div>
         </div>
 
         <div className="hidden md:flex items-center gap-1">
@@ -667,16 +701,52 @@ function Cover() {
 
         <div style={{ width: "100%", height: 1.5, background: `linear-gradient(90deg, transparent, ${C.border}, transparent)` }} />
 
-        {/* Clean list of services */}
-        <p
-          className="w-full text-center text-[12px] sm:text-[13.5px] md:text-[15px] tracking-[0.35em] md:tracking-[0.4em] uppercase font-extrabold"
-          style={{
-            fontFamily: "var(--font-mono)",
-            color: "#8A4010",
-          }}
-        >
-          POST PRODUCTION &bull; DESIGNING SERVICES &bull; DIGITAL MARKETING
-        </p>
+        {/* Dual Brand Powerhouse Showcase */}
+        <div className="w-full max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 px-2">
+          {/* Film Dappa */}
+          <div
+            className="flex items-center gap-3.5 p-3.5 rounded-2xl border transition-all duration-300 hover:shadow-md"
+            style={{
+              background: "rgba(255, 255, 255, 0.92)",
+              borderColor: "rgba(255, 107, 0, 0.28)",
+              boxShadow: "0 6px 18px rgba(255, 107, 0, 0.06)",
+            }}
+          >
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl p-1 bg-amber-500/10 border border-amber-500/25 flex-shrink-0">
+              <img src="/logo.png" alt="Film Dappa" className="w-full h-full object-contain" />
+            </div>
+            <div className="text-left">
+              <div className="font-heading font-black text-sm tracking-wider uppercase text-black">
+                FILM DAPPA
+              </div>
+              <div className="text-[10px] tracking-widest uppercase font-extrabold text-[#D68500]" style={{ fontFamily: "var(--font-mono)" }}>
+                Post Production Studio
+              </div>
+            </div>
+          </div>
+
+          {/* FD BrandStudio */}
+          <div
+            className="flex items-center gap-3.5 p-3.5 rounded-2xl border transition-all duration-300 hover:shadow-md"
+            style={{
+              background: "rgba(255, 255, 255, 0.92)",
+              borderColor: "rgba(255, 196, 0, 0.38)",
+              boxShadow: "0 6px 18px rgba(255, 196, 0, 0.08)",
+            }}
+          >
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl p-1 bg-amber-500/10 border border-amber-500/35 flex-shrink-0">
+              <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio" className="w-full h-full object-contain" />
+            </div>
+            <div className="text-left">
+              <div className="font-heading font-black text-sm tracking-wider uppercase text-black">
+                FD BRANDSTUDIO
+              </div>
+              <div className="text-[10px] tracking-widest uppercase font-extrabold text-[#D68500]" style={{ fontFamily: "var(--font-mono)" }}>
+                Designing & Marketing
+              </div>
+            </div>
+          </div>
+        </div>
       </Reveal>
 
       <PageNum n="00" label="COVER" />
@@ -686,54 +756,129 @@ function Cover() {
 
 function About() {
   return (
-    <section className="relative min-h-screen flex items-center py-16 md:py-28 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
+    <section className="relative min-h-screen flex items-center py-12 md:py-16 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
       <Spotlight top="20%" left="70%" color={C.orange} />
 
       <div className="relative z-10 w-[92%] max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
         {/* Left */}
         <Reveal className="relative w-full flex justify-center" delay={0}>
           <div
-            className="relative flex flex-col items-center justify-center p-6 sm:p-10 select-none h-[380px] sm:h-[500px] w-full max-w-[500px] lg:max-w-[568px] transition-all duration-500 hover:shadow-xl"
+            className="relative flex flex-col items-center justify-center p-6 sm:p-8 select-none w-full max-w-[540px] lg:max-w-[580px] transition-all duration-500 hover:shadow-2xl"
             style={{
-              background: "rgba(255, 255, 255, 0.75)",
+              background: "rgba(255, 255, 255, 0.88)",
               backdropFilter: "blur(20px)",
-              border: "1px solid rgba(255, 215, 0, 0.25)",
-              borderRadius: "24px",
-              boxShadow: "0 20px 50px rgba(255, 215, 0, 0.08), 0 5px 15px rgba(0, 0, 0, 0.01)"
+              border: "1.5px solid rgba(255, 196, 0, 0.35)",
+              borderRadius: "28px",
+              boxShadow: "0 20px 50px rgba(255, 196, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.02)"
             }}
           >
-            <img
-              src="/logo.png"
-              alt="FILMDAPPA Logo"
-              className="about-logo h-[200px] sm:h-[280px] w-auto object-contain"
-            />
-            <div className="mt-6 text-center">
+            {/* Top Badge */}
+            <div className="w-full flex items-center justify-between pb-4 mb-4 border-b border-amber-300/25">
+              <span className="text-[10px] font-mono font-bold tracking-[0.25em] text-[#D68500] uppercase">
+                Creative Media Agency
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/10 text-[#D68500] border border-amber-500/20">
+                Tiruchengode, TN
+              </span>
+            </div>
+
+            {/* Equal Side-by-Side Brand Showcase */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
+              {/* Brand 1: Film Dappa */}
               <div
+                className="flex flex-col items-center justify-center p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] text-center"
                 style={{
-                  fontFamily: "var(--font-heading)",
-                  color: "#111111",
-                  fontWeight: 900,
-                  fontSize: "18px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase"
+                  background: "linear-gradient(180deg, rgba(255, 107, 0, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%)",
+                  border: "1px solid rgba(255, 107, 0, 0.25)",
                 }}
               >
-                FILMDAPPA MEDIA COMPANY
+                <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-1.5 mb-3 rounded-2xl bg-white shadow-sm border border-amber-500/20">
+                  <img
+                    src="/logo.png"
+                    alt="Film Dappa Logo"
+                    className="w-full h-full object-contain scale-105"
+                  />
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    color: "#111111",
+                    fontWeight: 900,
+                    fontSize: "17px",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase"
+                  }}
+                >
+                  FILM DAPPA
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    color: C.orangeDim,
+                    fontSize: "10px",
+                    letterSpacing: "0.15em",
+                    marginTop: "4px",
+                    textTransform: "uppercase",
+                    fontWeight: 800
+                  }}
+                >
+                  Post Production
+                </div>
+                <p className="text-[11.5px] text-gray-600 mt-2 leading-relaxed">
+                  Cinema editing, DaVinci DI grading, Dolby mix & OTT delivery.
+                </p>
               </div>
+
+              {/* Brand 2: FD BrandStudio */}
               <div
+                className="flex flex-col items-center justify-center p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] text-center"
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  color: "#666666",
-                  fontSize: "clamp(7.5px, 2vw, 10px)",
-                  letterSpacing: "0.02em",
-                  marginTop: "8px",
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  whiteSpace: "nowrap"
+                  background: "linear-gradient(180deg, rgba(255, 196, 0, 0.08) 0%, rgba(255, 255, 255, 0.8) 100%)",
+                  border: "1px solid rgba(255, 196, 0, 0.35)",
                 }}
               >
-                Shortfilm Post Production · Designing Service · Digital Marketing
+                <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-3 mb-3 rounded-2xl bg-white shadow-sm border border-amber-500/30 overflow-hidden">
+                  <img
+                    src="/fd-brandstudio-logo.png"
+                    alt="FD BrandStudio Logo"
+                    className="w-full h-full object-contain scale-95"
+                  />
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    color: "#111111",
+                    fontWeight: 900,
+                    fontSize: "17px",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase"
+                  }}
+                >
+                  FD BRANDSTUDIO
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    color: C.orangeDim,
+                    fontSize: "10px",
+                    letterSpacing: "0.15em",
+                    marginTop: "4px",
+                    textTransform: "uppercase",
+                    fontWeight: 800
+                  }}
+                >
+                  Design &bull; Marketing
+                </div>
+                <p className="text-[11.5px] text-gray-600 mt-2 leading-relaxed">
+                  Visual identity, UI/UX, brand systems & data-driven growth.
+                </p>
               </div>
+            </div>
+
+            {/* Bottom union banner */}
+            <div className="w-full mt-4 pt-3 flex items-center justify-between border-t border-amber-300/20 text-[9.5px] font-mono font-bold tracking-widest text-[#D68500] uppercase">
+              <span>ONE COMPLETE ECOSYSTEM</span>
+              <span>CINEMA + BRAND ACCELERATION</span>
             </div>
           </div>
         </Reveal>
@@ -747,13 +892,13 @@ function About() {
           >
             Crafting{" "}
             <span style={{ background: "linear-gradient(135deg, #FF6B00 0%, #FFA500 50%, #FFD700 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Cinematic
+              Cinematic & Brand
             </span>
             <br />Excellence
           </h2>
 
           <p className="premium-body-bold" style={{ fontSize: "var(--text-body)", lineHeight: 1.8, marginBottom: 28 }}>
-            <strong>Film Dappa</strong> is a full-spectrum creative media agency rooted in Tiruchengode, Tamil Nadu. We unite cinematic storytelling with strategic digital marketing — helping brands find their voice, grow their audience, and leave a lasting impression.
+            <strong>Film Dappa</strong> and <strong>FD BrandStudio</strong> stand as two equal, dedicated powerhouses under one creative media company in Tiruchengode, Tamil Nadu. <strong>Film Dappa</strong> powers industry-standard cinematic post-production — from raw footage to big screens. Meanwhile, <strong>FD BrandStudio</strong> leads brand identity designing and digital marketing — transforming ambitious businesses into household names.
           </p>
 
           <GoldRule className="mb-8" />
@@ -776,6 +921,7 @@ function About() {
             </div>
             {[
               "End-to-end creative production under one roof",
+              "Video shooting space with background and lighting setups",
               "Cinematic quality in every frame and pixel",
               "Data-driven marketing with an artistic soul",
               "Dedicated team with deep local & global vision",
@@ -796,148 +942,76 @@ function About() {
 
 
 
-function ServiceRow({ icon: Icon, name, color }: { icon: React.ElementType; name: string; color: string }) {
-  return (
-    <div
-      className="flex items-center gap-3 p-2.5 transition-all duration-300 group rounded-xl border border-transparent cursor-default"
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = "rgba(255, 107, 0, 0.2)";
-        e.currentTarget.style.background = "rgba(255, 215, 0, 0.04)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "transparent";
-        e.currentTarget.style.background = "transparent";
-      }}
-    >
-      <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg" style={{ background: "rgba(255, 170, 0, 0.08)", border: "1px solid rgba(255, 170, 0, 0.25)" }}>
-        <Icon size={12} style={{ color: C.orangeDim }} />
-      </div>
-      <span className="premium-body-bold group-hover:translate-x-1 transition-transform" style={{ fontSize: 13, opacity: 0.95 }}>{name}</span>
-    </div>
-  );
-}
-
-function DesigningServiceAccordionItem({
+function ServiceRow({
   icon: Icon,
   name,
-  types,
-  color,
-  isOpen,
-  onToggle
+  desc,
+  onClick,
+  hasDetails,
 }: {
   icon: React.ElementType;
   name: string;
-  types: string[];
-  color: string;
-  isOpen: boolean;
-  onToggle: () => void;
+  desc?: string;
+  onClick?: () => void;
+  hasDetails?: boolean;
 }) {
-  const activeColor = C.orangeDim;
   return (
     <div
-      className="flex flex-col transition-all duration-300 rounded-xl overflow-hidden mb-1"
-      style={{
-        border: `1px solid ${isOpen ? "rgba(255, 107, 0, 0.3)" : "rgba(255, 215, 0, 0.15)"}`,
-        background: isOpen ? "rgba(255, 215, 0, 0.04)" : "transparent",
-        boxShadow: isOpen ? "0 4px 15px rgba(255, 107, 0, 0.05)" : "none",
-      }}
+      onClick={onClick}
+      className={`flex items-start gap-2.5 p-2 sm:p-2.5 rounded-xl border transition-all duration-200 group ${
+        onClick
+          ? "cursor-pointer hover:border-amber-400 hover:bg-amber-500/[0.06] hover:shadow-sm"
+          : "border-transparent hover:border-amber-400/20 hover:bg-amber-500/[0.03]"
+      }`}
     >
-      {/* Accordion header button */}
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between p-2.5 text-left transition-all duration-300 group cursor-pointer focus:outline-none rounded-xl"
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className="flex-shrink-0 w-7 h-7 flex items-center justify-center transition-all duration-300 rounded-lg"
-            style={{
-              background: isOpen ? "rgba(255, 107, 0, 0.15)" : "rgba(255, 215, 0, 0.08)",
-              border: `1px solid ${isOpen ? "rgba(255, 107, 0, 0.35)" : "rgba(255, 215, 0, 0.2)"}`,
-              boxShadow: isOpen ? "0 0 8px rgba(255, 107, 0, 0.15)" : "none"
-            }}
-          >
-            <Icon size={12} style={{ color: isOpen ? activeColor : C.orangeDim, transition: "color 0.3s" }} />
-          </div>
-          <span
-            className="transition-colors duration-300 premium-body-bold"
-            style={{
-              fontSize: 13,
-              color: isOpen ? activeColor : C.fore,
-              opacity: isOpen ? 1 : 0.95,
-              textShadow: isOpen ? "0 0 8px rgba(255, 107, 0, 0.2)" : "none"
-            }}
-          >
-            {name}
-          </span>
-        </div>
-
-        <ChevronRight
-          size={13}
-          className="transition-transform duration-300"
-          style={{
-            color: isOpen ? activeColor : C.muted,
-            transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
-          }}
-        />
-      </button>
-
-      {/* Expandable sub-list */}
       <div
-        className="overflow-hidden transition-all duration-300 ease-in-out"
+        className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg mt-0.5 transition-transform group-hover:scale-105"
         style={{
-          maxHeight: isOpen ? `${types.length * 36 + 8}px` : "0px",
-          opacity: isOpen ? 1 : 0,
+          background: "rgba(255, 170, 0, 0.08)",
+          border: "1px solid rgba(255, 170, 0, 0.25)",
         }}
       >
-        <div className="pl-12 pr-4 pb-3 flex flex-col gap-1">
-          {types.map((type) => (
-            <div
-              key={type}
-              className="flex items-center gap-2 py-1.5 transition-all duration-200 hover:pl-1.5"
-            >
-              <div
-                className="w-1.5 h-1.5 rounded-full transition-all duration-300"
-                style={{
-                  background: isOpen ? activeColor : "rgba(255, 170, 0, 0.4)",
-                  boxShadow: isOpen ? "0 0 4px rgba(255, 107, 0, 0.8)" : "none"
-                }}
-              />
-              <span
-                className="transition-colors duration-200 cursor-default premium-body-bold"
-                style={{
-                  fontSize: 12.5,
-                  opacity: 0.85
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = C.fore;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = C.muted;
-                }}
-              >
-                {type}
-              </span>
-            </div>
-          ))}
+        <Icon size={12} style={{ color: C.orangeDim }} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-1">
+          <span className="premium-body-bold text-[12.5px] sm:text-[13px] text-gray-900 group-hover:text-black font-semibold truncate transition-colors">
+            {name}
+          </span>
+          {hasDetails && (
+            <span className="text-[8px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-400/15 text-[#D68500] uppercase tracking-wider flex-shrink-0">
+              Types
+            </span>
+          )}
         </div>
+        {desc && (
+          <p className="text-[10.5px] sm:text-[11px] text-gray-500 leading-tight truncate mt-0.5 font-normal">
+            {desc}
+          </p>
+        )}
       </div>
     </div>
   );
 }
 
 function Services() {
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
-  const cols = [
-    { num: "01", title: "Post Production", icon: Film, color: C.orangeDim, items: postProduction, desc: "Cinematic editing, grading, and motion that brings stories to life." },
-    { num: "02", title: "Designing Services", icon: Palette, color: C.orangeDim, items: designingServices, desc: "Visually stunning identities and creative assets that demand attention.", featured: true },
-    { num: "03", title: "Digital Marketing", icon: TrendingUp, color: C.orangeDim, items: digitalMarketing, desc: "Grow your brand's digital footprint across every platform." },
-  ];
+  const [activeModalItem, setActiveModalItem] = useState<{
+    name: string;
+    desc: string;
+    types: string[];
+    icon: React.ElementType;
+  } | null>(null);
+
+  // Split Film Dappa post-production into 2 balanced halves of 6 each
+  const postProdVisuals = postProduction.slice(0, 6);
+  const postProdAudio = postProduction.slice(6, 12);
+
   return (
-    <section className="relative min-h-screen py-16 md:py-28 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFDF8 0%, #FFFFFF 100%)" }}>
+    <section className="relative pt-12 pb-10 md:pt-16 md:pb-12 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFDF8 0%, #FFFFFF 100%)" }}>
       <Spotlight top="10%" left="50%" color={C.gold} />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10">
-        <Reveal className="text-center mb-16" delay={0}>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
+        <Reveal className="text-center mb-10" delay={0}>
           <Label>Our Services · Page 02</Label>
           <h2
             className="font-black leading-tight mt-4 premium-heading-bold"
@@ -948,69 +1022,446 @@ function Services() {
               Create
             </span>
           </h2>
+          <p className="premium-body-bold max-w-2xl mx-auto mt-3" style={{ fontSize: 14, color: C.muted }}>
+            Two powerhouse creative wings — perfectly balanced for cinematic storytelling and high-growth brand scale.
+          </p>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-6 items-stretch">
-          {cols.map(({ num, title, icon: Icon, color, items, desc, featured }, colIndex) => (
-            <Reveal key={title} delay={colIndex + 1}>
+        {/* 2-Column Perfectly Aligned Symmetrical Brand Showcase */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+          
+          {/* ─── Pillar 1: FILM DAPPA (Post Production Wing) ─── */}
+          <Reveal delay={1} className="h-full flex flex-col">
             <div
-              className="relative flex flex-col rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-default h-full"
+              className="relative flex flex-col rounded-3xl transition-all duration-300 hover:shadow-2xl cursor-default h-full overflow-hidden"
               style={{
-                border: featured ? "1px solid rgba(255, 107, 0, 0.3)" : "1px solid rgba(255, 215, 0, 0.2)",
-                background: featured ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.75)",
+                border: "1.5px solid rgba(255, 107, 0, 0.35)",
+                background: "rgba(255, 255, 255, 0.94)",
                 backdropFilter: "blur(20px)",
-                boxShadow: featured
-                  ? "0 20px 40px rgba(255, 107, 0, 0.08)"
-                  : "0 10px 30px rgba(0, 0, 0, 0.02)",
+                boxShadow: "0 20px 45px rgba(255, 107, 0, 0.08)",
               }}
             >
-              {featured && (
-                <div
-                  className="absolute top-0 left-6 right-6 h-1 rounded-full"
-                  style={{ background: "linear-gradient(90deg, #FFD700, #FF6B00)" }}
-                />
-              )}
+              {/* Top accent gradient bar */}
+              <div
+                className="absolute top-0 left-8 right-8 h-1 rounded-full"
+                style={{ background: "linear-gradient(90deg, #FF6B00, #FFA500, #FFD700)" }}
+              />
 
-              <div className="p-6 pb-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 flex items-center justify-center rounded-xl" style={{ background: "rgba(255, 107, 0, 0.08)", border: "1px solid rgba(255, 107, 0, 0.25)" }}>
-                    <Icon size={17} style={{ color: C.orangeDim }} />
+              {/* Card Header */}
+              <div className="p-6 sm:p-7 pb-4">
+                <div className="flex items-center justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl p-2 bg-amber-500/10 border border-amber-500/25 flex-shrink-0">
+                      <img src="/logo.png" alt="Film Dappa Logo" className="w-full h-full object-contain" />
+                    </div>
+                    <div>
+                      <div
+                        className="font-black text-2xl sm:text-3xl text-black tracking-tight"
+                        style={{ fontFamily: "var(--font-heading)" }}
+                      >
+                        FILM DAPPA
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: 10,
+                          color: C.orangeDim,
+                          letterSpacing: "0.22em",
+                          fontWeight: 800,
+                          textTransform: "uppercase",
+                          marginTop: 2
+                        }}
+                      >
+                        Post Production Wing
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 800 }}>{num}</div>
-                    <div className="premium-heading-bold" style={{ fontSize: "var(--text-card)", color: C.fore }}>{title}</div>
-                  </div>
+                  <span
+                    className="px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase hidden sm:inline-block flex-shrink-0"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      background: "rgba(255, 107, 0, 0.1)",
+                      color: C.orangeDim,
+                      border: "1px solid rgba(255, 107, 0, 0.3)"
+                    }}
+                  >
+                    12 Services
+                  </span>
                 </div>
-                <p className="premium-body-bold" style={{ fontSize: "var(--text-small)", lineHeight: 1.6, marginBottom: 16 }}>{desc}</p>
-                <div style={{ height: 1, background: "linear-gradient(90deg, rgba(255, 107, 0, 0.2), transparent)", marginBottom: 16 }} />
+
+                <p className="premium-body-bold text-[13px] leading-relaxed text-gray-600 mb-4">
+                  Complete cinematic post-production pipeline — bringing stories from raw camera rushes to theatrical screenings and OTT release.
+                </p>
+                <div style={{ height: 1, background: "linear-gradient(90deg, rgba(255, 107, 0, 0.25), transparent)", marginBottom: 16 }} />
               </div>
 
-              <div className="flex-1 px-3 pb-6 space-y-0.5">
-                {items.map((s) => {
-                  const item = s as { icon: React.ElementType; name: string; types?: string[] };
-                  if (item.types) {
-                    return (
-                      <DesigningServiceAccordionItem
+              {/* Symmetrical Body: 2 Subsections of 6 items each */}
+              <div className="flex-1 px-4 sm:px-6 pb-6 space-y-5">
+                {/* Subsection A: Editing & Visual Pipeline */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2 px-1">
+                    <Scissors size={13} style={{ color: C.orangeDim }} />
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 800, textTransform: "uppercase" }}>
+                      Editing & Visual Pipeline
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    {postProdVisuals.map((s) => (
+                      <ServiceRow key={s.name} icon={s.icon} name={s.name} desc={s.desc} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subsection B: Audio & Sound Post */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2 px-1">
+                    <Music size={13} style={{ color: C.orangeDim }} />
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 800, textTransform: "uppercase" }}>
+                      Audio & Sound Design
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    {postProdAudio.map((s) => (
+                      <ServiceRow key={s.name} icon={s.icon} name={s.name} desc={s.desc} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Feature Footer */}
+              <div
+                className="mt-auto px-6 py-3.5 flex items-center justify-between border-t"
+                style={{ borderColor: "rgba(255, 107, 0, 0.15)", background: "rgba(255, 170, 0, 0.03)" }}
+              >
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.15em", fontWeight: 700 }}>
+                  CINEMA GRADE 4K / DCI PIPELINE
+                </span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, letterSpacing: "0.1em" }}>
+                  DOLBY AUDIO &bull; MASTERED
+                </span>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* ─── Pillar 2: FD BRANDSTUDIO (Designing & Marketing Wing) ─── */}
+          <Reveal delay={2} className="h-full flex flex-col">
+            <div
+              className="relative flex flex-col rounded-3xl transition-all duration-300 hover:shadow-2xl cursor-default h-full overflow-hidden"
+              style={{
+                border: "1.5px solid rgba(255, 196, 0, 0.45)",
+                background: "rgba(255, 255, 255, 0.94)",
+                backdropFilter: "blur(20px)",
+                boxShadow: "0 20px 45px rgba(255, 196, 0, 0.1)",
+              }}
+            >
+              {/* Top accent gradient bar */}
+              <div
+                className="absolute top-0 left-8 right-8 h-1 rounded-full"
+                style={{ background: "linear-gradient(90deg, #FFD700, #FFA500, #FF6B00)" }}
+              />
+
+              {/* Card Header */}
+              <div className="p-6 sm:p-7 pb-4">
+                <div className="flex items-center justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl p-1.5 bg-amber-500/15 border border-amber-500/35 flex-shrink-0">
+                      <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio Logo" className="w-full h-full object-contain" />
+                    </div>
+                    <div>
+                      <div
+                        className="font-black text-2xl sm:text-3xl text-black tracking-tight"
+                        style={{ fontFamily: "var(--font-heading)" }}
+                      >
+                        FD BRANDSTUDIO
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: 10,
+                          color: C.orangeDim,
+                          letterSpacing: "0.22em",
+                          fontWeight: 800,
+                          textTransform: "uppercase",
+                          marginTop: 2
+                        }}
+                      >
+                        Designing & Marketing Wing
+                      </div>
+                    </div>
+                  </div>
+                  <span
+                    className="px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase hidden sm:inline-block flex-shrink-0"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      background: "rgba(255, 196, 0, 0.18)",
+                      color: C.orangeDim,
+                      border: "1px solid rgba(255, 196, 0, 0.4)"
+                    }}
+                  >
+                    12 Services
+                  </span>
+                </div>
+
+                <p className="premium-body-bold text-[13px] leading-relaxed text-gray-600 mb-4">
+                  Strategic brand identity design, interactive digital experiences, and high-conversion social marketing that commands attention.
+                </p>
+                <div style={{ height: 1, background: "linear-gradient(90deg, rgba(255, 196, 0, 0.25), transparent)", marginBottom: 16 }} />
+              </div>
+
+              {/* Symmetrical Body: 2 Subsections of 6 items each */}
+              <div className="flex-1 px-4 sm:px-6 pb-6 space-y-5">
+                {/* Subsection A: Designing Services */}
+                <div>
+                  <div className="flex items-center justify-between mb-2 px-1">
+                    <div className="flex items-center gap-2">
+                      <Palette size={13} style={{ color: C.orangeDim }} />
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 800, textTransform: "uppercase" }}>
+                        Designing Services
+                      </span>
+                    </div>
+                    <span className="text-[8.5px] font-mono text-amber-600/80 font-bold uppercase tracking-wider">
+                      Tap for Formats
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    {designingServices.map((item) => (
+                      <ServiceRow
                         key={item.name}
                         icon={item.icon}
                         name={item.name}
-                        types={item.types}
-                        color={color}
-                        isOpen={openCategory === item.name}
-                        onToggle={() => setOpenCategory(openCategory === item.name ? null : item.name)}
+                        desc={item.desc}
+                        hasDetails={true}
+                        onClick={() => setActiveModalItem(item)}
                       />
-                    );
-                  }
-                  return (
-                    <ServiceRow key={item.name} icon={item.icon} name={item.name} color={color} />
-                  );
-                })}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subsection B: Digital Marketing */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2 px-1">
+                    <TrendingUp size={13} style={{ color: C.orangeDim }} />
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 800, textTransform: "uppercase" }}>
+                      Digital Marketing
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    {digitalMarketing.map((item) => (
+                      <ServiceRow key={item.name} icon={item.icon} name={item.name} desc={item.desc} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Feature Footer */}
+              <div
+                className="mt-auto px-6 py-3.5 flex items-center justify-between border-t"
+                style={{ borderColor: "rgba(255, 196, 0, 0.2)", background: "rgba(255, 196, 0, 0.03)" }}
+              >
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: C.orangeDim, letterSpacing: "0.15em", fontWeight: 700 }}>
+                  VECTOR PRECISION &bull; HIGH CONVERSION
+                </span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, letterSpacing: "0.1em" }}>
+                  DATA DRIVEN &bull; SOCIAL SCALE
+                </span>
               </div>
             </div>
-            </Reveal>
-          ))}
+          </Reveal>
+
         </div>
+
+        {/* ─── Studio Space & Video Background Setup Feature Card ─── */}
+        <Reveal delay={3} className="mt-8">
+          <div
+            className="relative rounded-3xl p-6 sm:p-8 overflow-hidden transition-all duration-300 hover:shadow-2xl"
+            style={{
+              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 252, 243, 0.95) 100%)",
+              border: "1.5px solid rgba(255, 180, 0, 0.38)",
+              boxShadow: "0 20px 45px rgba(255, 170, 0, 0.08)",
+            }}
+          >
+            {/* Top accent gradient line */}
+            <div
+              className="absolute top-0 left-8 right-8 h-1 rounded-full"
+              style={{ background: "linear-gradient(90deg, #FF6B00, #FFA500, #FFD700)" }}
+            />
+
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                  <span
+                    className="px-3 py-1 rounded-full text-[9.5px] font-mono font-bold tracking-widest uppercase"
+                    style={{
+                      background: "rgba(255, 107, 0, 0.1)",
+                      color: C.orangeDim,
+                      border: "1px solid rgba(255, 107, 0, 0.25)",
+                    }}
+                  >
+                    Studio Space & Background Setup
+                  </span>
+                  <span className="flex items-center gap-1 text-[10.5px] font-mono font-semibold text-gray-500">
+                    <MapPin size={11} className="text-amber-500" /> In-House Studio &bull; Tiruchengode
+                  </span>
+                </div>
+
+                <h3
+                  className="text-2xl sm:text-3xl font-black text-black tracking-tight"
+                  style={{ fontFamily: "var(--font-heading)" }}
+                >
+                  We Provide Space to Take Videos & Content Setups
+                </h3>
+
+                <p className="text-[14px] sm:text-[15px] text-gray-700 font-medium mt-2 leading-relaxed">
+                  We provide dedicated studio space to shoot your videos. We also provide content video background setups with professional lightings, so you can walk in and record easily.
+                </p>
+
+                {/* Simple Sentences in Clear English */}
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                    <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Video size={13} />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-bold text-gray-900">
+                        Space to Take Video
+                      </div>
+                      <div className="text-[12px] text-gray-600 leading-snug mt-0.5">
+                        We provide quiet, comfortable studio space to shoot your videos without any disturbance.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                    <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Lightbulb size={13} />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-bold text-gray-900">
+                        Professional Lightings
+                      </div>
+                      <div className="text-[12px] text-gray-600 leading-snug mt-0.5">
+                        We provide professional lightings so your face and subject look bright, sharp, and natural.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                    <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Layers size={13} />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-bold text-gray-900">
+                        Content Video Background Setup
+                      </div>
+                      <div className="text-[12px] text-gray-600 leading-snug mt-0.5">
+                        We provide attractive video background setups designed specially for Instagram reels, YouTube videos, and business content.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-white/80 border border-amber-500/15">
+                    <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Sparkles size={13} />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-bold text-gray-900">
+                        Ready to Shoot
+                      </div>
+                      <div className="text-[12px] text-gray-600 leading-snug mt-0.5">
+                        Everything is set up in advance. You can simply come in, record your video, and leave with high-quality footage.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side: Quick Action Box */}
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 justify-center items-stretch flex-shrink-0 lg:w-[260px] p-5 rounded-2xl bg-amber-500/[0.08] border border-amber-500/25">
+                <div className="text-center lg:text-left">
+                  <div className="text-[10px] font-mono font-bold text-amber-700 uppercase tracking-wider">
+                    Need Video Space?
+                  </div>
+                  <div className="text-[13px] font-bold text-gray-900 mt-0.5">
+                    Book our studio space and lighting setup for your next video shoot.
+                  </div>
+                </div>
+                <a
+                  href="https://wa.me/918489854125?text=Hi%20Film%20Dappa,%20I%20want%20to%20book%20the%20video%20shooting%20space%20and%20content%20background%20setup%20with%20lightings."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-3 rounded-xl font-bold text-xs tracking-wider uppercase text-black bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MessageCircle size={15} /> Book Studio Space
+                </a>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
+
+      {/* Modal Popup for Detailed Designing Formats & Options */}
+      {activeModalItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div
+            className="w-full max-w-md p-6 sm:p-7 rounded-3xl border shadow-2xl relative bg-white overflow-hidden"
+            style={{
+              borderColor: "rgba(255, 196, 0, 0.4)",
+              boxShadow: "0 25px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 196, 0, 0.15)"
+            }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-amber-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
+                  <activeModalItem.icon size={18} style={{ color: C.orangeDim }} />
+                </div>
+                <div>
+                  <h3 className="font-heading font-black text-lg text-black">
+                    {activeModalItem.name}
+                  </h3>
+                  <span className="font-mono text-[9px] text-[#D68500] font-extrabold uppercase tracking-widest">
+                    FD BrandStudio Design Formats
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveModalItem(null)}
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+              >
+                <X size={15} />
+              </button>
+            </div>
+
+            {/* Types Tags */}
+            <div className="mb-6">
+              <p className="text-[12px] text-gray-500 font-medium mb-3">
+                Available specifications, formats, and design styles available under this service:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {activeModalItem.types.map((type) => (
+                  <span
+                    key={type}
+                    className="px-3 py-1.5 rounded-xl text-[11.5px] font-semibold bg-amber-500/[0.08] text-gray-800 border border-amber-500/25 flex items-center gap-1.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                    {type}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setActiveModalItem(null)}
+                className="w-full py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black shadow-md cursor-pointer transition-all hover:scale-[1.02]"
+              >
+                Got It
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <PageNum n="02" label="SERVICES" />
     </section>
@@ -1018,208 +1469,844 @@ function Services() {
 }
 
 function Works() {
-  const [activeCategory, setActiveCategory] = useState<string>("Short Film");
+  const [playingIdx, setPlayingIdx] = useState<number | null>(null);
+  const [bigScreenIdx, setBigScreenIdx] = useState<number | null>(null);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isPlayingBig, setIsPlayingBig] = useState<boolean>(true);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const bigScreenVideoRef = useRef<HTMLVideoElement | null>(null);
+  const bigScreenContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const portfolioItems = [
-    // Short Film
-    {
-      title: "100 Rubaai",
-      category: "Short Film",
-      status: "Released",
-      videoUrl: "https://youtu.be/WLdbzGxszo4?si=SV0PPfr0dr-Cuw5N",
-      img: "/100_rubaai.png",
-      cls: "col-span-1 row-span-2"
-    },
-    {
-      title: "Adayaalam",
-      category: "Short Film",
-      status: "Released",
-      videoUrl: "https://youtu.be/WoZlFqWxJ_U?si=_ZVSpOXSw6lbglID",
-      img: "/adayaalam.png",
-      cls: "col-span-1 row-span-1"
-    },
-    {
-      title: "Immature",
-      category: "Short Film",
-      status: "Released",
-      videoUrl: "https://youtu.be/oaI47J6ML0I?si=Amlr0cwYjt_vERN3",
-      img: "/immature.jpg",
-      cls: "col-span-2 row-span-1"
-    },
-    {
-      title: "Uraiyadal",
-      category: "Short Film",
-      status: "Released",
-      videoUrl: "https://youtu.be/ZQH6uXYhQr4?si=8HLn8wjeBNCZpgnU",
-      img: "/uraiyadal.jpg",
-      cls: "col-span-1 row-span-1"
-    },
-    {
-      title: "Hidden Life",
-      category: "Short Film",
-      status: "Released",
-      videoUrl: "https://youtu.be/GwDt0JgqLjk?si=BTT_UxUPQnuGd9aH",
-      img: "/hidden_life.jpg",
-      cls: "col-span-1 row-span-1"
+  // Scroll left/right
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 340;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
     }
-  ];
+  };
 
-  const categories = ["Short Film"];
-  const isAll = false;
-  const filtered = portfolioItems;
+  // Open video in Big Screen camera container
+  const openBigScreen = useCallback((idx: number) => {
+    const currentVideo = videoRefs.current[idx];
+    const currentTime = currentVideo ? currentVideo.currentTime : 0;
+    setBigScreenIdx(idx);
+    setIsPlayingBig(true);
+    if (currentVideo) currentVideo.pause();
+
+    setTimeout(() => {
+      if (bigScreenVideoRef.current) {
+        bigScreenVideoRef.current.currentTime = currentTime;
+        bigScreenVideoRef.current.muted = isMuted;
+        bigScreenVideoRef.current.play().catch(() => {});
+      }
+    }, 100);
+  }, [isMuted]);
+
+  // One-click: play there itself (single click toggles play/pause inline)
+  const handleInlineClick = (idx: number) => {
+    const video = videoRefs.current[idx];
+    if (!video) return;
+
+    if (playingIdx === idx) {
+      if (video.paused) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    } else {
+      // Pause previously playing video
+      if (playingIdx !== null && videoRefs.current[playingIdx]) {
+        videoRefs.current[playingIdx]!.pause();
+      }
+      setPlayingIdx(idx);
+      video.muted = isMuted;
+      video.play().catch(() => {
+        video.muted = true;
+        setIsMuted(true);
+        video.play().catch(() => {});
+      });
+    }
+  };
+
+  // Mobile long-press timer & state
+  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isLongPressTriggeredRef = useRef<boolean>(false);
+
+  const handleTouchStart = (idx: number) => {
+    isLongPressTriggeredRef.current = false;
+    if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
+    longPressTimerRef.current = setTimeout(() => {
+      isLongPressTriggeredRef.current = true;
+      openBigScreen(idx);
+      if (typeof navigator !== "undefined" && navigator.vibrate) {
+        navigator.vibrate(60);
+      }
+    }, 450); // 450ms long press threshold
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const handleTouchMove = () => {
+    // If scrolling on mobile, cancel long press
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  // Toggle play/pause on big screen
+  const handleBigScreenPlayToggle = () => {
+    if (bigScreenVideoRef.current) {
+      if (bigScreenVideoRef.current.paused) {
+        bigScreenVideoRef.current.play();
+        setIsPlayingBig(true);
+      } else {
+        bigScreenVideoRef.current.pause();
+        setIsPlayingBig(false);
+      }
+    }
+  };
+
+  // Toggle mute on big screen
+  const handleBigScreenMuteToggle = () => {
+    if (bigScreenVideoRef.current) {
+      const newMuted = !bigScreenVideoRef.current.muted;
+      bigScreenVideoRef.current.muted = newMuted;
+      setIsMuted(newMuted);
+    }
+  };
+
+  // Fullscreen trigger
+  const handleFullscreenToggle = () => {
+    if (!bigScreenContainerRef.current) return;
+    if (!document.fullscreenElement) {
+      bigScreenContainerRef.current.requestFullscreen().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen().catch(() => {});
+      setIsFullscreen(false);
+    }
+  };
+
+  // Lock background scrolling whenever big screen modal is open
+  useEffect(() => {
+    if (bigScreenIdx !== null) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [bigScreenIdx]);
+
+  // Close modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && bigScreenIdx !== null) {
+        if (bigScreenVideoRef.current) bigScreenVideoRef.current.pause();
+        setBigScreenIdx(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [bigScreenIdx]);
+
+  const activeBigVideo = bigScreenIdx !== null ? videoWorks[bigScreenIdx] : null;
 
   return (
-    <section className="relative min-h-screen py-16 px-5 md:py-28 md:px-10 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
+    <section className="relative pt-8 pb-10 px-5 md:pt-10 md:pb-12 md:px-10 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
       <Spotlight top="50%" left="50%" color={C.orange} />
 
+      <style>{`
+        @keyframes projectorWideBeam {
+          0%, 100% { opacity: 0.85; transform: scaleY(1); }
+          50% { opacity: 1; transform: scaleY(1.03); }
+        }
+        @keyframes lensGlare {
+          0%, 100% { opacity: 0.7; transform: rotate(0deg); }
+          50% { opacity: 1; transform: rotate(15deg); }
+        }
+        @keyframes tallyRed {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.2; }
+        }
+        .film-scroll-container::-webkit-scrollbar {
+          height: 6px;
+        }
+        .film-scroll-container::-webkit-scrollbar-track {
+          background: rgba(255, 170, 0, 0.08);
+          border-radius: 999px;
+        }
+        .film-scroll-container::-webkit-scrollbar-thumb {
+          background: linear-gradient(90deg, #FF9F00, #FFC400);
+          border-radius: 999px;
+        }
+      `}</style>
+
       <div className="relative z-10 max-w-7xl mx-auto">
-        <Reveal className="mb-12" delay={0}>
-          <Label>Our Works · Page 03</Label>
-          <h2
-            className="font-black leading-tight mt-4 premium-heading-bold"
-            style={{ fontSize: "var(--text-section)", color: C.fore }}
-          >
-            Our{" "}
-            <span style={{ background: "linear-gradient(135deg, #FF6B00, #FFA500, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Shortfilm
-            </span>
-          </h2>
-          <p className="premium-body-bold" style={{ fontSize: 14, color: C.muted, marginTop: 8 }}>
-            A curated showcase of our cinematic short films.
-          </p>
+        <Reveal className="mb-8" delay={0}>
+          <Label>Our Works &bull; Page 03</Label>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mt-4">
+            <div>
+              <h2
+                className="font-black leading-tight premium-heading-bold"
+                style={{ fontSize: "var(--text-section)", color: C.fore }}
+              >
+                Our{" "}
+                <span style={{ background: "linear-gradient(135deg, #FF6B00, #FFA500, #FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  Works
+                </span>
+              </h2>
+              <p className="premium-body-bold" style={{ fontSize: 14, color: C.muted, marginTop: 8 }}>
+                One-click to play &bull; Double-click (or long press on mobile) to open in Cinema View.
+              </p>
+            </div>
+
+            {/* Scroll navigation buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => scroll("left")}
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+                style={{
+                  background: "rgba(255, 255, 255, 0.9)",
+                  border: "1.5px solid rgba(255, 159, 0, 0.35)",
+                  color: C.orangeDim,
+                }}
+                title="Scroll Left"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={() => scroll("right")}
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+                style={{
+                  background: "linear-gradient(135deg, #FF9F00, #FFC400)",
+                  border: "1.5px solid #FF9F00",
+                  color: "#111111",
+                }}
+                title="Scroll Right"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
         </Reveal>
 
-        {/* Desktop Gallery */}
-        <div className="hidden md:grid grid-cols-3 gap-5" style={isAll ? { gridTemplateRows: "240px 240px 210px" } : {}}>
-          {filtered.map((item, idx) => (
-            <Reveal key={item.title} delay={idx % 3 + 1}>
+        {/* ─── BIG SCREEN CAMERA PROJECTOR POPUP MODAL (Clean floating popup with no extra nesting) ─── */}
+        {bigScreenIdx !== null && activeBigVideo && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 animate-in fade-in duration-300">
+            {/* Backdrop Overlay */}
             <div
-              onClick={() => window.open(item.videoUrl, "_blank")}
-              className={`${isAll ? item.cls : "col-span-1"} relative group overflow-hidden cursor-pointer rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-xl h-full`}
-              style={{ border: "1px solid rgba(255, 215, 0, 0.25)", height: isAll ? "auto" : "260px" }}
+              className="absolute inset-0 bg-black/85 backdrop-blur-md cursor-pointer transition-opacity"
+              onClick={() => {
+                if (bigScreenVideoRef.current) bigScreenVideoRef.current.pause();
+                setBigScreenIdx(null);
+              }}
+            />
+
+            {/* Main Modal Stage - optimized max-width and max-height for 100% zoom laptops */}
+            <div
+              ref={bigScreenContainerRef}
+              className="relative z-10 w-full max-w-5xl max-h-[88vh] overflow-hidden rounded-3xl p-4 sm:p-6 border shadow-2xl flex flex-col"
+              style={{
+                background: "radial-gradient(ellipse at 80% 50%, #1A1713 0%, #0A0A0B 100%)",
+                borderColor: "rgba(255, 196, 0, 0.4)",
+                boxShadow: "0 25px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 196, 0, 0.12)"
+              }}
             >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 animate-fade-in"
-                style={{ opacity: 0.8 }}
-              />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 20%, rgba(17, 17, 17, 0.95) 100%)" }} />
-
-              {/* Corner marker */}
-              <div className="absolute top-4 left-4 w-4 h-4" style={{ borderTop: "2px solid #FFA500", borderLeft: "2px solid #FFA500" }} />
-              <div className="absolute top-4 right-4 w-4 h-4" style={{ borderTop: "2px solid #FFA500", borderRight: "2px solid #FFA500" }} />
-
-              {/* Info Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-6 group-hover:translate-y-0 transition-transform duration-300 flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
-                    {item.category}
+              {/* Top Navigation Bar */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10 flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-600 animate-[tallyRed_1.2s_infinite]" />
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#FFD700", letterSpacing: "0.15em", fontWeight: 800 }}>
+                    CINEMA CAMERA PROJECTOR
                   </span>
-                  <span
-                    className="flex items-center gap-1.5 px-2 py-0.5"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 7.5,
-                      color: "#FFFFFF",
-                      background: "rgba(255, 107, 0, 0.85)",
-                      border: "1px solid rgba(255, 215, 0, 0.5)",
-                      borderRadius: "4px",
-                      fontWeight: 700
+                  <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[8.5px] font-mono font-bold bg-white/10 text-gray-300">
+                    {activeBigVideo.brand}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  {/* Next video button */}
+                  <button
+                    onClick={() => {
+                      const nextIdx = (bigScreenIdx + 1) % videoWorks.length;
+                      setBigScreenIdx(nextIdx);
+                      setIsPlayingBig(true);
+                      setTimeout(() => {
+                        if (bigScreenVideoRef.current) {
+                          bigScreenVideoRef.current.currentTime = 0;
+                          bigScreenVideoRef.current.play().catch(() => {});
+                        }
+                      }, 50);
                     }}
+                    className="px-2.5 py-1.5 rounded-xl flex items-center gap-1 text-[9px] sm:text-[9.5px] font-mono font-bold uppercase cursor-pointer transition-all bg-white/10 hover:bg-white/20 text-white border border-white/15"
+                    title="Next Video"
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full animate-pulse"
-                      style={{ backgroundColor: "#FFFFFF" }}
+                    <span>Next</span>
+                    <ChevronRight size={12} />
+                  </button>
+
+                  <button
+                    onClick={handleFullscreenToggle}
+                    className="hidden sm:flex px-2.5 py-1.5 rounded-xl items-center gap-1 text-[9.5px] font-mono font-bold uppercase cursor-pointer transition-all hover:bg-white/15 text-white border border-white/15"
+                    title="Fullscreen"
+                  >
+                    {isFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
+                    <span>Fullscreen</span>
+                  </button>
+
+                  {/* Close Pop-up Button */}
+                  <button
+                    onClick={() => {
+                      if (bigScreenVideoRef.current) bigScreenVideoRef.current.pause();
+                      setBigScreenIdx(null);
+                    }}
+                    className="px-3 py-1.5 rounded-xl flex items-center gap-1 text-[9px] sm:text-[9.5px] font-mono font-bold uppercase cursor-pointer transition-all bg-red-600/40 hover:bg-red-600/60 text-white border border-red-500/60 shadow-md hover:scale-105 active:scale-95"
+                    title="Close Pop-up"
+                  >
+                    <X size={13} className="stroke-[2.5]" />
+                    <span>Close</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Content: Desktop = Side-by-Side (Left video camera frame, Right camera projector) | Mobile = Immersive Camera Frame */}
+              <div className="relative flex-1 flex flex-col md:flex-row items-center justify-center gap-4 lg:gap-8 min-h-0 overflow-y-auto md:overflow-visible py-1">
+                
+                {/* ─── AUTHENTIC CINEMA CAMERA FRAME WITH PROMINENT REC TEXT ─── */}
+                <div className="w-full md:w-[50%] lg:w-[46%] max-w-[340px] sm:max-w-[380px] md:max-w-none flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden bg-[#0D0E12] border-2 sm:border-[2.5px] border-[#383944] shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_20px_rgba(255,196,0,0.15)] flex-shrink-0 z-20">
+                  
+                  {/* Camera Body Top Plate (Authentic Camera Housing) */}
+                  <div className="px-3 py-1.5 bg-[#16171D] border-b border-[#282932] flex items-center justify-between text-[8.5px] sm:text-[9px] font-mono select-none">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-600 animate-[tallyRed_1s_infinite] shadow-[0_0_6px_#ef4444]" />
+                      <span className="font-extrabold tracking-wider text-gray-200">FILM DAPPA CAM-4K</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-bold text-amber-400">
+                      <span>35MM SENSOR</span>
+                      <span className="text-gray-600">•</span>
+                      <span className="text-gray-300">BAT 96%</span>
+                    </div>
+                  </div>
+
+                  {/* Camera Viewfinder Screen */}
+                  <div className="relative w-full aspect-[9/14] sm:aspect-[9/15] md:aspect-[9/14] max-h-[48vh] sm:max-h-[50vh] bg-black flex items-center justify-center overflow-hidden">
+                    <video
+                      ref={bigScreenVideoRef}
+                      src={activeBigVideo.src}
+                      className="w-full h-full object-contain"
+                      playsInline
+                      loop
+                      controls={false}
+                      onClick={handleBigScreenPlayToggle}
                     />
-                    {item.status}
-                  </span>
-                </div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>
-                  {item.title}
-                </div>
-                {/* Watch Now Button */}
-                <div className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+
+                    {/* ─── 4 Viewfinder Corner Reticle Brackets (Camera Frame) ─── */}
+                    <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-amber-400/80 pointer-events-none z-10" />
+                    <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-amber-400/80 pointer-events-none z-10" />
+                    <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-amber-400/80 pointer-events-none z-10" />
+                    <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-amber-400/80 pointer-events-none z-10" />
+
+                    {/* ─── Center Focus Reticle Crosshair ─── */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25 z-10">
+                      <div className="w-8 h-8 rounded-full border border-amber-400 flex items-center justify-center">
+                        <div className="w-4 h-px bg-amber-400" />
+                        <div className="h-4 w-px bg-amber-400 absolute" />
+                      </div>
+                    </div>
+
+                    {/* ─── Viewfinder HUD Overlays ─── */}
+                    <div className="absolute inset-0 pointer-events-none p-3 sm:p-3.5 flex flex-col justify-between z-10">
+                      
+                      {/* Top Bar: PROMINENT RED REC BADGE & CAMERA TELEMETRY */}
+                      <div className="flex items-center justify-between gap-2">
+                        {/* High-Visibility Blinking REC Badge */}
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/95 border border-red-400 shadow-[0_0_14px_rgba(239,68,68,0.85)] backdrop-blur-md">
+                          <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                          <span className="font-mono font-black text-[10px] sm:text-[11px] text-white tracking-widest uppercase">
+                            REC
+                          </span>
+                          <span className="font-mono text-[9px] text-red-100 font-bold ml-0.5">
+                            4K DCI
+                          </span>
+                        </div>
+
+                        {/* Camera Settings Telemetry */}
+                        <div className="flex items-center gap-1.5 sm:gap-2 px-2 py-1 rounded-lg bg-black/65 border border-white/15 backdrop-blur-md text-[8.5px] sm:text-[9px] font-mono font-bold text-amber-300 drop-shadow">
+                          <span>24 FPS</span>
+                          <span className="text-gray-500">•</span>
+                          <span>180°</span>
+                          <span className="text-gray-500">•</span>
+                          <span>ISO 800</span>
+                        </div>
+                      </div>
+
+                      {/* Bottom Bar: Timecode & Audio / Brand Telemetry */}
+                      <div className="flex items-center justify-between gap-2 text-[8px] sm:text-[8.5px] font-mono drop-shadow">
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/65 border border-white/15 backdrop-blur-md">
+                          <span className="text-gray-400">TC</span>
+                          <span className="text-white font-bold tracking-wider">00:02:19:14</span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/65 border border-white/15 backdrop-blur-md">
+                          {/* Animated Audio Meter */}
+                          <div className="flex items-center gap-0.5 mr-1">
+                            <span className="w-1 h-2 rounded-xs bg-green-500 animate-[tallyRed_0.8s_infinite]" />
+                            <span className="w-1 h-3 rounded-xs bg-green-400 animate-[tallyRed_1.1s_infinite]" />
+                            <span className="w-1 h-3.5 rounded-xs bg-amber-400 animate-[tallyRed_0.9s_infinite]" />
+                            <span className="w-1 h-2 rounded-xs bg-red-500 animate-[tallyRed_1.3s_infinite]" />
+                          </div>
+                          <span className="text-amber-400 font-bold uppercase tracking-wider">{activeBigVideo.brand}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Camera Control Deck (Bottom of Camera Body) */}
                   <div
-                    className="flex items-center justify-center gap-1.5 py-1.5 w-full text-[9px] tracking-[0.2em] font-bold uppercase transition-all rounded-lg"
-                    style={{ border: `1px solid ${C.gold}`, color: "#FFFFFF", background: "rgba(255, 215, 0, 0.12)" }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = C.gold;
-                      e.currentTarget.style.color = "#111111";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(255, 215, 0, 0.12)";
-                      e.currentTarget.style.color = "#FFFFFF";
-                    }}
+                    className="p-2 sm:p-2.5 flex items-center justify-between gap-1.5 border-t border-[#282932]"
+                    style={{ background: "#16171D" }}
                   >
-                    <Play size={8} fill="currentColor" />
-                    WATCH NOW
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <button
+                        onClick={handleBigScreenPlayToggle}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-amber-500 hover:bg-amber-400 text-black font-bold cursor-pointer transition-transform hover:scale-105"
+                        title={isPlayingBig ? "Pause" : "Play"}
+                      >
+                        {isPlayingBig ? <Pause size={13} /> : <Play size={13} fill="currentColor" className="ml-0.5" />}
+                      </button>
+
+                      <button
+                        onClick={handleBigScreenMuteToggle}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center bg-white/10 hover:bg-white/20 text-amber-300 cursor-pointer transition-transform hover:scale-105"
+                        title={isMuted ? "Unmute Sound" : "Mute Sound"}
+                      >
+                        {isMuted ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                      </button>
+
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: isMuted ? "#888" : "#22C55E", fontWeight: 700 }}>
+                        {isMuted ? "MUTED" : "SOUND ON"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => {
+                          const prevIdx = (bigScreenIdx - 1 + videoWorks.length) % videoWorks.length;
+                          setBigScreenIdx(prevIdx);
+                          setIsPlayingBig(true);
+                          setTimeout(() => {
+                            if (bigScreenVideoRef.current) {
+                              bigScreenVideoRef.current.currentTime = 0;
+                              bigScreenVideoRef.current.play().catch(() => {});
+                            }
+                          }, 50);
+                        }}
+                        className="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[9.5px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                        title="Previous Video"
+                      >
+                        <ChevronLeft size={11} />
+                        <span>Prev</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          const nextIdx = (bigScreenIdx + 1) % videoWorks.length;
+                          setBigScreenIdx(nextIdx);
+                          setIsPlayingBig(true);
+                          setTimeout(() => {
+                            if (bigScreenVideoRef.current) {
+                              bigScreenVideoRef.current.currentTime = 0;
+                              bigScreenVideoRef.current.play().catch(() => {});
+                            }
+                          }, 50);
+                        }}
+                        className="px-2 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold text-[9.5px] font-mono flex items-center gap-1 cursor-pointer transition-all hover:scale-105"
+                        title="Next Video"
+                      >
+                        <span>Next</span>
+                        <ChevronRight size={11} />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            </Reveal>
-          ))}
-        </div>
 
-        {/* Mobile Gallery */}
-        <div className="flex flex-col gap-5 md:hidden">
-          {filtered.map((item, idx) => (
-            <Reveal key={item.title} delay={idx > 0 ? 1 : 0}>
-            <div
-              onClick={() => window.open(item.videoUrl, "_blank")}
-              className="relative group overflow-hidden h-[240px] cursor-pointer rounded-2xl shadow-md"
-              style={{ border: "1px solid rgba(255, 215, 0, 0.25)" }}
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover"
-                style={{ opacity: 0.8 }}
-              />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 20%, rgba(17, 17, 17, 0.95) 100%)" }} />
-              <div className="absolute top-4 left-4 w-3.5 h-3.5" style={{ borderTop: "1.5px solid #FFA500", borderLeft: "1.5px solid #FFA500" }} />
-              <div className="absolute top-4 right-4 w-3.5 h-3.5" style={{ borderTop: "1.5px solid #FFA500", borderRight: "1.5px solid #FFA500" }} />
-
-              <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
-                    {item.category}
-                  </span>
-                  <span
-                    className="flex items-center gap-1 px-1.5 py-0.5"
+                {/* ─── DESKTOP ONLY: STUDIO CAMERA RIG ON STAND WITH WIDE LIGHT BEAM ─── */}
+                <div className="hidden md:flex md:w-[50%] lg:w-[48%] relative flex-col items-center justify-center min-h-0 py-2 sm:py-4">
+                  
+                  {/* WIDE LIGHT BEAM (Desktop): Originates from lens and stretches across video height */}
+                  <div
+                    className="absolute pointer-events-none hidden md:block"
                     style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 7.5,
-                      color: "#FFFFFF",
-                      background: "rgba(255, 107, 0, 0.85)",
-                      border: "1px solid rgba(255, 215, 0, 0.5)",
-                      borderRadius: "4px",
-                      fontWeight: 700
+                      top: "-15px",
+                      bottom: "-15px",
+                      left: "-35%",
+                      right: "52%",
+                      background: "radial-gradient(ellipse at 100% 41%, rgba(255, 196, 0, 0.5) 0%, rgba(255, 160, 0, 0.22) 42%, rgba(255, 196, 0, 0.05) 75%, transparent 100%)",
+                      clipPath: "polygon(100% 41%, 0% 0%, 0% 100%, 100% 45%)",
+                      filter: "blur(6px)",
+                      animation: "projectorWideBeam 4s ease-in-out infinite",
+                      zIndex: 1
                     }}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: "#FFFFFF" }}
-                    />
-                    {item.status}
-                  </span>
+                  />
+
+                  {/* Sharp golden focal laser streak coming directly from lens (Desktop) */}
+                  <div
+                    className="absolute pointer-events-none hidden md:block"
+                    style={{
+                      top: "41%",
+                      left: "-30%",
+                      right: "52%",
+                      height: "3px",
+                      transform: "translateY(-50%)",
+                      background: "linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.7) 20%, #FFFFFF 65%, #FF8C00 95%, transparent 100%)",
+                      filter: "blur(1px)",
+                      boxShadow: "0 0 20px rgba(255, 215, 0, 0.8)",
+                      zIndex: 2
+                    }}
+                  />
+
+                  {/* MOBILE LIGHT BEAM (Mobile): Projecting upwards towards the video above */}
+                  <div
+                    className="absolute pointer-events-none md:hidden block"
+                    style={{
+                      top: "-40px",
+                      bottom: "55%",
+                      left: "15%",
+                      right: "15%",
+                      background: "radial-gradient(ellipse at 50% 100%, rgba(255, 196, 0, 0.5) 0%, rgba(255, 160, 0, 0.15) 50%, transparent 100%)",
+                      clipPath: "polygon(0% 0%, 100% 0%, 55% 100%, 45% 100%)",
+                      filter: "blur(6px)",
+                      zIndex: 1
+                    }}
+                  />
+
+                  {/* Camera Rig on Stand */}
+                  <div className="relative z-10 flex flex-col items-center text-center">
+                    
+                    {/* Camera Rig SVG */}
+                    <div className="relative mb-2 flex flex-col items-center">
+                      {/* Ambient golden aura behind lens */}
+                      <div
+                        className="absolute top-6 left-2 w-24 h-24 rounded-full pointer-events-none"
+                        style={{
+                          background: "radial-gradient(circle, rgba(255, 196, 0, 0.5) 0%, transparent 70%)",
+                          filter: "blur(20px)",
+                        }}
+                      />
+
+                      {/* Film Dappa Camera on Stand SVG - responsive sizing */}
+                      <svg width="190" height="210" viewBox="0 0 240 260" className="relative z-10 drop-shadow-[0_0_20px_rgba(255,196,0,0.4)] max-w-full">
+                        {/* ── TOP FILM REELS (Dual Golden Film Reels like Film Dappa logo) ── */}
+                        <g>
+                          {/* Left Film Reel */}
+                          <circle cx="86" cy="46" r="28" fill="#18181A" stroke="#FFC400" strokeWidth="2.5" />
+                          <circle cx="86" cy="46" r="20" fill="#0C0C0E" stroke="#FFA500" strokeWidth="1.2" strokeDasharray="3 2" />
+                          <circle cx="86" cy="46" r="8" fill="#FFC400" />
+                          {/* Spokes on Left Reel */}
+                          <line x1="86" y1="26" x2="86" y2="66" stroke="#FFC400" strokeWidth="1.2" opacity="0.6" />
+                          <line x1="66" y1="46" x2="106" y2="46" stroke="#FFC400" strokeWidth="1.2" opacity="0.6" />
+                          <line x1="72" y1="32" x2="100" y2="60" stroke="#FFC400" strokeWidth="1.2" opacity="0.6" />
+                          <line x1="72" y1="60" x2="100" y2="32" stroke="#FFC400" strokeWidth="1.2" opacity="0.6" />
+
+                          {/* Right Film Reel */}
+                          <circle cx="140" cy="42" r="24" fill="#18181A" stroke="#FFB300" strokeWidth="2.5" />
+                          <circle cx="140" cy="42" r="17" fill="#0C0C0E" stroke="#FF9F00" strokeWidth="1.2" strokeDasharray="3 2" />
+                          <circle cx="140" cy="42" r="7" fill="#FFB300" />
+                          {/* Spokes on Right Reel */}
+                          <line x1="140" y1="25" x2="140" y2="59" stroke="#FFB300" strokeWidth="1.2" opacity="0.6" />
+                          <line x1="123" y1="42" x2="157" y2="42" stroke="#FFB300" strokeWidth="1.2" opacity="0.6" />
+
+                          {/* Reel Connecting Bridge / Bracket */}
+                          <path d="M 86 52 L 114 62 L 140 48" stroke="#FFC400" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                        </g>
+
+                        {/* ── CAMERA MAIN CHASSIS (Film Dappa Yellow/Black Studio Body) ── */}
+                        <g>
+                          {/* Matte Box Top Shade */}
+                          <polygon points="36,70 66,74 66,86 36,84" fill="#222226" stroke="#FFB300" strokeWidth="1" />
+
+                          {/* Main Camera Body (Rounded Rectangle) */}
+                          <rect x="64" y="68" width="92" height="66" rx="10" fill="#141416" stroke="#FFC400" strokeWidth="2.5" />
+
+                          {/* Yellow Accent Corner / Side Panel (Matching Film Dappa brand) */}
+                          <rect x="70" y="74" width="38" height="54" rx="6" fill="#1C1C20" stroke="rgba(255, 196, 0, 0.3)" strokeWidth="1" />
+                          {/* Internal branding square icon like Film Dappa logo */}
+                          <rect x="76" y="86" width="24" height="24" rx="4" fill="#FFC400" />
+                          <circle cx="88" cy="98" r="6" fill="#111111" />
+                          <circle cx="88" cy="98" r="2.5" fill="#FFC400" />
+
+                          {/* Viewfinder on Top-Back of Camera */}
+                          <rect x="136" y="60" width="28" height="12" rx="3" fill="#24242A" stroke="#FF9F00" strokeWidth="1.5" />
+                          <ellipse cx="164" cy="66" rx="3" ry="6" fill="#FFD700" />
+
+                          {/* Audio / Control Knobs on Body */}
+                          <circle cx="122" cy="85" r="4" fill="#FFC400" />
+                          <circle cx="138" cy="85" r="4" fill="#FFA500" />
+                          <circle cx="130" cy="100" r="5" fill="#FF8C00" />
+                          <line x1="120" y1="118" x2="146" y2="118" stroke="#FFC400" strokeWidth="2" strokeLinecap="round" />
+
+                          {/* Red Tally Recording Lamp on Camera */}
+                          <circle cx="68" cy="74" r="3" fill="#EF4444" className="animate-[tallyRed_1s_infinite]" />
+                        </g>
+
+                        {/* ── LENS & ANAMORPHIC EXTENSION (Pointing directly towards Left Screen) ── */}
+                        <g>
+                          {/* Lens Base Mount */}
+                          <polygon points="64,80 44,76 44,118 64,114" fill="#1F1F24" stroke="#FFC400" strokeWidth="1.8" />
+                          
+                          {/* Front Lens Cone / Matte Box */}
+                          <polygon points="44,76 20,70 20,124 44,118" fill="#101014" stroke="#FFB300" strokeWidth="2" />
+                          
+                          {/* Glowing Optical Lens Glass Opening */}
+                          <ellipse cx="20" cy="97" rx="7" ry="27" fill="url(#projectorBeamGrad)" stroke="#FFFFFF" strokeWidth="1.8" />
+
+                          {/* Center intense light core in lens */}
+                          <circle cx="20" cy="97" r="9" fill="#FFFFFF" filter="url(#lensCoreGlow)" />
+                        </g>
+
+                        {/* ── CAMERA MOUNT & TRIPOD STAND (Stand holding the camera) ── */}
+                        <g>
+                          {/* Fluid Head / Mount Platform */}
+                          <rect x="94" y="134" width="32" height="10" rx="3" fill="#282830" stroke="#FFC400" strokeWidth="1.5" />
+                          <rect x="103" y="144" width="14" height="16" fill="#18181D" stroke="#FFA500" strokeWidth="1.5" />
+                          {/* Tilt Lock Handle */}
+                          <line x1="126" y1="139" x2="152" y2="148" stroke="#FFB300" strokeWidth="3" strokeLinecap="round" />
+                          <circle cx="152" cy="148" r="3.5" fill="#FFC400" />
+
+                          {/* Stand Central Column / Spreader */}
+                          <rect x="105" y="160" width="10" height="28" fill="#101014" stroke="#FFB300" strokeWidth="1.5" />
+                          {/* Locking Collar on Stand */}
+                          <rect x="101" y="174" width="18" height="6" rx="2" fill="#FFC400" />
+
+                          {/* Tripod Legs Joint (Three Legs Spread) */}
+                          {/* Center Leg */}
+                          <line x1="110" y1="188" x2="110" y2="252" stroke="#FFB300" strokeWidth="4.5" strokeLinecap="round" />
+                          <line x1="110" y1="188" x2="110" y2="252" stroke="#111111" strokeWidth="2" strokeLinecap="round" />
+                          {/* Rubber Foot Center */}
+                          <rect x="106" y="248" width="8" height="6" rx="2" fill="#FFC400" />
+
+                          {/* Left Tripod Leg */}
+                          <line x1="106" y1="188" x2="42" y2="254" stroke="#FFC400" strokeWidth="4.5" strokeLinecap="round" />
+                          <line x1="106" y1="188" x2="42" y2="254" stroke="#111111" strokeWidth="2" strokeLinecap="round" />
+                          {/* Rubber Foot Left */}
+                          <rect x="36" y="250" width="10" height="5" rx="2" fill="#FFC400" transform="rotate(15 41 252)" />
+
+                          {/* Right Tripod Leg */}
+                          <line x1="114" y1="188" x2="178" y2="254" stroke="#FFC400" strokeWidth="4.5" strokeLinecap="round" />
+                          <line x1="114" y1="188" x2="178" y2="254" stroke="#111111" strokeWidth="2" strokeLinecap="round" />
+                          {/* Rubber Foot Right */}
+                          <rect x="174" y="250" width="10" height="5" rx="2" fill="#FFC400" transform="rotate(-15 179 252)" />
+
+                          {/* Tripod Mid-level Spreader Braces */}
+                          <line x1="72" y1="222" x2="110" y2="216" stroke="rgba(255, 196, 0, 0.6)" strokeWidth="2" strokeDasharray="2 1" />
+                          <line x1="110" y1="216" x2="148" y2="222" stroke="rgba(255, 196, 0, 0.6)" strokeWidth="2" strokeDasharray="2 1" />
+                        </g>
+
+                        {/* SVG Filter Definitions */}
+                        <defs>
+                          <radialGradient id="projectorBeamGrad" cx="30%" cy="50%" r="60%">
+                            <stop offset="0%" stopColor="#FFFFFF" />
+                            <stop offset="35%" stopColor="#FFF2B2" />
+                            <stop offset="60%" stopColor="#FFD700" />
+                            <stop offset="85%" stopColor="#FF6B00" />
+                            <stop offset="100%" stopColor="#221204" />
+                          </radialGradient>
+                          <filter id="lensCoreGlow" x="-60%" y="-60%" width="220%" height="220%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+                            <feMerge>
+                              <feMergeNode in="blur" />
+                              <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                          </filter>
+                        </defs>
+                      </svg>
+                    </div>
+
+                    {/* Camera Specs & Reflection Info */}
+                    <div className="space-y-1.5 max-w-xs">
+                      <div style={{ fontFamily: "var(--font-heading)", fontSize: 13, fontWeight: 900, color: "#FFFFFF", letterSpacing: "0.08em" }}>
+                        FILMDAPPA CAMERA RIG
+                      </div>
+                      <p style={{ fontFamily: "var(--font-sans)", fontSize: 10.5, color: "#AAAAAA", lineHeight: 1.4 }}>
+                        Cinema camera mounted on studio tripod stand projecting light onto the playback monitor.
+                      </p>
+
+                      <div className="pt-1 grid grid-cols-2 gap-2 text-left">
+                        <div className="p-1.5 rounded-lg bg-white/5 border border-white/10">
+                          <div className="text-[7.5px] font-mono text-amber-400 uppercase">Camera Model</div>
+                          <div className="text-[9.5px] font-bold text-white">Film Dappa Studio</div>
+                        </div>
+                        <div className="p-1.5 rounded-lg bg-white/5 border border-white/10">
+                          <div className="text-[7.5px] font-mono text-amber-400 uppercase">Stand Rig</div>
+                          <div className="text-[9.5px] font-bold text-white">Tripod Fluid Head</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>
-                  {item.title}
-                </div>
-                <div
-                  className="flex items-center justify-center gap-1.5 py-2 w-full text-[8.5px] tracking-[0.2em] font-bold uppercase mt-1 rounded-lg"
-                  style={{ border: `1px solid ${C.gold}`, color: "#FFFFFF", background: "rgba(255, 215, 0, 0.12)" }}
-                >
-                  <Play size={8} fill="currentColor" />
-                  WATCH NOW
-                </div>
+
               </div>
             </div>
-            </Reveal>
-          ))}
+          </div>
+        )}
+
+        {/* ─── HORIZONTAL LEFT-TO-RIGHT SCROLLING REEL ─── */}
+        <div className="relative">
+          <div
+            ref={scrollContainerRef}
+            className="film-scroll-container flex gap-5 overflow-x-auto pb-6 scroll-smooth snap-x snap-mandatory"
+            style={{ scrollbarWidth: "thin" }}
+          >
+            {videoWorks.map((item, idx) => {
+              const isPlayingInline = playingIdx === idx && bigScreenIdx !== idx;
+              const isSelectedBig = bigScreenIdx === idx;
+
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    if (isLongPressTriggeredRef.current) {
+                      isLongPressTriggeredRef.current = false;
+                      return;
+                    }
+                    handleInlineClick(idx);
+                  }}
+                  onDoubleClick={(e) => {
+                    e.stopPropagation();
+                    openBigScreen(idx);
+                  }}
+                  onTouchStart={() => handleTouchStart(idx)}
+                  onTouchEnd={handleTouchEnd}
+                  onTouchMove={handleTouchMove}
+                  onTouchCancel={handleTouchEnd}
+                  className="flex-shrink-0 w-[240px] sm:w-[280px] snap-start relative group rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl select-none"
+                  style={{
+                    border: isSelectedBig
+                      ? "2px solid #FFD700"
+                      : isPlayingInline
+                      ? "2px solid #FF9F00"
+                      : "1px solid rgba(255, 215, 0, 0.25)",
+                    aspectRatio: "9/16",
+                    background: "#0E0E10",
+                  }}
+                >
+                  {/* Inline Video Player */}
+                  <video
+                    ref={(el) => { videoRefs.current[idx] = el; }}
+                    src={item.src}
+                    className="w-full h-full object-cover"
+                    playsInline
+                    loop
+                    preload="metadata"
+                  />
+
+                  {/* Gradient overlays */}
+                  <div
+                    className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
+                    style={{
+                      background: "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 35%, transparent 60%, rgba(0,0,0,0.92) 100%)",
+                      opacity: isPlayingInline ? 0.35 : 0.85,
+                    }}
+                  />
+
+                  {/* Corner brackets */}
+                  <div className="absolute top-3 left-3 w-3.5 h-3.5" style={{ borderTop: "2px solid #FFA500", borderLeft: "2px solid #FFA500" }} />
+                  <div className="absolute top-3 right-3 w-3.5 h-3.5" style={{ borderTop: "2px solid #FFA500", borderRight: "2px solid #FFA500" }} />
+
+                  {/* Top Bar: Brand tag & Playing status */}
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
+                    <span
+                      className="px-2 py-0.5 rounded-full text-[8px] font-bold tracking-wider uppercase backdrop-blur-md"
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        background: item.brand === "Film Dappa" ? "rgba(255, 107, 0, 0.9)" : "rgba(255, 196, 0, 0.9)",
+                        color: "#111111",
+                        border: "1px solid rgba(255, 255, 255, 0.3)",
+                      }}
+                    >
+                      {item.brand}
+                    </span>
+
+                    {isPlayingInline ? (
+                      <span className="flex items-center gap-1 text-[8px] font-mono text-green-400 font-bold bg-black/75 px-2 py-0.5 rounded-full border border-green-500/30 backdrop-blur-md">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                        PLAYING
+                      </span>
+                    ) : (
+                      <span className="text-[7.5px] font-mono text-white/80 font-bold bg-black/50 px-1.5 py-0.5 rounded-full backdrop-blur-sm border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        1-CLICK PLAY
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Bottom Info bar */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3.5 flex flex-col gap-1 z-10">
+                    <div className="flex items-center justify-between pointer-events-none">
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.gold, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
+                        {item.tag}
+                      </span>
+                      <span
+                        className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[7.5px] font-bold uppercase tracking-wider"
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          color: "#FFFFFF",
+                          background: isPlayingInline ? "rgba(34, 197, 94, 0.85)" : "rgba(255, 255, 255, 0.2)",
+                        }}
+                      >
+                        {isPlayingInline ? "Playing" : "Tap Reel"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2">
+                      <div
+                        style={{
+                          fontFamily: "var(--font-sans)",
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: "#FFFFFF",
+                          textShadow: "0 2px 4px rgba(0,0,0,0.6)",
+                        }}
+                        className="truncate"
+                      >
+                        {item.title}
+                      </div>
+
+                      {/* Quick Open in Cinema Container button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openBigScreen(idx);
+                        }}
+                        className="w-6 h-6 rounded-md bg-black/60 hover:bg-amber-500 hover:text-black border border-amber-400/30 text-amber-300 flex items-center justify-center transition-all hover:scale-110 flex-shrink-0 cursor-pointer pointer-events-auto"
+                        title="Open in Cinema View (or Double-Click / Long-Press)"
+                      >
+                        <Maximize2 size={11} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Left / Right scroll fade indicators */}
+          <div className="absolute top-0 bottom-6 left-0 w-8 pointer-events-none bg-gradient-to-r from-white to-transparent" />
+          <div className="absolute top-0 bottom-6 right-0 w-8 pointer-events-none bg-gradient-to-l from-white to-transparent" />
         </div>
+
       </div>
 
       <PageNum n="03" label="WORKS" />
@@ -1240,7 +2327,7 @@ const TooltipStyle = {
 
 function Results() {
   return (
-    <section className="relative min-h-screen py-16 md:py-28 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
+    <section className="relative pt-8 pb-12 px-5 md:pt-10 md:pb-16 md:px-10 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
       <Spotlight top="30%" left="30%" color={C.gold} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10">
@@ -1398,7 +2485,7 @@ function Process() {
   const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section className="relative min-h-screen flex items-center py-16 md:py-28 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
+    <section className="relative min-h-screen flex items-center py-12 md:py-16 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
       <Spotlight top="50%" left="50%" color={C.orange} />
 
       {/* Editing timeline tracks bg */}
@@ -1822,7 +2909,7 @@ function Team() {
   const [imgHovered, setImgHovered] = useState(false);
 
   return (
-    <section className="relative min-h-screen py-16 md:py-28 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
+    <section className="relative pt-8 pb-12 px-5 md:pt-10 md:pb-16 md:px-10 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
       <Spotlight top="15%" left="80%" color={C.orange} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10">
@@ -2054,7 +3141,7 @@ function Contact() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center py-16 md:py-28 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
+    <section className="relative min-h-screen flex items-center py-12 md:py-16 overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%)" }}>
       <div className="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&h=900&fit=crop&auto=format"
@@ -2352,7 +3439,7 @@ function Contact() {
         </div>
       )}
 
-      <PageNum n="07" label="CONTACT" />
+      <PageNum n="06" label="CONTACT" />
     </section>
   );
 }
@@ -2426,7 +3513,7 @@ function Finale() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex flex-col items-center justify-between pt-24 pb-20 px-5 md:pt-32 md:pb-24 md:px-10 overflow-hidden bg-white"
+      className="relative min-h-screen flex flex-col items-center justify-between pt-14 pb-14 px-5 md:pt-18 md:pb-16 md:px-10 overflow-hidden bg-white"
       style={{ background: "#FFFFFF" }}
     >
       <style>{`
@@ -2647,9 +3734,9 @@ function Finale() {
                 PRE PRODUCTION
               </h3>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
-                (iPhone 16, Gimbal,<br />
-                LC500R Light,<br />
-                Live Audio Mic)
+                (Studio Space & Backdrops,<br />
+                Professional Lightings, iPhone 16,<br />
+                Gimbal & Audio Mic)
               </p>
             </div>
           </Reveal>
@@ -2777,6 +3864,11 @@ function Finale() {
           <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 700 }} className="tracking-widest">
             FILMDAPPA MEDIA COMPANY
           </span>
+          <span className="opacity-30 mx-1">|</span>
+          <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio" className="h-5 w-auto opacity-80" />
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: C.orangeDim, letterSpacing: "0.15em", fontWeight: 600 }} className="tracking-widest hidden sm:inline">
+            FD BRANDSTUDIO
+          </span>
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 text-xs font-medium" style={{ fontFamily: "var(--font-sans)", color: C.muted }}>
@@ -2895,14 +3987,14 @@ function Finale() {
         </div>
       )}
 
-      <PageNum n="06" label="OFFERS" />
+      <PageNum n="05" label="OFFERS" />
     </section>
   );
 }
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
 
-const PAGES = [Cover, About, Services, Works, Results, Team, Finale, Contact];
+const PAGES = [Cover, About, Services, Works, Results, Finale, Contact];
 
 function CinemaCameraWatermark({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   const filmPath = "M 145 110 C 60 110 30 200 40 280 C 50 360 150 380 220 330 C 290 280 290 140 340 100 C 370 76 395 86 395 86";

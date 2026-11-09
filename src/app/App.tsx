@@ -283,7 +283,7 @@ const teamMembers = [
 
 const PAGE_TITLES = [
   "COVER", "ABOUT US", "SERVICES", "OUR WORKS",
-  "RESULTS", "OFFERS", "CONTACT"
+  "RESULTS", "CONTACT"
 ];
 
 // ─── VIDEO WORKS DATA ─────────────────────────────────────────────────────────
@@ -686,17 +686,23 @@ function Cover() {
       {/* BOTTOM: Services and Contacts */}
       <Reveal delay={1} className="relative z-20 w-full max-w-5xl mx-auto pb-6 flex flex-col items-center gap-5">
         {/* Contact details line (very minimal) */}
-        <div className="flex flex-wrap items-center justify-center gap-x-10 md:gap-x-14 gap-y-3 opacity-95">
-          {[
-            { icon: Phone, v: "8489854125" },
-            { icon: Instagram, v: "@filmdappa" },
-            { icon: MapPin, v: "Tiruchengode, TN" },
-          ].map(({ icon: Icon, v }) => (
-            <div key={v} className="flex items-center gap-2">
-              <Icon size={13} style={{ color: C.orangeDim }} />
-              <span className="text-[12px] md:text-[13px] font-bold" style={{ fontFamily: "var(--font-sans)", color: "#111111" }}>{v}</span>
-            </div>
-          ))}
+        <div className="flex flex-wrap items-center justify-center gap-x-6 md:gap-x-10 gap-y-3 opacity-95">
+          <a href="tel:8489854125" className="flex items-center gap-2 hover:text-amber-600 transition-colors">
+            <Phone size={13} style={{ color: C.orangeDim }} />
+            <span className="text-[12px] md:text-[13px] font-bold" style={{ fontFamily: "var(--font-sans)", color: "#111111" }}>8489854125</span>
+          </a>
+          <a href="https://instagram.com/filmdappa" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-amber-600 transition-colors">
+            <Instagram size={13} style={{ color: C.orangeDim }} />
+            <span className="text-[12px] md:text-[13px] font-bold" style={{ fontFamily: "var(--font-sans)", color: "#111111" }}>@filmdappa</span>
+          </a>
+          <a href="https://www.instagram.com/fd.brandstudio?obrf=MXB6ZmpjNTZtMnJoMQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-amber-600 transition-colors">
+            <Instagram size={13} style={{ color: C.orangeDim }} />
+            <span className="text-[12px] md:text-[13px] font-bold" style={{ fontFamily: "var(--font-sans)", color: "#111111" }}>@fd.brandstudio</span>
+          </a>
+          <div className="flex items-center gap-2">
+            <MapPin size={13} style={{ color: C.orangeDim }} />
+            <span className="text-[12px] md:text-[13px] font-bold" style={{ fontFamily: "var(--font-sans)", color: "#111111" }}>Tiruchengode, TN</span>
+          </div>
         </div>
 
         <div style={{ width: "100%", height: 1.5, background: `linear-gradient(90deg, transparent, ${C.border}, transparent)` }} />
@@ -1542,17 +1548,25 @@ function Works() {
       }
     });
 
-    // Auto-play the front video (muted for mobile browser policies) and pause all others
+    // Auto-play the front video and pause all others
     videoRefs.current.forEach((videoEl, idx) => {
       if (!videoEl) return;
       if (idx === closestIndex) {
+        videoEl.volume = 1.0;
+        if (!isMuted) {
+          videoEl.muted = false;
+        } else {
+          videoEl.muted = true;
+        }
         if (videoEl.paused) {
-          videoEl.muted = isMuted;
-          videoEl.play().catch(() => {
-            // Mobile fallback: ensure muted is true if browser blocks sound
-            videoEl.muted = true;
-            videoEl.play().catch(() => {});
-          });
+          const playPromise = videoEl.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // Mobile fallback: ensure muted is true if browser blocks sound
+              videoEl.muted = true;
+              videoEl.play().catch(() => {});
+            });
+          }
         }
       } else {
         if (!videoEl.paused) {
@@ -1595,30 +1609,58 @@ function Works() {
     };
   }, [updateFrontVideoOnScroll]);
 
+  // Mobile / Desktop sound unlock on user interaction
+  useEffect(() => {
+    const unlockAudio = () => {
+      if (playingIdx !== null && videoRefs.current[playingIdx]) {
+        const v = videoRefs.current[playingIdx];
+        if (v && v.muted && !isMuted) {
+          v.muted = false;
+          v.volume = 1.0;
+          v.play().catch(() => {});
+        }
+      }
+    };
+    window.addEventListener("touchstart", unlockAudio, { passive: true });
+    window.addEventListener("pointerdown", unlockAudio, { passive: true });
+    window.addEventListener("scroll", unlockAudio, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("pointerdown", unlockAudio);
+      window.removeEventListener("scroll", unlockAudio);
+    };
+  }, [playingIdx, isMuted]);
+
+  // Toggle mute on inline reel video
+  const handleToggleInlineMute = (idx: number) => {
+    const video = videoRefs.current[idx];
+    if (!video) return;
+    const nextMuted = !video.muted;
+    video.muted = nextMuted;
+    video.volume = 1.0;
+    setIsMuted(nextMuted);
+    if (video.paused) {
+      video.play().catch(() => {});
+    }
+  };
+
   // Single click: toggle audio / play-pause inline
   const handleInlineClick = (idx: number) => {
     const video = videoRefs.current[idx];
     if (!video) return;
 
     if (playingIdx === idx) {
-      // If already playing, toggle mute so user can hear audio on tap
-      const newMuted = !video.muted;
-      video.muted = newMuted;
-      setIsMuted(newMuted);
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+      handleToggleInlineMute(idx);
     } else {
       // Pause others and switch to this video
       videoRefs.current.forEach((v, i) => {
         if (i !== idx && v && !v.paused) v.pause();
       });
       setPlayingIdx(idx);
-      video.muted = false;
-      setIsMuted(false);
+      video.volume = 1.0;
+      video.muted = isMuted;
       video.play().catch(() => {
         video.muted = true;
-        setIsMuted(true);
         video.play().catch(() => {});
       });
     }
@@ -2301,7 +2343,6 @@ function Works() {
                     className="w-full h-full object-cover"
                     playsInline
                     loop
-                    muted
                     preload="metadata"
                   />
 
@@ -2318,7 +2359,7 @@ function Works() {
                   <div className="absolute top-3 left-3 w-3.5 h-3.5" style={{ borderTop: "2px solid #FFA500", borderLeft: "2px solid #FFA500" }} />
                   <div className="absolute top-3 right-3 w-3.5 h-3.5" style={{ borderTop: "2px solid #FFA500", borderRight: "2px solid #FFA500" }} />
 
-                  {/* Top Bar: Brand tag & Playing status */}
+                  {/* Top Bar: Brand tag & Audio status / Mute button */}
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
                     <span
                       className="px-2 py-0.5 rounded-full text-[8px] font-bold tracking-wider uppercase backdrop-blur-md"
@@ -2333,10 +2374,37 @@ function Works() {
                     </span>
 
                     {isPlayingInline && (
-                      <span className="flex items-center gap-1 text-[8px] font-mono text-green-400 font-bold bg-black/75 px-2 py-0.5 rounded-full border border-green-500/30 backdrop-blur-md">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                        PLAYING
-                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleInlineMute(idx);
+                        }}
+                        className="pointer-events-auto flex items-center gap-1.5 text-[8.5px] font-mono font-bold px-2.5 py-1 rounded-full border backdrop-blur-md cursor-pointer transition-transform hover:scale-105 active:scale-95 shadow-md"
+                        style={{
+                          background: (videoRefs.current[idx]?.muted ?? isMuted)
+                            ? "rgba(255, 165, 0, 0.9)"
+                            : "rgba(0, 0, 0, 0.8)",
+                          color: (videoRefs.current[idx]?.muted ?? isMuted)
+                            ? "#111111"
+                            : "#22C55E",
+                          borderColor: (videoRefs.current[idx]?.muted ?? isMuted)
+                            ? "rgba(255, 255, 255, 0.4)"
+                            : "rgba(34, 197, 94, 0.4)",
+                        }}
+                        title={(videoRefs.current[idx]?.muted ?? isMuted) ? "Unmute Sound" : "Mute Sound"}
+                      >
+                        {(videoRefs.current[idx]?.muted ?? isMuted) ? (
+                          <>
+                            <VolumeX size={11} />
+                            <span>TAP FOR SOUND</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 size={11} className="animate-pulse" />
+                            <span>SOUND ON</span>
+                          </>
+                        )}
+                      </button>
                     )}
                   </div>
 
@@ -3242,7 +3310,8 @@ function Contact() {
             <div className="space-y-4">
               {[
                 { icon: Phone, label: "Call Us", value: "8489854125", sub: "Mon–Sat · 9 AM – 7 PM IST", href: "tel:8489854125", color: C.orangeDim },
-                { icon: Instagram, label: "Instagram", value: "@filmdappa", sub: "DM us for quick creative chats", href: "https://instagram.com/filmdappa", color: C.orange },
+                { icon: Instagram, label: "Film Dappa Instagram", value: "@filmdappa", sub: "Cinema Editing & Post-Production", href: "https://instagram.com/filmdappa", color: C.orange },
+                { icon: Instagram, label: "FD BrandStudio Instagram", value: "@fd.brandstudio", sub: "Branding, Design & Marketing", href: "https://www.instagram.com/fd.brandstudio?obrf=MXB6ZmpjNTZtMnJoMQ%3D%3D&utm_source=qr", color: C.gold },
                 { icon: Youtube, label: "YouTube Channel", value: "FILMDAPPA", sub: "Subscribe for creative films", href: "https://youtube.com/@filmdappa?si=DmTt0mLuiNMqWTbF", color: "#FF0000" },
                 { icon: MapPin, label: "Studio", value: "VISIT OFFICE", sub: "Tamil Nadu, India — 637211", href: "https://maps.app.goo.gl/nb1zG7UD7Bf46rE57", color: C.orangeDim },
               ].map((c, i) => (
@@ -3434,12 +3503,47 @@ function Contact() {
             </a>
 
             <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: C.muted, textAlign: "center", letterSpacing: "0.3em", marginTop: 16, textTransform: "uppercase", fontWeight: 600 }}>
-              8489854125 · @filmdappa · Tiruchengode
+              8489854125 · @filmdappa · @fd.brandstudio · Tiruchengode
             </div>
           </Reveal>
         </div>
 
         <GoldRule className="mt-14" />
+
+        {/* Footer info */}
+        <Reveal delay={0} className="relative z-20 w-full max-w-5xl mx-auto px-4 mt-12 pt-6 border-t border-dashed border-gray-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="FILMDAPPA Logo" className="h-6 w-auto opacity-90" />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 700 }} className="tracking-widest">
+              FILMDAPPA MEDIA COMPANY
+            </span>
+            <span className="opacity-30 mx-1">|</span>
+            <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio" className="h-5 w-auto opacity-80" />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: C.orangeDim, letterSpacing: "0.15em", fontWeight: 600 }} className="tracking-widest hidden sm:inline">
+              FD BRANDSTUDIO
+            </span>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 text-xs font-medium" style={{ fontFamily: "var(--font-sans)", color: C.muted }}>
+            <a href="https://instagram.com/filmdappa" target="_blank" rel="noopener noreferrer" className="hover:text-amber-600 transition-colors">
+              @filmdappa
+            </a>
+            <span className="opacity-30">|</span>
+            <a href="https://www.instagram.com/fd.brandstudio?obrf=MXB6ZmpjNTZtMnJoMQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-amber-600 transition-colors">
+              @fd.brandstudio
+            </a>
+            <span className="opacity-30">|</span>
+            <span>Tiruchengode, TN</span>
+            <span className="opacity-30">|</span>
+            <a href="tel:8489854125" className="hover:text-amber-600 transition-colors">
+              +91 84898 54125
+            </a>
+          </div>
+
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: 10, color: C.muted }} className="text-center md:text-right">
+            &copy; {new Date().getFullYear()} <strong>FilmDappa</strong> & <strong>FD BrandStudio</strong>. All rights reserved.
+          </p>
+        </Reveal>
       </div>
 
       {showSuccessModal && (
@@ -3520,562 +3624,11 @@ function Contact() {
         </div>
       )}
 
-      <PageNum n="06" label="CONTACT" />
+      <PageNum n="05" label="CONTACT" />
     </section>
   );
 }
-function Finale() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [showPriceModal, setShowPriceModal] = useState(false);
-  const [priceRevealed, setPriceRevealed] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePos({ x, y });
-  };
-
-  const handleGetMoreDetails = () => {
-    toast.success("Opening WhatsApp for package details...");
-    setTimeout(() => {
-      window.open("https://wa.me/918489854125?text=Hi%20Film%20Dappa%20Media,%20I'm%20interested%20in%20your%20First%20Offer%20package.%20I'd%20like%20to%20know%20more%20details.", "_blank");
-    }, 800);
-  };
-
-  const triggerCelebration = () => {
-    setShowPriceModal(true);
-    setPriceRevealed(false);
-
-    // Blast gold particles
-    const duration = 2 * 1000;
-    const end = Date.now() + duration;
-    const goldColors = ['#FFD700', '#FFA500', '#FFDF00', '#D4AF37', '#B8860B', '#FFFFFF'];
-
-    const frame = () => {
-      confetti({
-        particleCount: 4,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0, y: 0.8 },
-        colors: goldColors,
-        zIndex: 9999
-      });
-      confetti({
-        particleCount: 4,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1, y: 0.8 },
-        colors: goldColors,
-        zIndex: 9999
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    };
-
-    // Central blast immediately
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: goldColors,
-      zIndex: 9999
-    });
-
-    frame();
-
-    setTimeout(() => {
-      setPriceRevealed(true);
-    }, 300);
-  };
-
-  return (
-    <section
-      onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex flex-col items-center justify-between pt-14 pb-14 px-5 md:pt-18 md:pb-16 md:px-10 overflow-hidden bg-white"
-      style={{ background: "#FFFFFF" }}
-    >
-      <style>{`
-        @keyframes floatDust {
-          0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.15; }
-          50% { transform: translateY(-25px) translateX(12px); opacity: 0.5; }
-        }
-        @keyframes floatLight {
-          0%, 100% { transform: translateY(0px) rotate(-12deg); }
-          50% { transform: translateY(-10px) rotate(-11deg); }
-        }
-        @keyframes floatIPhone {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-7px) rotate(1.5deg); }
-        }
-        @keyframes floatGimbal {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-11px) rotate(-1deg); }
-        }
-        @keyframes floatMic {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-8px) rotate(1deg); }
-        }
-        @keyframes floatCard {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        @keyframes floatChipItem {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          50% { transform: translateY(-5px) translateX(1.5px); }
-        }
-        @keyframes goldShine {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        @keyframes shine {
-          0% { transform: translateX(-100%); }
-          50%, 100% { transform: translateX(100%); }
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes goldenGlow {
-          0%, 100% { opacity: 0.4; filter: blur(40px); }
-          50% { opacity: 0.8; filter: blur(55px); }
-        }
-        .hover-product {
-          cursor: default;
-        }
-        .glass-card-premium {
-          background: rgba(255, 255, 255, 0.75);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 196, 0, 0.25);
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.02);
-          border-radius: 20px;
-          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .glass-card-premium:hover {
-          box-shadow: 0 25px 45px rgba(255, 196, 0, 0.06);
-        }
-        .floating-chip {
-          animation: floatChipItem 4s ease-in-out infinite;
-        }
-        .dust-particle {
-          position: absolute;
-          background: rgba(255, 196, 0, 0.3);
-          border-radius: 50%;
-          pointer-events: none;
-        }
-        .light-ray {
-          position: absolute;
-          width: 800px;
-          height: 600px;
-          background: radial-gradient(circle, rgba(255, 196, 0, 0.06) 0%, transparent 70%);
-          pointer-events: none;
-          mix-blend-mode: screen;
-        }
-
-        .product-light-wrapper {
-          position: absolute;
-          left: 3%;
-          bottom: 35px;
-          height: 270px;
-          animation: floatLight 5s ease-in-out infinite;
-          transform-origin: bottom center;
-        }
-        .product-iphone-wrapper {
-          position: absolute;
-          left: 26%;
-          bottom: 12px;
-          height: 155px;
-          animation: floatIPhone 6s ease-in-out infinite;
-          animation-delay: 0.5s;
-          transform-origin: bottom center;
-        }
-        .product-gimbal-wrapper {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          bottom: 18px;
-          height: 190px;
-          animation: floatGimbal 4s ease-in-out infinite;
-          animation-delay: 0.2s;
-          transform-origin: bottom center;
-        }
-        .product-mic-wrapper {
-          position: absolute;
-          right: 3%;
-          bottom: 15px;
-          height: 100px;
-          animation: floatMic 5.5s ease-in-out infinite;
-          animation-delay: 0.8s;
-          transform-origin: bottom center;
-        }
-
-        @media (max-width: 768px) {
-          .product-light-wrapper {
-            left: 2%;
-            bottom: 25px;
-            height: 170px;
-          }
-          .product-iphone-wrapper {
-            left: 25%;
-            bottom: 8px;
-            height: 110px;
-          }
-          .product-gimbal-wrapper {
-            left: 50%;
-            bottom: 12px;
-            height: 125px;
-          }
-          .product-mic-wrapper {
-            right: 2%;
-            bottom: 10px;
-            height: 75px;
-          }
-        }
-      `}</style>
-
-      {/* Background Atmosphere */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        {/* Parallax Light Rays */}
-        <div
-          className="light-ray top-[-10%] left-[10%] animate-[goldenGlow_8s_ease-in-out_infinite]"
-          style={{ transform: `translate(${mousePos.x * 25}px, ${mousePos.y * 25}px)` }}
-        />
-        <div
-          className="light-ray bottom-[-10%] right-[10%] animate-[goldenGlow_12s_ease-in-out_infinite]"
-          style={{ transform: `translate(${mousePos.x * -15}px, ${mousePos.y * -15}px)` }}
-        />
-
-        {/* Ambient Golden Leaks */}
-        <div className="absolute top-[20%] left-[-200px] w-[500px] h-[500px] rounded-full bg-amber-400/5 blur-[120px]" />
-        <div className="absolute bottom-[20%] right-[-200px] w-[500px] h-[500px] rounded-full bg-amber-300/5 blur-[120px]" />
-
-        {/* Thin Floating Background Icons */}
-        <Tv size={54} className="opacity-5 top-[15%] left-[8%] absolute" />
-        <Camera size={64} className="opacity-5 bottom-[20%] left-[10%] absolute" />
-        <Clapperboard size={58} className="opacity-5 top-[18%] right-[10%] absolute" />
-        <Video size={60} className="opacity-5 bottom-[18%] right-[8%] absolute" />
-
-        {/* Floating dust particles */}
-        <div className="dust-particle w-2.5 h-2.5 top-[25%] left-[30%] animate-[floatDust_7s_infinite_ease-in-out]" />
-        <div className="dust-particle w-1.5 h-1.5 top-[65%] left-[20%] animate-[floatDust_9s_infinite_ease-in-out_delay-1s]" />
-        <div className="dust-particle w-2 h-2 top-[40%] right-[25%] animate-[floatDust_8s_infinite_ease-in-out_delay-2s]" />
-        <div className="dust-particle w-1 h-1 bottom-[30%] right-[35%] animate-[floatDust_6s_infinite_ease-in-out_delay-3s]" />
-      </div>
-
-      <div className="absolute top-0 left-0 right-0 z-10"><FilmStripH count={40} /></div>
-      <div className="absolute bottom-0 left-0 right-0 z-10"><FilmStripH count={40} /></div>
-
-      <div className="h-2 w-full" />
-
-      {/* Main Content Area */}
-      <div className="relative z-20 w-full max-w-[1400px] mx-auto flex flex-col items-center gap-12 my-auto">
-
-        {/* Header Titles */}
-        <Reveal delay={0} className="text-center space-y-4 max-w-3xl">
-          <div className="inline-block px-5 py-1.5 rounded-md" style={{ background: "linear-gradient(135deg, #FF6B00 0%, #FFA500 50%, #FFD700 100%)" }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, color: "#111111", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 900 }}>
-              LET'S MAKE A PURE CINEMA
-            </span>
-          </div>
-          <h1
-            className="leading-none text-center font-black tracking-tight uppercase"
-            style={{
-              fontSize: "clamp(48px, 7.5vw, 95px)",
-              display: "block",
-              lineHeight: 1.05,
-              background: "linear-gradient(135deg, #9C6A0F 0%, #FFD700 50%, #B8860B 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              fontWeight: 950
-            }}
-          >
-            FIRST OFFER
-          </h1>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(14px, 2vw, 17px)", fontWeight: 700, color: C.fore, letterSpacing: "0.02em" }}>
-            A Complete 10-Minute Filmmaking Package for New Age Creators
-          </p>
-        </Reveal>
-
-        {/* 3-Column Content Layout */}
-        <div className="w-full grid lg:grid-cols-3 items-center gap-8 lg:gap-4 xl:gap-8">
-
-          {/* Left Card: Pre Production */}
-          <Reveal delay={0} className="w-full flex justify-center">
-            <div
-              className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_7s_infinite_ease-in-out]"
-              style={{
-                transform: `translate(${mousePos.x * -8}px, ${mousePos.y * -8}px)`,
-                height: "150px"
-              }}
-            >
-              <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 900, color: C.fore, letterSpacing: "0.08em", marginBottom: 8 }}>
-                PRE PRODUCTION
-              </h3>
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
-                (Studio Space & Backdrops,<br />
-                Professional Lightings, iPhone 16,<br />
-                Gimbal & Audio Mic)
-              </p>
-            </div>
-          </Reveal>
-
-          {/* Center Column: Interactive Podium & Products */}
-          <Reveal delay={1} className="w-full">
-            <div className="flex flex-col items-center justify-center min-h-[380px] relative">
-
-              {/* Products container */}
-              <div className="relative w-full max-w-[440px] h-[300px] z-20 flex justify-center">
-
-                {/* Product 1: LC500R RGB Tube Light */}
-                <div className="hover-product product-light-wrapper">
-                  <img
-                    src="/product_light.png"
-                    alt="LC500R Tube Light"
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
-
-                {/* Product 2: iPhone 16 */}
-                <div className="hover-product product-iphone-wrapper">
-                  <img
-                    src="/product_iphone.png"
-                    alt="iPhone 16"
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
-
-                {/* Product 3: Gimbal */}
-                <div className="hover-product product-gimbal-wrapper">
-                  <img
-                    src="/product_gimbal.png"
-                    alt="Smartphone Gimbal"
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
-
-                {/* Product 4: Microphone */}
-                <div className="hover-product product-mic-wrapper">
-                  <img
-                    src="/product_mic.png"
-                    alt="Wireless Microphone"
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Right Card: Post Production */}
-          <Reveal delay={2} className="w-full flex justify-center">
-            <div
-              className="glass-card-premium py-5 px-6 flex flex-col items-center justify-center text-center max-w-[340px] mx-auto w-full animate-[floatCard_8s_infinite_ease-in-out_delay-1s]"
-              style={{
-                transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)`,
-                height: "150px"
-              }}
-            >
-              <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 900, color: C.fore, letterSpacing: "0.08em", marginBottom: 8 }}>
-                POST PRODUCTION
-              </h3>
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C.muted, fontWeight: 600, lineHeight: 1.5 }}>
-                (Short Film Edit, Title Design,<br />
-                First Look, Release Poster,<br />
-                Promotion Video)
-              </p>
-            </div>
-          </Reveal>
-
-        </div>
-
-        {/* CTA Bottom Area: Premium Glass Container */}
-        <Reveal delay={1} className="relative z-30 w-full max-w-xl mx-auto px-4 pt-4">
-          <div className="p-6 md:p-8 rounded-3xl backdrop-blur-xl border border-white/40 shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
-            style={{
-              background: "rgba(255, 255, 255, 0.45)",
-              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.6)"
-            }}
-          >
-            {/* Button 1: TAP TO SEE THE PRICE */}
-            <button
-              onClick={triggerCelebration}
-              className="w-full sm:w-auto px-6 py-4 rounded-2xl text-xs font-extrabold tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer shadow-lg hover:shadow-xl"
-              style={{
-                background: "linear-gradient(135deg, #FFC400 0%, #FFB300 50%, #FF9F00 100%)",
-                color: "#111111",
-                fontFamily: "var(--font-mono)",
-                border: "1px solid rgba(255, 255, 255, 0.4)",
-                boxShadow: "0 8px 25px rgba(255, 196, 0, 0.35)"
-              }}
-            >
-              <span>TAP TO SEE THE PRICE</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="animate-pulse">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-            </button>
-
-            {/* Button 2: GET MORE DETAILS */}
-            <button
-              onClick={handleGetMoreDetails}
-              className="w-full sm:w-auto px-6 py-4 rounded-2xl text-xs font-extrabold tracking-[0.15em] uppercase transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer border hover:bg-black/5"
-              style={{
-                background: "#111111",
-                color: "#FFFFFF",
-                fontFamily: "var(--font-mono)",
-                borderColor: "#111111",
-                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)"
-              }}
-            >
-              <span>GET MORE DETAILS</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-              </svg>
-            </button>
-          </div>
-        </Reveal>
-
-      </div>
-
-      {/* Footer info */}
-      <Reveal delay={0} className="relative z-20 w-full max-w-5xl mx-auto px-4 mt-8 pt-6 border-t border-dashed border-gray-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="FILMDAPPA Logo" className="h-6 w-auto opacity-90" />
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: C.orangeDim, letterSpacing: "0.2em", fontWeight: 700 }} className="tracking-widest">
-            FILMDAPPA MEDIA COMPANY
-          </span>
-          <span className="opacity-30 mx-1">|</span>
-          <img src="/fd-brandstudio-logo.png" alt="FD BrandStudio" className="h-5 w-auto opacity-80" />
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: C.orangeDim, letterSpacing: "0.15em", fontWeight: 600 }} className="tracking-widest hidden sm:inline">
-            FD BRANDSTUDIO
-          </span>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-4 text-xs font-medium" style={{ fontFamily: "var(--font-sans)", color: C.muted }}>
-          <a href="https://instagram.com/filmdappa" target="_blank" rel="noopener noreferrer" className="hover:text-amber-600 transition-colors">
-            Instagram
-          </a>
-          <span className="opacity-30">|</span>
-          <span>Tiruchengode, TN</span>
-          <span className="opacity-30">|</span>
-          <a href="tel:8489854125" className="hover:text-amber-600 transition-colors">
-            +91 84898 54125
-          </a>
-        </div>
-
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: 10, color: C.muted }} className="text-center md:text-right">
-          &copy; {new Date().getFullYear()} <strong>FilmDappa</strong>. All rights reserved.
-        </p>
-      </Reveal>
-
-      {/* Price Reveal Pop-up Modal */}
-      {showPriceModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          {/* Backdrop Blur */}
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-500 ease-out"
-            onClick={() => setShowPriceModal(false)}
-          />
-
-          {/* Modal Container */}
-          <div
-            className={`relative w-full max-w-md p-8 rounded-3xl border border-amber-400/30 text-center shadow-2xl transition-all duration-500 ease-out transform ${priceRevealed ? "scale-100 opacity-100" : "scale-90 opacity-0"
-              }`}
-            style={{
-              background: "rgba(17, 17, 17, 0.95)",
-              boxShadow: "0 25px 50px -12px rgba(255, 196, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.05)"
-            }}
-          >
-            {/* Close button */}
-            <button
-              onClick={() => setShowPriceModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors cursor-pointer p-1 rounded-full hover:bg-white/10"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-
-            {/* Glowing Golden Aura behind content */}
-            <div className="absolute -inset-10 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
-
-            <div className="space-y-6">
-              <div className="inline-block px-4 py-1 rounded-full border border-amber-400/20 bg-amber-400/5">
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#FFD700", letterSpacing: "0.2em", fontWeight: 700 }}>
-                  EXCLUSIVE PACKAGE PRICE
-                </span>
-              </div>
-
-              <h3
-                className="font-sans font-black tracking-tight"
-                style={{ fontSize: 24, color: "#FFFFFF" }}
-              >
-                FIRST OFFER
-              </h3>
-
-              {/* Price with Premium Scale-up Animation */}
-              <div className="py-6 flex flex-col items-center justify-center">
-                <span className="text-xs text-amber-400 font-mono tracking-widest mb-2 uppercase">
-                  for 10 minute
-                </span>
-                <div
-                  className={`transition-all duration-700 ease-out transform ${priceRevealed ? "scale-110 opacity-100" : "scale-50 opacity-0"
-                    }`}
-                >
-                  <span
-                    className="font-heading font-black tracking-wide block"
-                    style={{
-                      fontSize: "72px",
-                      background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      textShadow: "0 0 30px rgba(255, 196, 0, 0.4)",
-                      lineHeight: 1
-                    }}
-                  >
-                    ₹3000
-                  </span>
-                </div>
-                <span className="text-[10px] text-gray-400 font-mono tracking-widest mt-3 uppercase">
-                  COMPLETE FILMMAKING PACKAGE
-                </span>
-              </div>
-
-              <div className="pt-2">
-                <button
-                  onClick={() => {
-                    setShowPriceModal(false);
-                    handleGetMoreDetails();
-                  }}
-                  className="w-full py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer"
-                  style={{
-                    background: "rgba(255, 255, 255, 0.08)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    color: "#FFFFFF"
-                  }}
-                >
-                  <span>PROCEED TO BOOKING</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <PageNum n="05" label="OFFERS" />
-    </section>
-  );
-}
-
-// ─── ROOT ─────────────────────────────────────────────────────────────────────
-
-const PAGES = [Cover, About, Services, Works, Results, Finale, Contact];
+const PAGES = [Cover, About, Services, Works, Results, Contact];
 
 function CinemaCameraWatermark({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   const filmPath = "M 145 110 C 60 110 30 200 40 280 C 50 360 150 380 220 330 C 290 280 290 140 340 100 C 370 76 395 86 395 86";

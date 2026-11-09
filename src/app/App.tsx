@@ -782,96 +782,110 @@ function About() {
               </span>
             </div>
 
-            {/* Equal Side-by-Side Brand Showcase */}
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
-              {/* Brand 1: Film Dappa */}
+            {/* Stacked Dual Brand Showcase: Line 1 Film Dappa, Line 2 FD BrandStudio */}
+            <div className="w-full flex flex-col gap-3.5">
+              {/* Line 1: Film Dappa */}
               <div
-                className="flex flex-col items-center justify-center p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] text-center"
+                className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:scale-[1.01] hover:shadow-md"
                 style={{
-                  background: "linear-gradient(180deg, rgba(255, 107, 0, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%)",
-                  border: "1px solid rgba(255, 107, 0, 0.25)",
+                  background: "linear-gradient(90deg, rgba(255, 107, 0, 0.06) 0%, rgba(255, 255, 255, 0.95) 100%)",
+                  border: "1.5px solid rgba(255, 107, 0, 0.28)",
                 }}
               >
-                <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-1.5 mb-3 rounded-2xl bg-white shadow-sm border border-amber-500/20">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1.5 rounded-2xl bg-white shadow-sm border border-amber-500/25 flex-shrink-0">
                   <img
                     src="/logo.png"
                     alt="Film Dappa Logo"
-                    className="w-full h-full object-contain scale-105"
+                    className="w-full h-full object-contain"
                   />
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-heading)",
-                    color: "#111111",
-                    fontWeight: 900,
-                    fontSize: "17px",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase"
-                  }}
-                >
-                  FILM DAPPA
+                <div className="flex-1 text-left">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div
+                      style={{
+                        fontFamily: "var(--font-heading)",
+                        color: "#111111",
+                        fontWeight: 900,
+                        fontSize: "18px",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase"
+                      }}
+                    >
+                      FILM DAPPA
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        color: C.orangeDim,
+                        fontSize: "9.5px",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        fontWeight: 800,
+                        background: "rgba(255, 107, 0, 0.1)",
+                        padding: "2px 8px",
+                        borderRadius: "6px",
+                        border: "1px solid rgba(255, 107, 0, 0.25)"
+                      }}
+                    >
+                      Post Production
+                    </span>
+                  </div>
+                  <p className="text-[12px] sm:text-[13px] text-gray-600 mt-1.5 leading-relaxed font-medium">
+                    Cinema editing, DaVinci DI color grading, Dolby sound mixing & theatrical / OTT delivery.
+                  </p>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    color: C.orangeDim,
-                    fontSize: "10px",
-                    letterSpacing: "0.15em",
-                    marginTop: "4px",
-                    textTransform: "uppercase",
-                    fontWeight: 800
-                  }}
-                >
-                  Post Production
-                </div>
-                <p className="text-[11.5px] text-gray-600 mt-2 leading-relaxed">
-                  Cinema editing, DaVinci DI grading, Dolby mix & OTT delivery.
-                </p>
               </div>
 
-              {/* Brand 2: FD BrandStudio */}
+              {/* Line 2: FD BrandStudio */}
               <div
-                className="flex flex-col items-center justify-center p-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] text-center"
+                className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl transition-all duration-300 hover:scale-[1.01] hover:shadow-md"
                 style={{
-                  background: "linear-gradient(180deg, rgba(255, 196, 0, 0.08) 0%, rgba(255, 255, 255, 0.8) 100%)",
-                  border: "1px solid rgba(255, 196, 0, 0.35)",
+                  background: "linear-gradient(90deg, rgba(255, 196, 0, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%)",
+                  border: "1.5px solid rgba(255, 196, 0, 0.38)",
                 }}
               >
-                <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-3 mb-3 rounded-2xl bg-white shadow-sm border border-amber-500/30 overflow-hidden">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-2 rounded-2xl bg-white shadow-sm border border-amber-500/30 flex-shrink-0 overflow-hidden">
                   <img
                     src="/fd-brandstudio-logo.png"
                     alt="FD BrandStudio Logo"
-                    className="w-full h-full object-contain scale-95"
+                    className="w-full h-full object-contain"
                   />
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-heading)",
-                    color: "#111111",
-                    fontWeight: 900,
-                    fontSize: "17px",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase"
-                  }}
-                >
-                  FD BRANDSTUDIO
+                <div className="flex-1 text-left">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div
+                      style={{
+                        fontFamily: "var(--font-heading)",
+                        color: "#111111",
+                        fontWeight: 900,
+                        fontSize: "18px",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase"
+                      }}
+                    >
+                      FD BRANDSTUDIO
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        color: C.orangeDim,
+                        fontSize: "9.5px",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        fontWeight: 800,
+                        background: "rgba(255, 196, 0, 0.15)",
+                        padding: "2px 8px",
+                        borderRadius: "6px",
+                        border: "1px solid rgba(255, 196, 0, 0.35)"
+                      }}
+                    >
+                      Design &bull; Marketing
+                    </span>
+                  </div>
+                  <p className="text-[12px] sm:text-[13px] text-gray-600 mt-1.5 leading-relaxed font-medium">
+                    Strategic brand identity, UI/UX systems, content production & data-driven digital growth.
+                  </p>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    color: C.orangeDim,
-                    fontSize: "10px",
-                    letterSpacing: "0.15em",
-                    marginTop: "4px",
-                    textTransform: "uppercase",
-                    fontWeight: 800
-                  }}
-                >
-                  Design &bull; Marketing
-                </div>
-                <p className="text-[11.5px] text-gray-600 mt-2 leading-relaxed">
-                  Visual identity, UI/UX, brand systems & data-driven growth.
-                </p>
               </div>
             </div>
 

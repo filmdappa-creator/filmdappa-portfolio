@@ -1477,7 +1477,8 @@ function Services() {
 }
 
 function Works() {
-  const [playingIdx, setPlayingIdx] = useState<number | null>(null);
+  const [playingIdx, setPlayingIdx] = useState<number | null>(0);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [bigScreenIdx, setBigScreenIdx] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isPlayingBig, setIsPlayingBig] = useState<boolean>(true);
@@ -1486,6 +1487,31 @@ function Works() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const bigScreenVideoRef = useRef<HTMLVideoElement | null>(null);
   const bigScreenContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Start all videos immediately on mount so there is never a black screen
+  useEffect(() => {
+    const startAllVideos = () => {
+      videoRefs.current.forEach((v) => {
+        if (v) {
+          v.muted = true;
+          v.playsInline = true;
+          const p = v.play();
+          if (p !== undefined) {
+            p.catch(() => {});
+          }
+        }
+      });
+    };
+
+    startAllVideos();
+    const t1 = setTimeout(startAllVideos, 250);
+    const t2 = setTimeout(startAllVideos, 800);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
 
   // Scroll left/right
   const scroll = (direction: "left" | "right") => {
@@ -1515,22 +1541,13 @@ function Works() {
     }, 100);
   }, [isMuted]);
 
-  // Auto-play the video shown in front while scrolling without touching
+  // Auto-play the video shown in front while scrolling
   const updateFrontVideoOnScroll = useCallback(() => {
     if (bigScreenIdx !== null) return;
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    // Check if the works reel is within the viewport vertically
     const containerRect = container.getBoundingClientRect();
-    if (containerRect.bottom < 50 || containerRect.top > window.innerHeight - 50) {
-      // Out of viewport: pause all videos to save battery/bandwidth
-      videoRefs.current.forEach((v) => {
-        if (v && !v.paused) v.pause();
-      });
-      return;
-    }
-
     const containerCenter = containerRect.left + containerRect.width / 2;
     let closestIndex = 0;
     let minDistance = Infinity;
@@ -1548,35 +1565,50 @@ function Works() {
       }
     });
 
-    // Auto-play the front video and pause all others
+    const isTouchMobile = typeof window !== "undefined" && (window.innerWidth <= 768 || (window.matchMedia && window.matchMedia("(hover: none)").matches));
+
     videoRefs.current.forEach((videoEl, idx) => {
       if (!videoEl) return;
+      const card = videoEl.parentElement;
+      const cardRect = card?.getBoundingClientRect();
+
       if (idx === closestIndex) {
-        videoEl.volume = 1.0;
-        if (!isMuted) {
-          videoEl.muted = false;
-        } else {
-          videoEl.muted = true;
+        if (isTouchMobile) {
+          videoEl.volume = 1.0;
+          videoEl.muted = isMuted;
         }
         if (videoEl.paused) {
           const playPromise = videoEl.play();
           if (playPromise !== undefined) {
             playPromise.catch(() => {
-              // Mobile fallback: ensure muted is true if browser blocks sound
               videoEl.muted = true;
               videoEl.play().catch(() => {});
             });
           }
         }
       } else {
-        if (!videoEl.paused) {
-          videoEl.pause();
+        if (isTouchMobile) {
+          // On mobile: pause far offscreen cards to conserve threads, keep neighbors running
+          if (cardRect && (cardRect.right < containerRect.left - 60 || cardRect.left > containerRect.right + 60)) {
+            if (!videoEl.paused) videoEl.pause();
+          } else {
+            videoEl.muted = true;
+            if (videoEl.paused) videoEl.play().catch(() => {});
+          }
+        } else {
+          // Desktop: keep all videos playing continuously
+          if (hoveredIdx === null) {
+            videoEl.muted = true;
+          }
+          if (videoEl.paused) {
+            videoEl.play().catch(() => {});
+          }
         }
       }
     });
 
     setPlayingIdx(closestIndex);
-  }, [bigScreenIdx, isMuted]);
+  }, [bigScreenIdx, isMuted, hoveredIdx]);
 
   // Attach horizontal reel scroll listener and window scroll listener
   useEffect(() => {
@@ -1623,13 +1655,53 @@ function Works() {
     };
     window.addEventListener("touchstart", unlockAudio, { passive: true });
     window.addEventListener("pointerdown", unlockAudio, { passive: true });
+    window.addEventListener("mousemove", unlockAudio, { passive: true, once: true });
     window.addEventListener("scroll", unlockAudio, { passive: true });
     return () => {
       window.removeEventListener("touchstart", unlockAudio);
       window.removeEventListener("pointerdown", unlockAudio);
+      window.removeEventListener("mousemove", unlockAudio);
       window.removeEventListener("scroll", unlockAudio);
     };
   }, [playingIdx, isMuted]);
+
+  // Desktop: place mouse on video to play audio
+  const handleCardMouseEnter = (idx: number) => {
+    if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(hover: none)").matches) {
+      return;
+    }
+    setHoveredIdx(idx);
+    setPlayingIdx(idx);
+
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === idx) {
+        v.muted = false;
+        v.volume = 1.0;
+        const p = v.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            v.muted = true;
+            v.play().catch(() => {});
+          });
+        }
+      } else {
+        v.muted = true;
+      }
+    });
+  };
+
+  // Desktop: move mouse off video to mute audio
+  const handleCardMouseLeave = (idx: number) => {
+    if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(hover: none)").matches) {
+      return;
+    }
+    setHoveredIdx(null);
+    const v = videoRefs.current[idx];
+    if (v) {
+      v.muted = true;
+    }
+  };
 
   // Toggle mute on inline reel video
   const handleToggleInlineMute = (idx: number) => {
@@ -1652,10 +1724,6 @@ function Works() {
     if (playingIdx === idx) {
       handleToggleInlineMute(idx);
     } else {
-      // Pause others and switch to this video
-      videoRefs.current.forEach((v, i) => {
-        if (i !== idx && v && !v.paused) v.pause();
-      });
       setPlayingIdx(idx);
       video.volume = 1.0;
       video.muted = isMuted;
@@ -2321,6 +2389,8 @@ function Works() {
                     e.stopPropagation();
                     openBigScreen(idx);
                   }}
+                  onMouseEnter={() => handleCardMouseEnter(idx)}
+                  onMouseLeave={() => handleCardMouseLeave(idx)}
                   onTouchStart={() => handleTouchStart(idx)}
                   onTouchEnd={handleTouchEnd}
                   onTouchMove={handleTouchMove}
@@ -2329,11 +2399,11 @@ function Works() {
                   style={{
                     border: isSelectedBig
                       ? "2px solid #FFD700"
-                      : isPlayingInline
+                      : (hoveredIdx === idx || isPlayingInline)
                       ? "2px solid #FF9F00"
                       : "1px solid rgba(255, 215, 0, 0.25)",
                     aspectRatio: "9/16",
-                    background: "#0E0E10",
+                    background: "linear-gradient(180deg, #1C1C22 0%, #101014 100%)",
                   }}
                 >
                   {/* Inline Video Player */}
@@ -2341,9 +2411,14 @@ function Works() {
                     ref={(el) => { videoRefs.current[idx] = el; }}
                     src={item.src}
                     className="w-full h-full object-cover"
+                    autoPlay
+                    muted
                     playsInline
                     loop
-                    preload="metadata"
+                    preload="auto"
+                    onLoadedData={(e) => {
+                      e.currentTarget.play().catch(() => {});
+                    }}
                   />
 
                   {/* Gradient overlays */}
@@ -2351,7 +2426,7 @@ function Works() {
                     className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
                     style={{
                       background: "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 35%, transparent 60%, rgba(0,0,0,0.92) 100%)",
-                      opacity: isPlayingInline ? 0.35 : 0.85,
+                      opacity: (isPlayingInline || hoveredIdx === idx) ? 0.35 : 0.85,
                     }}
                   />
 
@@ -2373,7 +2448,12 @@ function Works() {
                       {item.brand}
                     </span>
 
-                    {isPlayingInline && (
+                    {hoveredIdx === idx ? (
+                      <span className="pointer-events-auto flex items-center gap-1.5 text-[8.5px] font-mono font-bold px-2.5 py-1 rounded-full border border-amber-400/50 bg-black/85 text-amber-300 backdrop-blur-md shadow-lg animate-pulse">
+                        <Volume2 size={11} className="text-amber-400" />
+                        <span>AUDIO PLAYING</span>
+                      </span>
+                    ) : isPlayingInline ? (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -2405,7 +2485,7 @@ function Works() {
                           </>
                         )}
                       </button>
-                    )}
+                    ) : null}
                   </div>
 
                   {/* Bottom Info bar */}
